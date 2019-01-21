@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+		xmlns:f="http://xmlns.jcp.org/jsf/core"
+	
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/page-template.xhtml">
+	<ui:param name="pageTitle" value="Edit Customer" />
+	<ui:define name="panel-main">
+		<h:form>
+			<p:panel id="panel" header="Customer Information">
+
+				<p:messages id="msgs" />
+
+				<h:panelGrid columns="3" cellpadding="5">
+					<p:outputLabel for="firstname" value="Firstname:" />
+					<p:inputText id="firstname" value="#{custBB.cust.firstName}"
+						required="true" label="Firstname" />
+					<p:message for="firstname" display="icon" />
+
+					<p:outputLabel for="lastname" value="Lastname:" />
+					<p:inputText id="lastname" value="#{custBB.cust.lastName}"
+						label="Lastname" required="true" />
+					<p:message for="lastname" id="msgLastname" display="icon" />
+
+					<p:outputLabel for="address" value="Address:" />
+					<p:inputText id="address" value="#{custBB.cust.address}"
+						label="Address" required="false" />
+					<p:message for="address" id="msgAddress" display="icon" />
+
+					<p:outputLabel for="email" value="Email:" />
+					<p:inputText id="email" value="#{custBB.cust.email}" label="Email"
+						required="false" />
+					<p:message for="email" id="msgEmail" display="icon" />
+
+					<p:outputLabel for="allowed" value="Allowed Tickets:" />
+					<p:inputNumber id="allowed" value="#{custBB.cust.allowedTickets}"
+						minValue="0" maxValue="100" decimalPlaces="0" required="true" />
+					<p:message for="allowed" id="msgAllowed" display="icon" />
+
+					<p:outputLabel for="special" value="Special Needs: " />
+					<p:selectOneMenu id="special" value="#{custBB.cust.specialNeeds}">
+						<f:selectItem itemLabel="None" itemValue="" />
+						<f:selectItems value="#{custBB.allneeds}" />
+					</p:selectOneMenu>
+
+				</h:panelGrid>
+
+				<p:commandButton value="Save" action="custlist"
+					actionListener="#{custBB.save}" icon="ui-icon-check" />
+			</p:panel>
+
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>
+</html>

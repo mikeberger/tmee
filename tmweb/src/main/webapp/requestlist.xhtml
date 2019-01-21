@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/templates/page-template.xhtml">
+	<ui:param name="pageTitle" value="Requests" />
+	<ui:define name="panel-main">
+		<h:form>
+			<p:dataTable var="req" value="#{requestBB.list}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+				paginator="true" rows="20" style="margin-bottom:20px">>
+				<p:column headerText="Name" sortBy="#{req.show.name}">
+					<h:outputText value="#{req.show.name}" />
+				</p:column>
+
+				<p:column headerText="Time" sortBy="#{req.show.time}">
+					<h:outputText value="#{req.show.time}" />
+				</p:column>
+
+				<p:column headerText="Tickets">
+					<h:outputText value="#{req.tickets}" />
+				</p:column>
+
+				<p:column headerText="Action">
+					<p:commandButton action="requestlist?faces-redirect=true" icon="ui-icon-circle-close"
+						actionListener="#{requestBB.delete}">
+						<f:param name="request_id" value="#{req.recordId}" />
+						<p:confirm header="Confirmation" message="Really Delete?"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+			<p:commandButton action="request" value="Enter New Request"
+				actionListener="#{requestBB.newRecord}" />
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

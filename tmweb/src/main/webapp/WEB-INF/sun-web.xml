@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sun-web-app PUBLIC '-//Sun Microsystems, Inc.//DTD 
+Application Server 9.0 Servlet 2.5//EN' 
+'http://www.sun.com/software/appserver/dtds/sun-web-app_2_5-0.dtd'>
+<sun-web-app>
+	<security-role-mapping>
+		<role-name>tmadmin</role-name>
+		<group-name>tmadmin</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>tmuser</role-name>
+		<group-name>tmuser</group-name>
+	</security-role-mapping>
+</sun-web-app>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/templates/page-template.xhtml">
+	<ui:param name="pageTitle" value="Edit Customer" />
+	<ui:define name="panel-main">
+		<h:form>
+			<p:panel id="panel" header="Customer Information">
+
+				<p:messages id="msgs" />
+
+				<h:panelGrid columns="3" cellpadding="5">
+					<p:outputLabel for="firstname" value="Firstname:" />
+					<p:inputText id="firstname" value="#{custBB.cust.firstName}"
+						required="true" disabled="true" label="Firstname" />
+					<p:message for="firstname" display="icon" />
+
+					<p:outputLabel for="lastname" value="Lastname:" />
+					<p:inputText id="lastname" value="#{custBB.cust.lastName}"
+						label="Lastname" disabled="true" required="true" />
+					<p:message for="lastname" id="msgLastname" display="icon" />
+
+					<p:outputLabel for="address" value="Address:" />
+					<p:inputText id="address" value="#{custBB.cust.address}"
+						label="Address" disabled="true" required="false" />
+					<p:message for="address" id="msgAddress" display="icon" />
+
+					<p:outputLabel for="email" value="Email:" />
+					<p:inputText id="email" value="#{custBB.cust.email}" disabled="true" label="Email"
+						required="false" />
+					<p:message for="email" id="msgEmail" display="icon" />
+
+					<p:outputLabel for="allowed" value="Allowed Tickets:" />
+					<p:inputNumber id="allowed" value="#{custBB.cust.allowedTickets}"
+						minValue="0" maxValue="100" disabled="true" decimalPlaces="0" required="true" />
+					<p:message for="allowed" id="msgAllowed" display="icon" />
+
+					<p:outputLabel for="special" value="Special Needs: " />
+					<p:inputText disabled="true" id="special" value="#{custBB.cust.specialNeeds}"/>
+						
+					
+				</h:panelGrid>
+
+				
+			</p:panel>
+
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>
+</html>

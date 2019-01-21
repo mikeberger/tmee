@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>tmee</groupId>
+		<artifactId>tmee</artifactId>
+		<version>1.0</version>
+	</parent>
+	<artifactId>tmweb</artifactId>
+	<packaging>war</packaging>
+	<repositories>
+		<repository>
+			<id>prime-repo</id>
+			<name>PrimeFaces Maven Repository</name>
+			<url>http://repository.primefaces.org</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+	<dependencies>
+		<dependency>
+			<groupId>tmee</groupId>
+			<artifactId>tmserviceapi</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>tmee</groupId>
+			<artifactId>tmserviceimpl</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>tmee</groupId>
+			<artifactId>tmdto</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+			<version>6.2</version>
+		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.primefaces.themes</groupId> -->
+<!-- 			<artifactId>dark-hive</artifactId> -->
+<!-- 			<version>1.0.10</version> -->
+<!-- 		</dependency> -->
+
+	</dependencies>
+</project>

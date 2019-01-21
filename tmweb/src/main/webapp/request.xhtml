@@ -1,0 +1,31 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/templates/page-template.xhtml">
+	<ui:param name="pageTitle" value="Requests" />
+	<ui:define name="panel-main">
+		<h:form>
+			<p:messages id="messages" showDetail="true" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+			<p:panelGrid columns="2">
+				<p:outputLabel for="show" value="Show:" />
+				<p:selectOneMenu required="true" id="show" value="#{showBB.selectedShow}">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="item" itemValue="#{item.recordId}" itemLabel="#{item}" value="#{showBB.showList}" />
+				</p:selectOneMenu>
+				<p:outputLabel for="ticks" value="Number of Tickets: " />
+				<p:inputText id="ticks" value="#{requestBB.request.tickets}"
+					required="true">
+					<f:validateLongRange minimum="1" />
+				</p:inputText>
+				<p:commandButton value="Add Request" action="requestlist" actionListener="#{requestBB.save}" />
+			</p:panelGrid>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

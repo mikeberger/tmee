@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition>
+	<h:form>
+		<p:growl id="messages" />
+
+		<p:menubar id="mb">
+			<p:submenu label="User">
+				<p:menuitem value="My Profile" action="custinfo"
+					actionListener="#{custBB.get}" />
+				<p:menuitem value="My Requests" action="requestlist"
+					actionListener="#{requestBB.refreshList}" />
+				<p:menuitem value="My Tickets" action="ticketlist"
+					actionListener="#{ticketBB.refreshList}" />
+				<p:menuitem value="Init" action="index"
+					actionListener="#{testBB.init}" />
+				<p:menuitem value="Logout" action="index"
+					actionListener="#{login.logout}" />
+			</p:submenu>
+			<p:submenu label="Admin" rendered="#{p:ifGranted('tmadmin')}">
+				<p:menuitem value="Customers" action="custlist"
+					actionListener="#{custBB.refreshList}" />
+				<p:menuitem value="Shows" action="showlist"
+					actionListener="#{showBB.refreshList}" />
+				<p:menuitem value="Packages" action="showlist"
+					actionListener="#{showBB.refreshList}" />
+				<p:menuitem value="Requests" action="showlist"
+					actionListener="#{showBB.refreshList}" />
+				<p:menuitem value="Tickets" action="showlist"
+					actionListener="#{showBB.refreshList}" />
+				<p:menuitem value="Reservations" action="showlist"
+					actionListener="#{showBB.refreshList}" />
+				
+			</p:submenu>
+			<p:submenu label="Reports" rendered="#{p:ifGranted('tmadmin')}">
+				<p:menuitem value="Customers" action="custlist"
+					actionListener="#{custBB.refreshList}" />
+			</p:submenu>
+			
+			
+		</p:menubar>
+		<div style="height: 10px"></div>
+		<p:sticky target="mb" />
+	</h:form>
+</ui:composition>
+
+</html>
