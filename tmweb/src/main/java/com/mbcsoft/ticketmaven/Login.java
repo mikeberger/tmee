@@ -16,6 +16,7 @@ import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -23,15 +24,20 @@ import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import com.mbcsoft.ticketmaven.ejb.CustomerBean;
+
 @SessionScoped
 @Named("login")
 public class Login implements Serializable {
 
 	private static final long serialVersionUID = -5876465825563098570L;
 	static private final Logger logger = Logger.getLogger("audit_logger");
+	
+	@EJB private CustomerBean custbean;
 
 	private String username;
 	private String password;
+	private String community;
 
 	public String getUsername() {
 		return this.username;
@@ -48,6 +54,10 @@ public class Login implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public String getCommunity() {
+		return this.community;
+	}
 
 	public void login() {
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -58,6 +68,9 @@ public class Login implements Serializable {
 			logger.info("login success");
 			logger.info("is tmadmin: " + request.isUserInRole("tmadmin"));
 			logger.info("is tmuser: " + request.isUserInRole("tmuser"));
+			
+			community = custbean.getCurrentCustomer().getInstance().getName();
+			logger.info("community: " + community);
 
 			context.getExternalContext().getSessionMap().put("user", this.username);
 			context.getExternalContext().redirect("index.xhtml");

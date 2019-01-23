@@ -118,7 +118,7 @@ public class ShowBB implements Serializable {
 
 		try {
 
-			Show show = rbean.newRecord();
+			show = rbean.newRecord();
 			showid = Integer.toString(show.getRecordId());
 
 		} catch (Exception e) {

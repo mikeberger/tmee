@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/page-template.xhtml">
+	<ui:param name="pageTitle" value="Edit Show" />
+	<ui:define name="panel-main">
+		<h:form>
+			<p:messages id="messages" showDetail="false" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+			<p:panel id="panel" header="Show Information">
+
+				<p:panelGrid columns="1" layout="grid" cellpadding="5">
+					<p:outputLabel for="name" value="Show Name:" />
+					<p:inputText id="name" value="#{showBB.show.name}" required="true" />
+
+
+				</p:panelGrid>
+
+				<h:panelGrid columns="2" cellpadding="5">
+					<p:commandButton value="Save" action="showlist"
+						actionListener="#{showBB.save}" icon="ui-icon-check" />
+					<p:commandButton value="Cancel" immediate="true" action="showlist"
+						icon="ui-icon-circle-close" />
+				</h:panelGrid>
+			</p:panel>
+
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>
+</html>

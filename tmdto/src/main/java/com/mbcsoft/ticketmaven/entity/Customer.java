@@ -84,5 +84,11 @@ public class Customer extends BaseAppTable implements Serializable {
 	public Customer() {
 		super();
 	}
+	
+	public double getAverageQuality()
+	{
+		if( totalTickets == 0) return 0.0;
+		return (double) totalQuality/(double) totalTickets;
+	}
 
 }
