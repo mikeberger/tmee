@@ -13,6 +13,8 @@ package com.mbcsoft.ticketmaven;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -26,6 +28,8 @@ import javax.servlet.http.HttpServletRequest;
 public class Login implements Serializable {
 
 	private static final long serialVersionUID = -5876465825563098570L;
+	static private final Logger logger = Logger.getLogger("audit_logger");
+
 	private String username;
 	private String password;
 
@@ -49,12 +53,17 @@ public class Login implements Serializable {
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 		try {
-			// System.out.println(username + ":" + password );
+			logger.info("Trying login: " + this.username);
 			request.login(this.username, this.password);
+			logger.info("login success");
+			logger.info("is tmadmin: " + request.isUserInRole("tmadmin"));
+			logger.info("is tmuser: " + request.isUserInRole("tmuser"));
+
 			context.getExternalContext().getSessionMap().put("user", this.username);
 			context.getExternalContext().redirect("index.xhtml");
 
 		} catch (ServletException e) {
+			logger.log(Level.INFO, "login failed", e);
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "","Login failed."));
 
 		} catch (IOException e2) {

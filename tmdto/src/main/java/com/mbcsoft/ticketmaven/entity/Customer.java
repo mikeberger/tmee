@@ -43,10 +43,14 @@ public class Customer extends BaseAppTable implements Serializable {
 	static final public String REAR = "Rear";
 	static final public String NONE = "None";
 
-	@Column(unique = true, nullable = false)
+	@Column(name="USERID", unique = true, nullable = false)
 	private String userid;
 
+	@Column(name="PASSWORD")
 	private String password;
+	
+	@Column(name="roles")
+	private String roles;
 
 	@Column(nullable = false)
 	private String firstName;

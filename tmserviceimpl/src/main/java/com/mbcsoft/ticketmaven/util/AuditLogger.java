@@ -27,7 +27,8 @@ public class AuditLogger {
 		log.append("API:" + method.getDeclaringClass().getSimpleName() + "."
 				+ method.getName() + " USER:"
 				+ ejbContext.getCallerPrincipal().getName() + " [");
-
+		
+		
 		for(Object o : ic.getParameters())
 		{
 			if( o != null )
@@ -35,6 +36,10 @@ public class AuditLogger {
 		}
 		
 		log.append("]");
+		
+		logger.info("Is tmadmin: " + ejbContext.isCallerInRole("tmadmin"));
+		logger.info("Is tmuser: " + ejbContext.isCallerInRole("tmuser"));
+
 	
 		logger.info("ENTER :"+ log.toString());
 		long a = System.currentTimeMillis();

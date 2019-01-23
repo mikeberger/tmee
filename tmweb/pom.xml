@@ -22,27 +22,19 @@
 			<groupId>tmee</groupId>
 			<artifactId>tmserviceapi</artifactId>
 			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>tmee</groupId>
-			<artifactId>tmserviceimpl</artifactId>
-			<version>1.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>tmee</groupId>
 			<artifactId>tmdto</artifactId>
 			<version>1.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
 			<version>6.2</version>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.primefaces.themes</groupId> -->
-<!-- 			<artifactId>dark-hive</artifactId> -->
-<!-- 			<version>1.0.10</version> -->
-<!-- 		</dependency> -->
 
 	</dependencies>
 </project>
