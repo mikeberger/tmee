@@ -1,0 +1,3 @@
+<jboss>  
+    <security-domain>tmdomain</security-domain>  
+</jboss> 

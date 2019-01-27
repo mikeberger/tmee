@@ -30,7 +30,7 @@
 		<class>com.mbcsoft.ticketmaven.entity.Zone</class>
 		<properties>
 
-			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
 			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
 			<property name="hibernate.cache.use_second_level_cache"
 				value="false" />
