@@ -36,8 +36,7 @@
 				
 			</p:submenu>
 			<p:submenu label="Reports" rendered="#{p:ifGranted('tmadmin')}">
-				<p:menuitem value="Customers" action="custlist"
-					actionListener="#{custBB.refreshList}" />
+				<p:menuitem value="Customers" url="/report?id=cust" />
 			</p:submenu>
 			
 			
