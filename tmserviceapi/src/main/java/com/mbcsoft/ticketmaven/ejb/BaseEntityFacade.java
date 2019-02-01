@@ -14,6 +14,7 @@ package com.mbcsoft.ticketmaven.ejb;
 import java.util.List;
 
 import com.mbcsoft.ticketmaven.entity.BaseAppTable;
+import com.mbcsoft.ticketmaven.entity.Customer;
 
 public interface BaseEntityFacade<T extends BaseAppTable> {
 	
@@ -27,5 +28,8 @@ public interface BaseEntityFacade<T extends BaseAppTable> {
     public List<T> getAll();
     
     public T get(Class<? extends T> c, String id);
+    
+	public Customer getCurrentCustomer();
+
     
 }

@@ -23,4 +23,5 @@ import com.mbcsoft.ticketmaven.entity.ShowDTO;
 public interface ShowBean extends BaseEntityFacade<Show>{
 
 	public List<ShowDTO> getFutureShows();
+	public Show getFullShow(String id); // eager loading
 }

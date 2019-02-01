@@ -29,6 +29,7 @@ import com.mbcsoft.ticketmaven.entity.Layout;
 import com.mbcsoft.ticketmaven.entity.Request;
 import com.mbcsoft.ticketmaven.entity.Seat;
 import com.mbcsoft.ticketmaven.entity.Show;
+import com.mbcsoft.ticketmaven.entity.Ticket;
 import com.mbcsoft.ticketmaven.entity.Zone;
 
 @Singleton
@@ -140,6 +141,9 @@ public class StartupBean {
 				em.merge(st);
 			}
 		}
+		
+		sts = getSeats(l);
+
 
 		/*
 		 * l = new Layout(); l.setName("Tbl 1"); l.setInstanceName("mbcsoft");
@@ -183,6 +187,23 @@ public class StartupBean {
 			r.setTickets(3);
 			r.setPaid(true);
 			em.persist(r);
+			
+			Ticket t = new Ticket();
+			t.setCustomer(c);
+			t.setInstance(inst);
+			t.setSeat(sts.get(i));
+			t.setShow(show1);
+			t.setTicketPrice(2);
+			em.persist(t);
+			
+			t = new Ticket();
+			t.setCustomer(c);
+			t.setInstance(inst);
+			t.setSeat(sts.get(i+50));
+			t.setShow(show1);
+			t.setTicketPrice(2);
+			em.persist(t);
+
 		}
 
 
@@ -254,6 +275,7 @@ public class StartupBean {
 				seat.setAvailable("Y");
 				seat.setLayout(layout);
 				seat.setInstance(inst);
+				seat.setLabel(Integer.toString(s));
 				em.persist(seat);
 			}
 

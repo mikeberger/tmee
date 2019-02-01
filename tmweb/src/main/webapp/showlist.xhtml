@@ -45,10 +45,9 @@
 					<p:tooltip for="lott" value="Run Lottery" />
 					<h:outputText value="  " />
 
-					<p:commandButton id="ticks" action="tickets" icon="ui-icon-print"
-						actionListener="#{lotteryBB.load}">
-						<f:param name="showid" value="#{show.recordId}" />
-					</p:commandButton>
+					<p:button id="ticks" action="tickets" icon="ui-icon-print"
+						href="/tickets?id=#{show.recordId}">
+					</p:button>
 					<p:tooltip for="ticks" value="Print Tickets" />
 				</p:column>
 			</p:dataTable>

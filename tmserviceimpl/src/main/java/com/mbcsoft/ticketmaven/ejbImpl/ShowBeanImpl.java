@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -31,6 +32,8 @@ import com.mbcsoft.ticketmaven.util.AuditLogger;
 @Interceptors({AuditLogger.class})
 
 public class ShowBeanImpl extends BaseEntityFacadeImpl<Show> implements ShowBean {
+
+	static private final Logger logger = Logger.getLogger(ShowBeanImpl.class.getName());
 
 	public ShowBeanImpl() {
 	}
@@ -66,6 +69,15 @@ public class ShowBeanImpl extends BaseEntityFacadeImpl<Show> implements ShowBean
 		}
 		return al;
 
+	}
+
+
+	@Override
+	public Show getFullShow(String id) {
+		Show s = get(Show.class, id);
+		logger.info("full show sizes: " + s.getRequestsCollection().size() + " " + s.getTicketsCollection().size());
+		em.detach(s);
+		return s;
 	}
 
 }

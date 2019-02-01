@@ -17,6 +17,5 @@ import com.mbcsoft.ticketmaven.entity.Customer;
 public interface CustomerBean extends BaseEntityFacade<Customer> {
 
 	
-	public Customer getCurrentCustomer();
 	public Customer getCustomer(String id);
 }
