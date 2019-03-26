@@ -17,11 +17,10 @@ import java.util.List;
 import javax.ejb.Local;
 
 import com.mbcsoft.ticketmaven.entity.Show;
-import com.mbcsoft.ticketmaven.entity.ShowDTO;
 
 @Local
 public interface ShowBean extends BaseEntityFacade<Show>{
 
-	public List<ShowDTO> getFutureShows();
+	public List<Show> getFutureShows();
 	public Show getFullShow(String id); // eager loading
 }

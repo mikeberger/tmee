@@ -20,6 +20,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -45,7 +46,7 @@ public class Show extends BaseAppTable implements Serializable {
 	private String format;
 
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn
 	private Layout layout;
 
@@ -71,6 +72,10 @@ public class Show extends BaseAppTable implements Serializable {
 		super();
 	}
 
+	public String toString()
+	{
+		return this.getName() + " " + sdf.format(this.getTime());
+	}
 
 	// kludge for JSF layer - for now
 	static final SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy hh:mm");

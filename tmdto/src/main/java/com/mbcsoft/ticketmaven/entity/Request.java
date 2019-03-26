@@ -68,6 +68,9 @@ public class Request extends BaseAppTable implements Serializable {
 	}
 
 
-	
+	public String toString()
+	{
+		return "Request(id=" + this.getRecordId() + ")";
+	}
 
 }

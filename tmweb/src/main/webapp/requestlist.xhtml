@@ -10,7 +10,10 @@
 			<p:dataTable var="req" value="#{requestBB.list}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
 				paginator="true" rows="20" style="margin-bottom:20px">>
-				<p:column headerText="Name" sortBy="#{req.show.name}">
+				<p:column headerText="Customer" sortBy="#{req.show.name}">
+					<h:outputText value="#{req.customerName}" />
+				</p:column>
+				<p:column headerText="Show" sortBy="#{req.show.name}">
 					<h:outputText value="#{req.show.name}" />
 				</p:column>
 
@@ -23,8 +26,8 @@
 				</p:column>
 
 				<p:column headerText="Action">
-					<p:commandButton action="requestlist?faces-redirect=true" icon="ui-icon-circle-close"
-						actionListener="#{requestBB.delete}">
+					<p:commandButton action="requestlist?faces-redirect=true"
+						icon="ui-icon-circle-close" actionListener="#{requestBB.delete}">
 						<f:param name="request_id" value="#{req.recordId}" />
 						<p:confirm header="Confirmation" message="Really Delete?"
 							icon="ui-icon-alert" />

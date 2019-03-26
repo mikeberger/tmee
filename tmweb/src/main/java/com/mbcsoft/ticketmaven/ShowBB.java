@@ -22,7 +22,6 @@ import javax.inject.Named;
 
 import com.mbcsoft.ticketmaven.ejb.ShowBean;
 import com.mbcsoft.ticketmaven.entity.Show;
-import com.mbcsoft.ticketmaven.entity.ShowDTO;
 
 @Named("showBB")
 @SessionScoped
@@ -30,7 +29,7 @@ public class ShowBB implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<ShowDTO> showList = new ArrayList<ShowDTO>();
+	private List<Show> showList = new ArrayList<Show>();
 
 	private String showid;
 
@@ -98,11 +97,11 @@ public class ShowBB implements Serializable {
 		}
 	}
 
-	public void setShowList(List<ShowDTO> showList) {
+	public void setShowList(List<Show> showList) {
 		this.showList = showList;
 	}
 
-	public List<ShowDTO> getShowList() {
+	public List<Show> getShowList() {
 		return showList;
 	}
 

@@ -12,7 +12,6 @@
 package com.mbcsoft.ticketmaven.ejbImpl;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -24,7 +23,6 @@ import javax.persistence.Query;
 
 import com.mbcsoft.ticketmaven.ejb.ShowBean;
 import com.mbcsoft.ticketmaven.entity.Show;
-import com.mbcsoft.ticketmaven.entity.ShowDTO;
 import com.mbcsoft.ticketmaven.util.AuditLogger;
 
 @Stateless
@@ -49,25 +47,13 @@ public class ShowBeanImpl extends BaseEntityFacadeImpl<Show> implements ShowBean
 
 
 	@SuppressWarnings("unchecked")
-	public List<ShowDTO> getFutureShows() {
+	public List<Show> getFutureShows() {
 
-		Query query = em.createQuery("SELECT e FROM Show e WHERE e.instance = :inst and e.time > :now");
+		Query query = em.createQuery("SELECT e FROM Show e WHERE e.instance = :inst and e.time > :now order by e.name");
 		query.setParameter("inst", getInstance());
 		query.setParameter("now", new Timestamp(new Date().getTime()));
 		List<Show> l = (List<Show>) query.getResultList();
-		List<ShowDTO> al = new ArrayList<ShowDTO>();
-		for( Show s : l)
-		{
-			ShowDTO sd = new ShowDTO();
-			sd.setName(s.getName());
-			sd.setPrice(s.getPrice());
-			sd.setRecordId(s.getRecordId());
-			sd.setTime(s.getTime());
-			sd.setLayout(s.getLayout().getName());
-
-			al.add(sd);
-		}
-		return al;
+		return l;
 
 	}
 

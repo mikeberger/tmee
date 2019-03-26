@@ -25,12 +25,10 @@ import javax.persistence.UniqueConstraint;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ToString(exclude = { "ticketsCollection", "reservationsCollection", "requestsCollection" })
 @Table(uniqueConstraints = { 
 		@UniqueConstraint(columnNames = { "INSTANCE_ID", "FIRSTNAME", "LASTNAME" }) 
 		})
@@ -89,6 +87,11 @@ public class Customer extends BaseAppTable implements Serializable {
 	{
 		if( totalTickets == 0) return 0.0;
 		return (double) totalQuality/(double) totalTickets;
+	}
+	
+	public String toString()
+	{
+		return firstName + " " + lastName;
 	}
 
 }

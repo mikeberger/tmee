@@ -15,16 +15,18 @@ import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import javax.persistence.Query;
 
 import com.mbcsoft.ticketmaven.ejb.RequestBean;
 import com.mbcsoft.ticketmaven.entity.Customer;
 import com.mbcsoft.ticketmaven.entity.Request;
 import com.mbcsoft.ticketmaven.entity.Show;
+import com.mbcsoft.ticketmaven.util.AuditLogger;
 
 @Stateless
 @RolesAllowed({"tmuser", "tmadmin"})
-
+@Interceptors({AuditLogger.class})
 public class RequestBeanImpl extends BaseEntityFacadeImpl<Request> implements RequestBean  {
 
 	
@@ -55,6 +57,7 @@ public class RequestBeanImpl extends BaseEntityFacadeImpl<Request> implements Re
 	}
 
 	@SuppressWarnings("unchecked")
+	@RolesAllowed({"tmadmin"})
 	public List<Request> getRequestsForShow(Show s) {
 
 		Query query = em.createQuery("SELECT e FROM Request e WHERE e.show = :show");
@@ -63,6 +66,7 @@ public class RequestBeanImpl extends BaseEntityFacadeImpl<Request> implements Re
 	}
 	
 	@SuppressWarnings("unchecked")
+	@RolesAllowed({"tmadmin"})
 	public List<Request> getPaidRequestsForShow(Show s) {
 
 		Query query = em.createQuery("SELECT e FROM Request e WHERE e.show = :show AND e.paid = true");

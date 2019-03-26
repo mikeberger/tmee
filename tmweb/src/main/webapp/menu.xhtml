@@ -13,8 +13,8 @@
 			<p:submenu label="User">
 				<p:menuitem value="My Profile" action="custinfo"
 					actionListener="#{custBB.get}" />
-				<p:menuitem value="My Requests" action="requestlist"
-					actionListener="#{requestBB.refreshList}" />
+				<p:menuitem value="My Requests" action="requestlist?faces-redirect=true"
+					actionListener="#{requestBB.loadUserList}" />
 				<p:menuitem value="My Tickets" action="ticketlist"
 					actionListener="#{ticketBB.refreshList}" />
 				<p:menuitem value="Logout" action="index"
@@ -27,19 +27,24 @@
 					actionListener="#{showBB.refreshList}" />
 				<p:menuitem value="Packages" action="showlist"
 					actionListener="#{showBB.refreshList}" />
-				<p:menuitem value="Requests" action="showlist"
-					actionListener="#{showBB.refreshList}" />
+				<p:menuitem value="Requests" action="requestlist?faces-redirect=true"
+					actionListener="#{requestBB.loadAdminList}" />
 				<p:menuitem value="Tickets" action="showlist"
 					actionListener="#{showBB.refreshList}" />
 				<p:menuitem value="Reservations" action="showlist"
 					actionListener="#{showBB.refreshList}" />
-				
+				<p:submenu label="Theater">
+					<p:menuitem value="Layouts" />
+					<p:menuitem value="Seat Grid" />
+					<p:menuitem value="Zones (Special Needs)" />
+				</p:submenu>
+
 			</p:submenu>
 			<p:submenu label="Reports" rendered="#{p:ifGranted('tmadmin')}">
 				<p:menuitem value="Customers" url="/report?id=cust" />
 			</p:submenu>
-			
-			
+
+
 		</p:menubar>
 		<div style="height: 10px"></div>
 		<p:sticky target="mb" />

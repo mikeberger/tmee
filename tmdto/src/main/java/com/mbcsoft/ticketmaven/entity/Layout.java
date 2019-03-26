@@ -60,5 +60,8 @@ public class Layout extends BaseAppTable implements Serializable {
 		super();
 	}
 
+	public String toString() {
+		return name;
+	}
 	
 }

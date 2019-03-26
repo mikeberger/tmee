@@ -11,8 +11,13 @@
 				<p:autoUpdate />
 			</p:messages>
 			<p:panelGrid columns="2">
+				<p:outputLabel rendered="#{p:ifGranted('tmadmin')}" for="cust" value="Customer:" />
+				<p:selectOneMenu rendered="#{p:ifGranted('tmadmin')}" required="true" id="cust" value="#{requestBB.selectedCustomer}">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="item" itemValue="#{item.recordId}" itemLabel="#{item}" value="#{custBB.list}" />
+				</p:selectOneMenu>
 				<p:outputLabel for="show" value="Show:" />
-				<p:selectOneMenu required="true" id="show" value="#{showBB.selectedShow}">
+				<p:selectOneMenu required="true" id="show" value="#{requestBB.selectedShow}">
 					<f:selectItem itemLabel="Select One" itemValue="" />
 					<f:selectItems var="item" itemValue="#{item.recordId}" itemLabel="#{item}" value="#{showBB.showList}" />
 				</p:selectOneMenu>

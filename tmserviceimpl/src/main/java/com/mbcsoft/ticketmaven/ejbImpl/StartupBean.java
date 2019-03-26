@@ -74,151 +74,159 @@ public class StartupBean {
 		//em.flush();
 
 		logger.info("Deleted all data!");
-
-		// add user mbb if doesn't exist
-
-		Instance inst = new Instance();
-		inst.setEnabled(true);
-		inst.setName("mbcsoft");
-		em.persist(inst);
-
-		Customer mbb = new Customer();
-
-		mbb.setFirstName("Michael");
-		mbb.setLastName("Berger");
-		mbb.setUserid("mike");
-		mbb.setPassword("mike");
-		mbb.setRoles("tmadmin");
-		mbb.setInstance(inst);
-		mbb.setResident("Y");
-		mbb.setSpecialNeeds(Customer.NONE);
-
-		em.persist(mbb);
-
-
-		Customer uuu = new Customer();
-
-		uuu.setFirstName("Joe");
-		uuu.setLastName("User");
-		uuu.setUserid("user");
-		uuu.setPassword("user");
-		uuu.setRoles("tmuser");
-		uuu.setInstance(inst);
-		uuu.setResident("Y");
-		uuu.setSpecialNeeds(Customer.NONE);
-
-		em.persist(uuu);
-
-		Zone bzone = new Zone();
-		bzone.setExclusive("Y");
-		bzone.setInstance(inst);
-		bzone.setName("B row reserved");
-		em.persist(bzone);
-
-		Zone dzone = new Zone();
-		dzone.setExclusive("N");
-		dzone.setInstance(inst);
-		dzone.setName("D row special");
-		em.persist(dzone);
-
-		Layout l = new Layout();
-		l.setName("Aud 1");
-		l.setInstance(inst);
-		l.setNumRows(10);
-		l.setNumSeats(20);
-		l.setSeating(Layout.AUDITORIUM);
-		em.persist(l);
-
-		generateMissingSeats(l,inst);
-
-		List<Seat> sts = getSeats(l);
-		for (Seat st : sts) {
-			if (st.getRow().equals("D")) {
-				st.setZone(dzone);
-				em.merge(st);
-			} else if (st.getRow().equals("B")) {
-				st.setZone(bzone);
-				em.merge(st);
-			}
-		}
 		
-		sts = getSeats(l);
+		createInstData( em, "bellaggio");
+		createInstData( em, "valencia");
 
-
-		/*
-		 * l = new Layout(); l.setName("Tbl 1"); l.setInstanceName("mbcsoft");
-		 * l.setSeating(Layout.TABLE); em.persist(l);
-		 */
-		Show show1 = null;
-		for (int i = 1; i <= 10; i++) {
-			Show s = new Show();
-			s.setName("Show-" + i);
-			s.setCost(i * 1000);
-			s.setInstance(inst);
-			s.setLayout(l);
-			s.setPrice(i * 100);
-			s.setTime(new Timestamp(new Date().getTime() + (long) 1000 * 60
-					* 60 * 24 * 100));
-			em.persist(s);
-			if (i == 1)
-				show1 = s;
-		}
-
-		for (int i = 1; i < 50; i++) {
-			Customer c = new Customer();
-			c.setFirstName("John");
-			c.setLastName("Smith-" + i);
-			c.setResident("Y");
-			c.setUserid("cust" + i);
-			c.setPassword(c.getUserid());
-			c.setRoles("tmuser");
-			c.setInstance(inst);
-			c.setSpecialNeeds(Customer.NONE);
-			c.setPhone("908-" + i);
-
-			if (i <= 10)
-				c.setSpecialNeeds(dzone.getName());
-			em.persist(c);
-
-			Request r = new Request();
-			r.setCustomer(c);
-			r.setInstance(inst);
-			r.setShow(show1);
-			r.setTickets(3);
-			r.setPaid(true);
-			em.persist(r);
-			
-			Ticket t = new Ticket();
-			t.setCustomer(c);
-			t.setInstance(inst);
-			t.setSeat(sts.get(i));
-			t.setShow(show1);
-			t.setTicketPrice(2);
-			em.persist(t);
-			
-			t = new Ticket();
-			t.setCustomer(c);
-			t.setInstance(inst);
-			t.setSeat(sts.get(i+50));
-			t.setShow(show1);
-			t.setTicketPrice(2);
-			em.persist(t);
-
-		}
-
-
-		Request r = new Request();
-		r.setCustomer(mbb);
-		r.setInstance(inst);
-		r.setShow(show1);
-		r.setTickets(3);
-		r.setPaid(true);
-		em.persist(r);
-
-        logger.info("Initialization Complete");
-
-
+		
 	}
+    
+    private void createInstData(EntityManager em, String is)
+    {
+    	// add user mbb if doesn't exist
+
+    			Instance inst = new Instance();
+    			inst.setEnabled(true);
+    			inst.setName(is);
+    			em.persist(inst);
+
+    			Customer mbb = new Customer();
+
+    			mbb.setFirstName(is);
+    			mbb.setLastName("Admin");
+    			mbb.setUserid(is);
+    			mbb.setPassword("mike");
+    			mbb.setRoles("tmadmin");
+    			mbb.setInstance(inst);
+    			mbb.setResident("Y");
+    			mbb.setSpecialNeeds(Customer.NONE);
+
+    			em.persist(mbb);
+
+
+    			Customer uuu = new Customer();
+
+    			uuu.setFirstName("Joe");
+    			uuu.setLastName("User");
+    			uuu.setUserid(is+"user");
+    			uuu.setPassword("user");
+    			uuu.setRoles("tmuser");
+    			uuu.setInstance(inst);
+    			uuu.setResident("Y");
+    			uuu.setSpecialNeeds(Customer.NONE);
+
+    			em.persist(uuu);
+
+    			Zone bzone = new Zone();
+    			bzone.setExclusive("Y");
+    			bzone.setInstance(inst);
+    			bzone.setName("B row reserved");
+    			em.persist(bzone);
+
+    			Zone dzone = new Zone();
+    			dzone.setExclusive("N");
+    			dzone.setInstance(inst);
+    			dzone.setName("D row special");
+    			em.persist(dzone);
+
+    			Layout l = new Layout();
+    			l.setName("Aud 1");
+    			l.setInstance(inst);
+    			l.setNumRows(10);
+    			l.setNumSeats(20);
+    			l.setSeating(Layout.AUDITORIUM);
+    			em.persist(l);
+
+    			generateMissingSeats(l,inst);
+
+    			List<Seat> sts = getSeats(l);
+    			for (Seat st : sts) {
+    				if (st.getRow().equals("D")) {
+    					st.setZone(dzone);
+    					em.merge(st);
+    				} else if (st.getRow().equals("B")) {
+    					st.setZone(bzone);
+    					em.merge(st);
+    				}
+    			}
+    			
+    			sts = getSeats(l);
+
+
+    			/*
+    			 * l = new Layout(); l.setName("Tbl 1"); l.setInstanceName("mbcsoft");
+    			 * l.setSeating(Layout.TABLE); em.persist(l);
+    			 */
+    			Show show1 = null;
+    			for (int i = 1; i <= 10; i++) {
+    				Show s = new Show();
+    				s.setName("Show-" + i);
+    				s.setCost(i * 1000);
+    				s.setInstance(inst);
+    				s.setLayout(l);
+    				s.setPrice(i * 100);
+    				s.setTime(new Timestamp(new Date().getTime() + (long) 1000 * 60
+    						* 60 * 24 * 100));
+    				em.persist(s);
+    				if (i == 1)
+    					show1 = s;
+    			}
+
+    			for (int i = 1; i < 50; i++) {
+    				Customer c = new Customer();
+    				c.setFirstName("John");
+    				c.setLastName("Smith-" + i);
+    				c.setResident("Y");
+    				c.setUserid(is+"cust" + i);
+    				c.setPassword(c.getUserid());
+    				c.setRoles("tmuser");
+    				c.setInstance(inst);
+    				c.setSpecialNeeds(Customer.NONE);
+    				c.setPhone("908-" + i);
+
+    				if (i <= 10)
+    					c.setSpecialNeeds(dzone.getName());
+    				em.persist(c);
+
+    				Request r = new Request();
+    				r.setCustomer(c);
+    				r.setInstance(inst);
+    				r.setShow(show1);
+    				r.setTickets(3);
+    				r.setPaid(true);
+    				em.persist(r);
+    				
+    				Ticket t = new Ticket();
+    				t.setCustomer(c);
+    				t.setInstance(inst);
+    				t.setSeat(sts.get(i));
+    				t.setShow(show1);
+    				t.setTicketPrice(2);
+    				em.persist(t);
+    				
+    				t = new Ticket();
+    				t.setCustomer(c);
+    				t.setInstance(inst);
+    				t.setSeat(sts.get(i+50));
+    				t.setShow(show1);
+    				t.setTicketPrice(2);
+    				em.persist(t);
+
+    			}
+
+
+    			Request r = new Request();
+    			r.setCustomer(mbb);
+    			r.setInstance(inst);
+    			r.setShow(show1);
+    			r.setTickets(3);
+    			r.setPaid(true);
+    			em.persist(r);
+
+    	        logger.info("Initialization Complete for " + is);
+
+
+    }
 	
 	private Seat getSeat(String row, int seat, Layout l) {
 		Query query = em

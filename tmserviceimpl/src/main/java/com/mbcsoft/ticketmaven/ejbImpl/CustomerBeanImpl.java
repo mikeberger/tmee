@@ -16,6 +16,7 @@ import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.interceptor.Interceptors;
+import javax.persistence.Query;
 
 import com.mbcsoft.ticketmaven.ejb.CustomerBean;
 import com.mbcsoft.ticketmaven.entity.Customer;
@@ -40,9 +41,13 @@ public class CustomerBeanImpl extends BaseEntityFacadeImpl<Customer> implements 
 		return (new Customer());
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Customer> getAll() {
 
-		return getAll("Customer");
+		//return getAll("Customer");
+		Query query = em.createQuery("SELECT e FROM Customer e WHERE e.instance = :inst order by lastname, firstname");
+		query.setParameter("inst", getInstance());
+		return (List<Customer>) query.getResultList();
 
 	}
 

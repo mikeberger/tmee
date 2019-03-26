@@ -35,6 +35,13 @@ public class CustomerBB implements Serializable {
 	@EJB private ZoneBean zbean;
 
 	private List<Customer> list = new ArrayList<Customer>();
+	
+	static public void refreshSessionList() {
+		// find showBB in session
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		CustomerBB bb = ctx.getApplication().evaluateExpressionGet(ctx, "#{custBB}", CustomerBB.class);
+		bb.refreshList();
+	}
 
 	public void get() {
 

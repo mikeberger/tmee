@@ -19,12 +19,12 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.mbcsoft.ticketmaven.ejb.CustomerBean;
 import com.mbcsoft.ticketmaven.ejb.RequestBean;
 import com.mbcsoft.ticketmaven.ejb.ShowBean;
+import com.mbcsoft.ticketmaven.entity.Customer;
 import com.mbcsoft.ticketmaven.entity.Request;
 import com.mbcsoft.ticketmaven.entity.Show;
 
@@ -32,23 +32,27 @@ import com.mbcsoft.ticketmaven.entity.Show;
 @SessionScoped
 public class RequestBB implements Serializable {
 
-
 	private static final long serialVersionUID = 1L;
 
 	private Request request;
 
 	private List<Request> list = new ArrayList<Request>();
 
-	@EJB private RequestBean rbean;
-	@EJB private ShowBean showbean;
-	@EJB private CustomerBean cbean;
-	
-	@Inject ShowBB showbb;
+	@EJB
+	private RequestBean rbean;
+	@EJB
+	private ShowBean showbean;
+	@EJB
+	private CustomerBean cbean;
 
+	private String selectedShow;
+	private String selectedCustomer;
+
+	// filters
+	private boolean all = false;
 
 	public void get(ActionEvent evt) {
-		String id = FacesContext.getCurrentInstance().getExternalContext()
-				.getRequestParameterMap().get("request_id");
+		String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("request_id");
 		if (id == null || "".equals(id))
 			return;
 
@@ -58,6 +62,7 @@ public class RequestBB implements Serializable {
 
 			// we are going to the editor
 			ShowBB.refreshSessionShowList();
+			CustomerBB.refreshSessionList();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -68,17 +73,15 @@ public class RequestBB implements Serializable {
 	public void delete(ActionEvent evt) {
 
 		try {
-			String id = FacesContext.getCurrentInstance().getExternalContext()
-					.getRequestParameterMap().get("request_id");
+			String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+					.get("request_id");
 			if (id == null || "".equals(id))
 				return;
-
 
 			Request r = rbean.get(Request.class, id);
 			rbean.delete(r);
 
 			refreshList();
-
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -96,6 +99,7 @@ public class RequestBB implements Serializable {
 
 			// we are going to the editor
 			ShowBB.refreshSessionShowList();
+			CustomerBB.refreshSessionList();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -104,9 +108,15 @@ public class RequestBB implements Serializable {
 	}
 
 	public void save() {
-		
-		Show s = showbean.get(Show.class, showbb.getSelectedShow());
+
+		Show s = showbean.get(Show.class, selectedShow);
 		request.setShow(s);
+		
+		if( selectedCustomer != null )
+		{
+			Customer c = cbean.get(Customer.class, selectedCustomer);
+			request.setCustomer(c);
+		}
 
 		if (request.getCustomer() == null) {
 			request.setCustomer(cbean.getCurrentCustomer());
@@ -116,15 +126,27 @@ public class RequestBB implements Serializable {
 
 		refreshList();
 
-
 	}
 
+	public void loadUserList() {
+		all = false;
+		refreshList();
+	}
+
+	public void loadAdminList() {
+		all = true;
+		refreshList();
+	}
 
 	public void refreshList() {
 		try {
 
-			// get requests for current logged in customer
-			list = rbean.getRequestsForCustomer(null);
+			if (all) {
+				list = rbean.getAll();
+			} else {
+				// get requests for current logged in customer
+				list = rbean.getRequestsForCustomer(null);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -145,6 +167,22 @@ public class RequestBB implements Serializable {
 
 	public List<Request> getList() {
 		return list;
+	}
+
+	public String getSelectedShow() {
+		return selectedShow;
+	}
+
+	public void setSelectedShow(String selectedShow) {
+		this.selectedShow = selectedShow;
+	}
+
+	public String getSelectedCustomer() {
+		return selectedCustomer;
+	}
+
+	public void setSelectedCustomer(String selectedCustomer) {
+		this.selectedCustomer = selectedCustomer;
 	}
 
 }
