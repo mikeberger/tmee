@@ -12,7 +12,9 @@
 package com.mbcsoft.ticketmaven;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -29,35 +31,26 @@ public class ShowBB implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<Show> showList = new ArrayList<Show>();
+	static public void refreshSessionShowList() {
+		// find showBB in session
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		ShowBB bb = ctx.getApplication().evaluateExpressionGet(ctx, "#{showBB}", ShowBB.class);
+		bb.refreshList();
+	}
 
-	private String showid;
+	@EJB
+	private ShowBean rbean;
 
 	private String selectedShow;
 
 	private Show show;
-
-	public Show getShow() {
-		return show;
-	}
-
-	public void setShow(Show show) {
-		this.show = show;
-	}
-
-	public void get() {
-
-		try {
-			String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("show_id");
-
-			show = rbean.get(Show.class, id);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
 	
+	private Date inputDate;
+
+	private String showid;
+
+	private List<Show> showList = new ArrayList<Show>();
+
 	public void delete() {
 
 		try {
@@ -75,50 +68,14 @@ public class ShowBB implements Serializable {
 		}
 
 	}
-
-	@EJB
-	private ShowBean rbean;
-
-	static public void refreshSessionShowList() {
-		// find showBB in session
-		FacesContext ctx = FacesContext.getCurrentInstance();
-		ShowBB bb = ctx.getApplication().evaluateExpressionGet(ctx, "#{showBB}", ShowBB.class);
-		bb.refreshList();
-	}
-
-	public void refreshList() {
-		try {
-
-			// get requests for current logged in customer
-			showList = rbean.getFutureShows();
-
-		} catch (Exception e) {
-			e.getMessage();
-		}
-	}
-
-	public void setShowList(List<Show> showList) {
-		this.showList = showList;
-	}
-
-	public List<Show> getShowList() {
-		return showList;
-	}
-
-	public String getShowid() {
-		return showid;
-	}
-
-	public void setShowid(String showid) {
-		this.showid = showid;
-	}
-
-	public void newRecord() {
+	
+	public void get() {
 
 		try {
+			String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("show_id");
 
-			show = rbean.newRecord();
-			showid = Integer.toString(show.getRecordId());
+			show = rbean.get(Show.class, id);
+			inputDate = new Date(show.getTime().getTime());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -130,8 +87,81 @@ public class ShowBB implements Serializable {
 		return selectedShow;
 	}
 
+	public Show getShow() {
+		return show;
+	}
+
+	public String getShowid() {
+		return showid;
+	}
+
+	public List<Show> getShowList() {
+		return showList;
+	}
+
+	public void newRecord() {
+
+		try {
+
+			show = rbean.newRecord();
+			showid = Integer.toString(show.getRecordId());
+			inputDate = null;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void save() {
+		try {
+
+			show.setTime(new Timestamp(inputDate.getTime()));
+			rbean.save(show);
+			refreshList();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void refreshList() {
+		try {
+
+			// get requests for current logged in customer
+			showList = rbean.getAll();
+
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+
 	public void setSelectedShow(String selectedShow) {
 		this.selectedShow = selectedShow;
 	}
 
+	public void setShow(Show show) {
+		this.show = show;
+	}
+
+	public void setShowid(String showid) {
+		this.showid = showid;
+	}
+
+	public void setShowList(List<Show> showList) {
+		this.showList = showList;
+	}
+
+	public List<Show> getAllShows() {
+		return rbean.getAll();
+	}
+
+	public Date getInputDate() {
+		return inputDate;
+	}
+
+	public void setInputDate(Date inputDate) {
+		this.inputDate = inputDate;
+	}
 }

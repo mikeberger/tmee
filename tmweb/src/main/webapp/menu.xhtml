@@ -13,10 +13,10 @@
 			<p:submenu label="User">
 				<p:menuitem value="My Profile" action="custinfo"
 					actionListener="#{custBB.get}" />
-				<p:menuitem value="My Requests" action="requestlist?faces-redirect=true"
+				<p:menuitem rendered="#{p:ifGranted('tmuser')}" value="My Requests" action="requestlist?faces-redirect=true"
 					actionListener="#{requestBB.loadUserList}" />
-				<p:menuitem value="My Tickets" action="ticketlist"
-					actionListener="#{ticketBB.refreshList}" />
+				<p:menuitem rendered="#{p:ifGranted('tmuser')}" value="My Tickets" action="ticketlist?faces-redirect=true"
+					actionListener="#{ticketBB.loadUserList}" />
 				<p:menuitem value="Logout" action="index"
 					actionListener="#{login.logout}" />
 			</p:submenu>
@@ -25,14 +25,11 @@
 					actionListener="#{custBB.refreshList}" />
 				<p:menuitem value="Shows" action="showlist"
 					actionListener="#{showBB.refreshList}" />
-				<p:menuitem value="Packages" action="showlist"
-					actionListener="#{showBB.refreshList}" />
+				<p:menuitem value="Packages" action="index"/>
 				<p:menuitem value="Requests" action="requestlist?faces-redirect=true"
 					actionListener="#{requestBB.loadAdminList}" />
-				<p:menuitem value="Tickets" action="showlist"
-					actionListener="#{showBB.refreshList}" />
-				<p:menuitem value="Reservations" action="showlist"
-					actionListener="#{showBB.refreshList}" />
+				<p:menuitem value="Tickets" action="ticketlist?faces-redirect=true"
+					actionListener="#{ticketBB.loadAdminList}" />
 				<p:submenu label="Theater">
 					<p:menuitem value="Layouts" />
 					<p:menuitem value="Seat Grid" />

@@ -15,11 +15,12 @@
 			</p:messages>
 			<p:panel id="panel" header="Show Information">
 
-				<p:panelGrid columns="1" layout="grid" cellpadding="5">
+				<p:panelGrid columns="2" cellpadding="5">
 					<p:outputLabel for="name" value="Show Name:" />
 					<p:inputText id="name" value="#{showBB.show.name}" required="true" />
-
-
+					<p:outputLabel for="time" value="Show Time:" />
+					<p:calendar id="time" value="#{showBB.inputDate}"
+						pattern="MM/dd/yyyy HH:mm" required="true"/>
 				</p:panelGrid>
 
 				<h:panelGrid columns="2" cellpadding="5">

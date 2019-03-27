@@ -143,6 +143,20 @@ public class RequestBB implements Serializable {
 
 			if (all) {
 				list = rbean.getAll();
+				
+				if( selectedCustomer != null || selectedShow != null)
+				{
+					List<Request> list2 = new ArrayList<Request>();
+					for( Request r : list) {
+						if( selectedCustomer != null && !Integer.toString(r.getCustomer().getRecordId()).equals(selectedCustomer) )
+							continue;
+						if( selectedShow != null && !Integer.toString(r.getShow().getRecordId()).equals(selectedShow) )
+							continue;
+						list2.add(r);
+					}
+					list = list2;
+				}
+				
 			} else {
 				// get requests for current logged in customer
 				list = rbean.getRequestsForCustomer(null);

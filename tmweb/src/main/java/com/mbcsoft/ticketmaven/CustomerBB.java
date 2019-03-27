@@ -139,5 +139,9 @@ public class CustomerBB implements Serializable {
 			ret.add(z.getName());
 		return ret;
 	}
+	
+	public List<Customer> getAllCusts() {
+		return rbean.getAll();
+	}
 
 }

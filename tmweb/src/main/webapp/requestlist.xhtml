@@ -7,35 +7,55 @@
 	<ui:param name="pageTitle" value="Requests" />
 	<ui:define name="panel-main">
 		<h:form>
-			<p:dataTable var="req" value="#{requestBB.list}"
-				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-				paginator="true" rows="20" style="margin-bottom:20px">>
+			<p:panel header="Requests" rendered="#{p:ifGranted('tmadmin')}">
+				<h:panelGrid columns="6" cellpadding="10" frame="box" style="margin-bottom:20px">
+					<p:outputLabel for="cust" value="Customer:" />
+					<p:selectOneMenu id="cust" value="#{requestBB.selectedCustomer}">
+						<f:selectItem itemLabel="" itemValue="" />
+						<f:selectItems var="item" itemValue="#{item.recordId}"
+							itemLabel="#{item}" value="#{custBB.allCusts}" />
+					</p:selectOneMenu>
+					<p:outputLabel for="show" value="Show:" />
+					<p:selectOneMenu id="show" value="#{requestBB.selectedShow}">
+						<f:selectItem itemLabel="" itemValue="" />
+						<f:selectItems var="item" itemValue="#{item.recordId}"
+							itemLabel="#{item}" value="#{showBB.allShows}" />
+					</p:selectOneMenu>
+					<p:outputLabel />
+					<p:commandButton actionListener="#{requestBB.loadAdminList}"
+						action="requestlist?faces-redirect=true" value="Apply" />
+				</h:panelGrid>
+				<p:dataTable var="req" value="#{requestBB.list}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+					paginator="true" rows="20" style="margin-bottom:20px">>
 				<p:column headerText="Customer" sortBy="#{req.show.name}">
-					<h:outputText value="#{req.customerName}" />
-				</p:column>
-				<p:column headerText="Show" sortBy="#{req.show.name}">
-					<h:outputText value="#{req.show.name}" />
-				</p:column>
+						<h:outputText value="#{req.customerName}" />
+					</p:column>
+					<p:column headerText="Show" sortBy="#{req.show.name}">
+						<h:outputText value="#{req.show.name}" />
+					</p:column>
 
-				<p:column headerText="Time" sortBy="#{req.show.time}">
-					<h:outputText value="#{req.show.time}" />
-				</p:column>
+					<p:column headerText="Time" sortBy="#{req.show.time}">
+						<h:outputText value="#{req.show.time}" />
+					</p:column>
 
-				<p:column headerText="Tickets">
-					<h:outputText value="#{req.tickets}" />
-				</p:column>
+					<p:column headerText="Tickets">
+						<h:outputText value="#{req.tickets}" />
+					</p:column>
 
-				<p:column headerText="Action">
-					<p:commandButton action="requestlist?faces-redirect=true"
-						icon="ui-icon-circle-close" actionListener="#{requestBB.delete}">
-						<f:param name="request_id" value="#{req.recordId}" />
-						<p:confirm header="Confirmation" message="Really Delete?"
-							icon="ui-icon-alert" />
-					</p:commandButton>
-				</p:column>
-			</p:dataTable>
-			<p:commandButton action="request" value="Enter New Request"
-				actionListener="#{requestBB.newRecord}" />
+					<p:column headerText="Action">
+						<p:commandButton action="requestlist?faces-redirect=true"
+							icon="ui-icon-circle-close" actionListener="#{requestBB.delete}">
+							<f:param name="request_id" value="#{req.recordId}" />
+							<p:confirm header="Confirmation" message="Really Delete?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+				<p:commandButton action="request" value="Enter New Request"
+					actionListener="#{requestBB.newRecord}" />
+			</p:panel>
+
 		</h:form>
 	</ui:define>
 </ui:composition>

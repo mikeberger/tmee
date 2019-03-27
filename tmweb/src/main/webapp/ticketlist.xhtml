@@ -7,30 +7,55 @@
 	<ui:param name="pageTitle" value="Tickets" />
 	<ui:define name="panel-main">
 		<h:form>
-			<p:dataTable var="tick" value="#{ticketBB.ticketList}"
-				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-				paginator="true" rows="20" style="margin-bottom:20px">>
-				<p:column headerText="Name" sortBy="#{tick.show.name}">
-					<h:outputText value="#{tick.show.name}" />
-				</p:column>
+			<p:panel header="Tickets" rendered="#{p:ifGranted('tmadmin')}">
+				<h:panelGrid columns="6" cellpadding="10" frame="box"
+					style="margin-bottom:20px">
+					<p:outputLabel for="cust" value="Customer:" />
+					<p:selectOneMenu id="cust" value="#{ticketBB.selectedCustomer}">
+						<f:selectItem itemLabel="" itemValue="" />
+						<f:selectItems var="item" itemValue="#{item.recordId}"
+							itemLabel="#{item}" value="#{custBB.allCusts}" />
+					</p:selectOneMenu>
+					<p:outputLabel for="show" value="Show:" />
+					<p:selectOneMenu id="show" value="#{ticketBB.selectedShow}">
+						<f:selectItem itemLabel="" itemValue="" />
+						<f:selectItems var="item" itemValue="#{item.recordId}"
+							itemLabel="#{item}" value="#{showBB.allShows}" />
+					</p:selectOneMenu>
+					<p:outputLabel />
+					<p:commandButton actionListener="#{ticketBB.loadAdminList}"
+						action="ticketlist?faces-redirect=true" value="Apply" />
+				</h:panelGrid>
+				<p:dataTable var="tick" value="#{ticketBB.ticketList}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+					paginator="true" rows="20" style="margin-bottom:20px">>
+				<p:column headerText="Customer" sortBy="#{req.show.name}">
+						<h:outputText value="#{tick.customer}" />
+					</p:column>
+					<p:column headerText="Show" sortBy="#{tick.show.name}">
+						<h:outputText value="#{tick.show.name}" />
+					</p:column>
 
-				<p:column headerText="Time" sortBy="#{tick.show.time}">
-					<h:outputText value="#{tick.show.time}" />
-				</p:column>
+					<p:column headerText="Time" sortBy="#{tick.show.time}">
+						<h:outputText value="#{tick.show.time}" />
+					</p:column>
 
-				<p:column headerText="Seat">
-					<h:outputText value="#{tick.rowAisle}">
-						<f:convertDateTime pattern="MMM dd yyyy kk:mm" />
-					</h:outputText>
-				</p:column>
+					<p:column headerText="Seat">
+						<h:outputText value="#{tick.rowAisle}">
+							<f:convertDateTime pattern="MMM dd yyyy kk:mm" />
+						</h:outputText>
+					</p:column>
 
-				<p:column headerText="Price">
-					<h:outputText value="#{tick.ticketPrice / 100}">
-						<f:convertNumber maxFractionDigits="2" groupingUsed="true"
-							currencySymbol="$" maxIntegerDigits="7" type="currency" />
-					</h:outputText>
-				</p:column>
-			</p:dataTable>
+					<p:column headerText="Price">
+						<h:outputText value="#{tick.ticketPrice / 100}">
+							<f:convertNumber maxFractionDigits="2" groupingUsed="true"
+								currencySymbol="$" maxIntegerDigits="7" type="currency" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+				<p:commandButton action="ticket" value="Enter New Ticket"
+					actionListener="#{ticketBB.newRecord}" />
+			</p:panel>
 
 		</h:form>
 	</ui:define>
