@@ -10,39 +10,43 @@
 	<ui:define name="panel-main">
 		<h:form id="clform">
 			<p:growl id="message" showDetail="true" />
-			<p:dataTable id="cltable" var="cust" value="#{custBB.list}"
-				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-				paginator="true" rows="20" style="margin-bottom:20px">>
+			<p:panel header="Customers">
+
+				<p:dataTable id="cltable" var="cust" value="#{custBB.list}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+					paginator="true" rows="20" style="margin-bottom:20px">>
 				<p:column headerText="First" sortBy="#{cust.firstName}">
-					<h:outputText value="#{cust.firstName}" />
-				</p:column>
+						<h:outputText value="#{cust.firstName}" />
+					</p:column>
 
-				<p:column headerText="Last" sortBy="#{cust.lastName}">
-					<h:outputText value="#{cust.lastName}" />
-				</p:column>
+					<p:column headerText="Last" sortBy="#{cust.lastName}">
+						<h:outputText value="#{cust.lastName}" />
+					</p:column>
 
-				<p:column headerText="Special Needs">
-					<h:outputText value="#{cust.specialNeeds}" />
-				</p:column>
+					<p:column headerText="Special Needs" sortBy="#{cust.specialNeeds}">
+						<h:outputText value="#{cust.specialNeeds}" />
+					</p:column>
 
-				<p:column headerText="Action">
-					<p:commandButton action="custedit" icon="ui-icon-pencil"
-						actionListener="#{custBB.get}">
-						<f:param name="cust_id" value="#{cust.recordId}" />
-					</p:commandButton>
-					<h:outputText value="  " />
-					<p:commandButton action="custlist?faces-redirect=true" icon="ui-icon-circle-close"
-						actionListener="#{custBB.delete}">
-						<f:param name="cust_id" value="#{cust.recordId}" />
-						<p:confirm header="Confirmation" message="Really Delete?"
-							icon="ui-icon-alert" />
-					</p:commandButton>
-				</p:column>
-			</p:dataTable>
-			<p:commandButton action="custedit" value="Enter New Customer"
-				actionListener="#{custBB.newRecord}" />
+					<p:column headerText="Action">
+						<p:commandButton action="custedit" icon="ui-icon-pencil"
+							actionListener="#{custBB.get}">
+							<f:param name="cust_id" value="#{cust.recordId}" />
+						</p:commandButton>
+						<h:outputText value="  " />
+						<p:commandButton action="custlist?faces-redirect=true"
+							icon="ui-icon-circle-close" actionListener="#{custBB.delete}">
+							<f:param name="cust_id" value="#{cust.recordId}" />
+							<p:confirm header="Confirmation" message="Really Delete?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+				<p:commandButton action="custedit" value="Enter New Customer"
+					actionListener="#{custBB.newRecord}" />
+			</p:panel>
+
 		</h:form>
-		
+
 	</ui:define>
 </ui:composition>
 </html>

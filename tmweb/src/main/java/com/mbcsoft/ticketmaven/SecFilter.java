@@ -41,8 +41,9 @@ public class SecFilter implements Filter {
 				.startsWith(request.getContextPath() + ResourceHandler.RESOURCE_IDENTIFIER);
 		boolean cssRequest = request.getRequestURI().endsWith("default.css");
 		boolean rest = request.getRequestURI().startsWith(request.getContextPath() + "/tmrest/api/");
+		boolean img = request.getRequestURI().startsWith(request.getContextPath() + "/resources/tm/images");
 
-		if (loggedIn || loginRequest || resourceRequest || cssRequest || rest) {
+		if (loggedIn || loginRequest || resourceRequest || cssRequest || rest || img) {
 			chain.doFilter(request, response);
 		} else {
 			response.sendRedirect(loginURI);

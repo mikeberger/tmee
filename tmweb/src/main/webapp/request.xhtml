@@ -10,6 +10,8 @@
 			<p:messages id="messages" showDetail="true" closable="true">
 				<p:autoUpdate />
 			</p:messages>
+						<p:panel id="panel" header="Request Information">
+			
 			<p:panelGrid columns="2">
 				<p:outputLabel rendered="#{p:ifGranted('tmadmin')}" for="cust" value="Customer:" />
 				<p:selectOneMenu rendered="#{p:ifGranted('tmadmin')}" required="true" id="cust" value="#{requestBB.selectedCustomer}">
@@ -30,6 +32,7 @@
 				<p:commandButton value="Cancel" immediate="true" action="requestlist"
 						icon="ui-icon-circle-close" />
 			</p:panelGrid>
+			</p:panel>
 
 		</h:form>
 
