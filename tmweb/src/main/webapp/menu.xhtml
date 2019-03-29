@@ -9,40 +9,51 @@
 	<h:form>
 		<p:growl id="messages" />
 
-		<p:menubar id="mb">
-			<p:submenu label="User">
-				<p:menuitem value="My Profile" action="custinfo"
-					actionListener="#{custBB.get}" />
-				<p:menuitem rendered="#{p:ifGranted('tmuser')}" value="My Requests" action="requestlist?faces-redirect=true"
-					actionListener="#{requestBB.loadUserList}" />
-				<p:menuitem rendered="#{p:ifGranted('tmuser')}" value="My Tickets" action="ticketlist?faces-redirect=true"
-					actionListener="#{ticketBB.loadUserList}" />
-				<p:menuitem value="Logout" action="index"
-					actionListener="#{login.logout}" />
-			</p:submenu>
-			<p:submenu label="Admin" rendered="#{p:ifGranted('tmadmin')}">
-				<p:menuitem value="Customers" action="custlist"
-					actionListener="#{custBB.refreshList}" />
-				<p:menuitem value="Shows" action="showlist"
-					actionListener="#{showBB.refreshList}" />
-				<p:menuitem value="Packages" action="index"/>
-				<p:menuitem value="Requests" action="requestlist?faces-redirect=true"
-					actionListener="#{requestBB.loadAdminList}" />
-				<p:menuitem value="Tickets" action="ticketlist?faces-redirect=true"
-					actionListener="#{ticketBB.loadAdminList}" />
-				<p:submenu label="Theater">
+		<p:toolbar id="mb">
+
+			<f:facet name="left">
+				<p:commandButton value="Customers" action="custlist"
+					icon="ui-icon-person" actionListener="#{custBB.refreshList}"
+					rendered="#{p:ifGranted('tmadmin')}" />
+				<p:commandButton value="Shows" action="showlist"
+					icon="ui-icon-calendar" actionListener="#{showBB.refreshList}"
+					rendered="#{p:ifGranted('tmadmin')}" />
+				<p:commandButton value="Packages" action="index"
+					rendered="#{p:ifGranted('tmadmin')}" icon="ui-icon-suitcase" />
+				<p:commandButton value="Requests" icon="ui-icon-help"
+					action="requestlist?faces-redirect=true"
+					actionListener="#{requestBB.loadAdminList}"
+					rendered="#{p:ifGranted('tmadmin')}" />
+				<p:commandButton value="Tickets" icon="ui-icon-cart"
+					action="ticketlist?faces-redirect=true"
+					actionListener="#{ticketBB.loadAdminList}"
+					rendered="#{p:ifGranted('tmadmin')}" />
+				<p:menuButton value="Theater" rendered="#{p:ifGranted('tmadmin')}">
 					<p:menuitem value="Layouts" />
 					<p:menuitem value="Seat Grid" />
 					<p:menuitem value="Zones (Special Needs)" />
-				</p:submenu>
+				</p:menuButton>
 
-			</p:submenu>
-			<p:submenu label="Reports" rendered="#{p:ifGranted('tmadmin')}">
-				<p:menuitem value="Customers" url="/report?id=cust" />
-			</p:submenu>
+				<p:menuButton value="Reports" rendered="#{p:ifGranted('tmadmin')}" icon="ui-icon-script">
+					<p:menuitem value="Customers" url="/report?id=cust" />
+				</p:menuButton>
+			</f:facet>
+			<f:facet name="right">
+				<p:menuButton value="User">
+					<p:menuitem value="My Profile" action="custinfo"
+						actionListener="#{custBB.get}" />
+					<p:menuitem rendered="#{p:ifGranted('tmuser')}" value="My Requests"
+						action="requestlist?faces-redirect=true"
+						actionListener="#{requestBB.loadUserList}" />
+					<p:menuitem rendered="#{p:ifGranted('tmuser')}" value="My Tickets"
+						action="ticketlist?faces-redirect=true"
+						actionListener="#{ticketBB.loadUserList}" />
+					<p:menuitem value="Logout" action="index"
+						actionListener="#{login.logout}" />
+				</p:menuButton>
+			</f:facet>
 
-
-		</p:menubar>
+		</p:toolbar>
 		<div style="height: 10px"></div>
 		<p:sticky target="mb" />
 	</h:form>
