@@ -48,7 +48,7 @@
 						<h:outputText value="  " />
 
 						<p:button id="ticks" action="tickets" icon="ui-icon-print"
-							href="/tickets?id=#{show.recordId}">
+							href="#{request.contextPath}/tickets?id=#{show.recordId}">
 						</p:button>
 						<p:tooltip for="ticks" value="Print Tickets" />
 					</p:column>

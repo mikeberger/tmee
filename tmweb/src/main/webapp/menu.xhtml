@@ -35,7 +35,7 @@
 				</p:menuButton>
 
 				<p:menuButton value="Reports" rendered="#{p:ifGranted('tmadmin')}" icon="ui-icon-script">
-					<p:menuitem value="Customers" url="/report?id=cust" />
+					<p:menuitem value="Customers" url="#{request.contextPath}/report?id=cust" />
 				</p:menuButton>
 			</f:facet>
 			<f:facet name="right">

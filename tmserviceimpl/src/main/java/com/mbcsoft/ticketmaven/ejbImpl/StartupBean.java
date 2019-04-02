@@ -11,7 +11,12 @@
  ******************************************************************************/
 package com.mbcsoft.ticketmaven.ejbImpl;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -36,16 +41,12 @@ import com.mbcsoft.ticketmaven.entity.Zone;
 @Startup
 
 public class StartupBean {
-	final static protected Logger logger = Logger
-			.getLogger("com.mbcsoft.ticketmaven.ejb");
-
+	final static protected Logger logger = Logger.getLogger("com.mbcsoft.ticketmaven.ejb");
 
 	@PersistenceContext
 	private EntityManager em;
 
-
- 
-    @PostConstruct
+	@PostConstruct
 	public void generateTestData() {
 
 		Query q = em.createQuery("delete from Ticket t");
@@ -71,163 +72,199 @@ public class StartupBean {
 
 		q = em.createQuery("delete from Instance t");
 		q.executeUpdate();
-		//em.flush();
+		// em.flush();
 
 		logger.info("Deleted all data!");
-		
-		createInstData( em, "bellaggio");
-		createInstData( em, "valencia");
 
-		
+		createInstData(em, "bellaggio");
+		createInstData(em, "valencia");
+
 	}
-    
-    private void createInstData(EntityManager em, String is)
-    {
-    	// add user mbb if doesn't exist
 
-    			Instance inst = new Instance();
-    			inst.setEnabled(true);
-    			inst.setName(is);
-    			em.persist(inst);
+	private void createInstData(EntityManager em, String is) {
+		// add user mbb if doesn't exist
 
-    			Customer mbb = new Customer();
+		Instance inst = new Instance();
+		inst.setEnabled(true);
+		inst.setName(is);
+		em.persist(inst);
 
-    			mbb.setFirstName(is);
-    			mbb.setLastName("Admin");
-    			mbb.setUserid(is);
-    			mbb.setPassword("mike");
-    			mbb.setRoles("tmadmin");
-    			mbb.setInstance(inst);
-    			mbb.setResident("Y");
-    			mbb.setSpecialNeeds(Customer.NONE);
+		Customer mbb = new Customer();
 
-    			em.persist(mbb);
+		mbb.setFirstName(is);
+		mbb.setLastName("Admin");
+		mbb.setUserid(is);
+		mbb.setPassword("mike");
+		mbb.setRoles("tmadmin");
+		mbb.setInstance(inst);
+		mbb.setResident("Y");
+		mbb.setSpecialNeeds(Customer.NONE);
 
+		em.persist(mbb);
 
-    			Customer uuu = new Customer();
+		Customer uuu = new Customer();
 
-    			uuu.setFirstName("Joe");
-    			uuu.setLastName("User");
-    			uuu.setUserid(is+"user");
-    			uuu.setPassword("user");
-    			uuu.setRoles("tmuser");
-    			uuu.setInstance(inst);
-    			uuu.setResident("Y");
-    			uuu.setSpecialNeeds(Customer.NONE);
+		uuu.setFirstName("Joe");
+		uuu.setLastName("User");
+		uuu.setUserid(is + "user");
+		uuu.setPassword("user");
+		uuu.setRoles("tmuser");
+		uuu.setInstance(inst);
+		uuu.setResident("Y");
+		uuu.setSpecialNeeds(Customer.NONE);
 
-    			em.persist(uuu);
+		em.persist(uuu);
 
-    			Zone bzone = new Zone();
-    			bzone.setExclusive("Y");
-    			bzone.setInstance(inst);
-    			bzone.setName("B row reserved");
-    			em.persist(bzone);
+		ArrayList<Zone> zonelist = new ArrayList<Zone>();
 
-    			Zone dzone = new Zone();
-    			dzone.setExclusive("N");
-    			dzone.setInstance(inst);
-    			dzone.setName("D row special");
-    			em.persist(dzone);
+		for (String zone : new String[] { "Mobility Impaired", "Hearing Impaired", "Lavatory", "Vision Impaired",
+				"Front Row", "Lip Reader" }) {
+			Zone bzone = new Zone();
+			bzone.setExclusive("N");
+			bzone.setInstance(inst);
+			bzone.setName(zone);
+			em.persist(bzone);
+			zonelist.add(bzone);
+		}
 
-    			Layout l = new Layout();
-    			l.setName("Aud 1");
-    			l.setInstance(inst);
-    			l.setNumRows(10);
-    			l.setNumSeats(20);
-    			l.setSeating(Layout.AUDITORIUM);
-    			em.persist(l);
+		Zone bzone = new Zone();
+		bzone.setExclusive("Y");
+		bzone.setInstance(inst);
+		bzone.setName("Wheel Chair");
+		em.persist(bzone);
+		zonelist.add(bzone);
 
-    			generateMissingSeats(l,inst);
+		Layout l = new Layout();
+		l.setName("Aud 1");
+		l.setInstance(inst);
+		l.setNumRows(10);
+		l.setNumSeats(20);
+		l.setSeating(Layout.AUDITORIUM);
+		em.persist(l);
 
-    			List<Seat> sts = getSeats(l);
-    			for (Seat st : sts) {
-    				if (st.getRow().equals("D")) {
-    					st.setZone(dzone);
-    					em.merge(st);
-    				} else if (st.getRow().equals("B")) {
-    					st.setZone(bzone);
-    					em.merge(st);
-    				}
-    			}
-    			
-    			sts = getSeats(l);
+		generateMissingSeats(l, inst);
 
+		String[] shownames = { "Capitol Steps", "Little Anthony", "Robert Klein", "Swing Dance", "Pat Cooper",
+				"Lenny Rush", "Vampires Ball", "Liberace", "Tommy Tune", "West Side Story" };
 
-    			/*
-    			 * l = new Layout(); l.setName("Tbl 1"); l.setInstanceName("mbcsoft");
-    			 * l.setSeating(Layout.TABLE); em.persist(l);
-    			 */
-    			Show show1 = null;
-    			for (int i = 1; i <= 10; i++) {
-    				Show s = new Show();
-    				s.setName("Show-" + i);
-    				s.setCost(i * 1000);
-    				s.setInstance(inst);
-    				s.setLayout(l);
-    				s.setPrice(i * 100);
-    				s.setTime(new Timestamp(new Date().getTime() + (long) 1000 * 60
-    						* 60 * 24 * 100));
-    				em.persist(s);
-    				if (i == 1)
-    					show1 = s;
-    			}
+		Show show1 = null;
+		for (int i = 1; i <= shownames.length; i++) {
+			Show s = new Show();
+			s.setName(shownames[i - 1]);
+			s.setCost(i * 1000);
+			s.setInstance(inst);
+			s.setLayout(l);
+			s.setPrice(i * 100);
+			s.setTime(new Timestamp(new Date().getTime() + (long) 1000 * 60 * 60 * 24 * i));
+			em.persist(s);
+			if (i == 1)
+				show1 = s;
+		}
 
-    			for (int i = 1; i < 50; i++) {
-    				Customer c = new Customer();
-    				c.setFirstName("John");
-    				c.setLastName("Smith-" + i);
-    				c.setResident("Y");
-    				c.setUserid(is+"cust" + i);
-    				c.setPassword(c.getUserid());
-    				c.setRoles("tmuser");
-    				c.setInstance(inst);
-    				c.setSpecialNeeds(Customer.NONE);
-    				c.setPhone("908-" + i);
+		loadCusts(inst, l, show1, zonelist);
 
-    				if (i <= 10)
-    					c.setSpecialNeeds(dzone.getName());
-    				em.persist(c);
+		Request r = new Request();
+		r.setCustomer(mbb);
+		r.setInstance(inst);
+		r.setShow(show1);
+		r.setTickets(3);
+		r.setPaid(true);
+		em.persist(r);
 
-    				Request r = new Request();
-    				r.setCustomer(c);
-    				r.setInstance(inst);
-    				r.setShow(show1);
-    				r.setTickets(3);
-    				r.setPaid(true);
-    				em.persist(r);
-    				
-    				Ticket t = new Ticket();
-    				t.setCustomer(c);
-    				t.setInstance(inst);
-    				t.setSeat(sts.get(i));
-    				t.setShow(show1);
-    				t.setTicketPrice(2);
-    				em.persist(t);
-    				
-    				t = new Ticket();
-    				t.setCustomer(c);
-    				t.setInstance(inst);
-    				t.setSeat(sts.get(i+50));
-    				t.setShow(show1);
-    				t.setTicketPrice(2);
-    				em.persist(t);
+		logger.info("Initialization Complete for " + is);
 
-    			}
+	}
 
+	private void loadCusts(Instance inst, Layout l, Show show1, ArrayList<Zone> zonelist) {
 
-    			Request r = new Request();
-    			r.setCustomer(mbb);
-    			r.setInstance(inst);
-    			r.setShow(show1);
-    			r.setTickets(3);
-    			r.setPaid(true);
-    			em.persist(r);
+		List<Seat> sts = getSeats(l);
+		String fname = "c:/tmp/customers.csv";
+		File in = new File(fname);
+		if (!in.exists() || !in.canRead()) {
+			for (int i = 1; i < 50; i++) {
+				Customer c = new Customer();
+				c.setFirstName("John");
+				c.setLastName("Smith-" + i);
+				c.setResident("Y");
+				c.setUserid(inst.getName() + "cust" + i);
+				c.setPassword(c.getUserid());
+				c.setRoles("tmuser");
+				c.setInstance(inst);
+				c.setSpecialNeeds(Customer.NONE);
+				c.setPhone("908-" + i);
 
-    	        logger.info("Initialization Complete for " + is);
+				// if (i <= 20)
+				// c.setSpecialNeeds(zonelist.get(i%zonelist.size()).getName());
+				em.persist(c);
 
+				Request r = new Request();
+				r.setCustomer(c);
+				r.setInstance(inst);
+				r.setShow(show1);
+				r.setTickets(3);
+				r.setPaid(true);
+				em.persist(r);
 
-    }
-	
+				Ticket t = new Ticket();
+				t.setCustomer(c);
+				t.setInstance(inst);
+				t.setSeat(sts.get(i));
+				t.setShow(show1);
+				t.setTicketPrice(2);
+				em.persist(t);
+
+				t = new Ticket();
+				t.setCustomer(c);
+				t.setInstance(inst);
+				t.setSeat(sts.get(i + 50));
+				t.setShow(show1);
+				t.setTicketPrice(2);
+				em.persist(t);
+
+			}
+		} else {
+			String line = null;
+			try (BufferedReader reader = new BufferedReader(new FileReader(fname))) {
+
+				int i = 1;
+				while ((line = reader.readLine()) != null) {
+
+					// add customer
+					String[] fields = line.split(",");
+					Customer c = new Customer();
+					c.setFirstName(fields[1]);
+					c.setLastName(fields[0]);
+					c.setResident("Y");
+					c.setUserid(inst.getName() + "cust" + i);
+					c.setPassword(c.getUserid());
+					c.setRoles("tmuser");
+					c.setInstance(inst);
+					c.setPhone("908-" + i);
+					if (i <= 50)
+						c.setSpecialNeeds(zonelist.get(i % zonelist.size()).getName());
+					else
+						c.setSpecialNeeds(Customer.NONE);
+					em.persist(c);
+					i++;
+
+					em.persist(c);
+
+					Request r = new Request();
+					r.setCustomer(c);
+					r.setInstance(inst);
+					r.setShow(show1);
+					r.setTickets(3);
+					r.setPaid(true);
+					em.persist(r);
+
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+	}
+
 	private Seat getSeat(String row, int seat, Layout l) {
 		Query query = em
 				.createQuery("SELECT e FROM Seat e WHERE e.row = :row AND e.seat = :seat AND e.layout = :layout");
@@ -242,11 +279,10 @@ public class StartupBean {
 		}
 		return s;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private List<Seat> getSeats(Layout l) {
-		Query query = em
-				.createQuery("SELECT e FROM Seat e WHERE e.layout = :layout");
+		Query query = em.createQuery("SELECT e FROM Seat e WHERE e.layout = :layout");
 		query.setParameter("layout", l);
 		return (List<Seat>) query.getResultList();
 	}
@@ -255,7 +291,7 @@ public class StartupBean {
 
 		int rows = layout.getNumRows();
 		int seats = layout.getNumSeats();
-		//logger.info("Layout id=" + layout.getRecordId());
+		// logger.info("Layout id=" + layout.getRecordId());
 
 		for (int r = 0; r < rows; r++) {
 			String row = Seat.rowletters.substring(r, r + 1);

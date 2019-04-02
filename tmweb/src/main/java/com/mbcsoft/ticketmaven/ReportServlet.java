@@ -67,7 +67,7 @@ public class ReportServlet extends HttpServlet {
 			String targetFileName = reportname + ".pdf";
 			JasperReport jasperReport = (JasperReport) JRLoader.loadObject(is);
 			InitialContext ctx = new InitialContext();
-			DataSource ds = (DataSource) ctx.lookup("java:/tm/tmdb");
+			DataSource ds = (DataSource) ctx.lookup("java:/tm/tmdbpg");
 			
 			jasperPrint = JasperFillManager.fillReport(jasperReport, parms, ds.getConnection());
 			
