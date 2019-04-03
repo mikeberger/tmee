@@ -41,6 +41,7 @@ public class LotteryBB implements Serializable {
 	private String tickets;
 	private String seatsAvailable;
 	private String showid;
+	private String showName;
 
 	@EJB private LotteryManager lottery;
 	@EJB private ShowBean showbean;
@@ -62,6 +63,21 @@ public class LotteryBB implements Serializable {
 			e.printStackTrace();
 		}
 	}
+	
+	public void undo() throws AbortProcessingException {
+
+		try {
+
+			Show s = showbean.get(Show.class, showid);
+
+			lottery.undoLottery(s);
+
+			loadInternal();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void load() throws AbortProcessingException {
 			showid = FacesContext.getCurrentInstance().getExternalContext()
@@ -75,6 +91,8 @@ public class LotteryBB implements Serializable {
 
 
 			Show s = showbean.get(Show.class, showid);
+			
+			showName = s.getLabel();
 
 			Collection<Request> reqs = reqbean.getPaidRequestsForShow(s);
 
@@ -152,6 +170,14 @@ public class LotteryBB implements Serializable {
 	 */
 	public void setSeatsAvailable(String seatsAvailable) {
 		this.seatsAvailable = seatsAvailable;
+	}
+
+	public String getShowName() {
+		return showName;
+	}
+
+	public void setShowName(String showName) {
+		this.showName = showName;
 	}
 
 }

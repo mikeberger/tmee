@@ -20,4 +20,5 @@ import com.mbcsoft.ticketmaven.entity.Show;
 public interface LotteryManager {
 
 	public void runLottery(Show s);
+	public void undoLottery(Show s);
 }

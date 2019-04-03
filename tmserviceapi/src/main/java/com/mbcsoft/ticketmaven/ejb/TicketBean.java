@@ -26,6 +26,8 @@ public interface TicketBean extends BaseEntityFacade<Ticket>  {
 	public List<Ticket> getTicketsForShow(Show s);
 	
 	public List<Ticket> getTicketsForCustomer(Customer c);
+
+	public void deleteTicketsForShow(Show show);
 	
 	
 

@@ -14,7 +14,9 @@ package com.mbcsoft.ticketmaven.ejbImpl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.TreeSet;
 import java.util.logging.Level;
@@ -43,9 +45,7 @@ import com.mbcsoft.ticketmaven.entity.Zone;
 @RolesAllowed("tmadmin")
 public class LotteryManagerImpl implements LotteryManager {
 
-	final private static Logger logger = Logger
-			.getLogger("com.mbcsoft.ticketmaven.ejb");
-
+	final private static Logger logger = Logger.getLogger("com.mbcsoft.ticketmaven.ejb");
 
 	@EJB
 	private SeatBean seatbean;
@@ -61,48 +61,92 @@ public class LotteryManagerImpl implements LotteryManager {
 	@PersistenceContext
 	private EntityManager em;
 
-	public void runLottery(Show s)  {
+	public void runLottery(Show show) {
+		Collection<Seat> availableSeats = seatbean.getAvailableSeatsForShow(show);
 
-		logger.info("Running Lottery for show " + s.getRecordId());
+		// run the lottery with a capacity limit so that a random set of requests get
+		// chosen for a show that is sold out
+		runLottery(show, availableSeats.size());
+
+		Collection<Request> reqs = requestbean.getRequestsForShow(show);
+
+		// there are still outstanding requests. run another lottery with no capacity
+		// limit so that every request will
+		// be considered. This may fill in the remaining seats
+		if (!reqs.isEmpty()) {
+			runLottery(show, -1);
+		}
+	}
+
+	private void runLottery(Show s, int capacity) {
+
+		logger.info("Running Lottery for show " + s.getRecordId() + " capacity=" + capacity);
 
 		// fetch a copy of show that is managed
 		Show show = em.find(Show.class, s.getRecordId());
 
 		// get the list of available seats for the show
-		Collection<Seat> availableSeats = seatbean
-				.getAvailableSeatsForShow(show);
+		Collection<Seat> availableSeats = seatbean.getAvailableSeatsForShow(show);
 
 		dumpSeats("initial AVAIL", availableSeats);
 
-		// get the list of requests that win the lottery
-		Collection<Request> requests = getRequests(show, availableSeats.size());
+		// get the list of requests
+		Collection<Request> requests = getRequests(show, capacity);
 
 		// sort Requests in the order that they should be honored
-		TreeSet<Request> sortedRequests = new TreeSet<Request>(
-				new requestCompare());
+		// requests are sorted by past quality plus a random factor for
+		// people who have never gotten tickets.
+		// We will eventually assign tickets from
+		// the best to the worst, so at this point, we are ordering folks in
+		// the line at the door.
+		// the folks who got the worst seats in the past are put at the
+		// front of the line.
+		TreeSet<Request> sortedRequests = new TreeSet<Request>(new requestCompare());
 		sortedRequests.addAll(requests);
 
 		dumpRequests(sortedRequests);
 
+		// NOTE: once we start assigning tickets, we need to make sure that
+		// we do not
+		// break up a party across an aisle or in non-contiguous seats. So,
+		// if we ever get to the point where
+		// there are single empty seats scattered about, the program will
+		// not assign request for
+		// 2 or more tickets. If the user wants to break up ticket requests
+		// into smaller parties, then
+		// that must be done manually.
+
 		// assign front row seats
-		assignSeats(show, getFrontRowSeats(availableSeats), sortedRequests,
-				Customer.FRONT_ONLY);
+		// people with special needs type of front only are assigned here.
+		// if they don't get a front row seat - they get no ticket
+		assignSeats(show, getFrontRowSeats(availableSeats), sortedRequests, Customer.FRONT_ONLY);
 
 		// assign all special seats from zone table
+		// now we assign all of the special needs people according to the
+		// user's custom special needs
+		// if a special needs person does not get an available seat that
+		// matches their need - they get no ticket
+		// it's important to make sure there are enough special needs seats
+		// when creating the layout
+		// NOTE: all assignment still is servicing people in order of past
+		// quality whether it's
+		// special needs seating or regular
 		Collection<Zone> zones = zonebean.getAll();
 		for (Zone z : zones) {
-			Collection<Seat> zoneSeats = seatbean.getAvailableSeatsForShow(
-					show, z);
+			Collection<Seat> zoneSeats = seatbean.getAvailableSeatsForShow(show, z);
 			assignSeats(show, zoneSeats, sortedRequests, z.getName());
 		}
 
+		// now we assign aisle seats for people with the built-in Aisle
+		// needs type
 		availableSeats = seatbean.getAvailableSeatsForShow(show);
 		assignAisleSeats(show, availableSeats, sortedRequests);
 
-		// assign front seats
+		// assign front seats - the folks with this special need just get
+		// whatever seats a
+		// left as close to the front as possible
 		availableSeats = seatbean.getAvailableSeatsForShow(show);
-		TreeSet<Seat> frontSortedSeats = new TreeSet<Seat>(
-				new frontSeatCompare());
+		TreeSet<Seat> frontSortedSeats = new TreeSet<Seat>(new frontSeatCompare());
 		dumpSeats("before front sorted", availableSeats);
 		frontSortedSeats.addAll(availableSeats);
 		dumpSeats("front sorted", frontSortedSeats);
@@ -115,8 +159,10 @@ public class LotteryManagerImpl implements LotteryManager {
 		assignSeats(show, rearSortedSeats, sortedRequests, Customer.REAR);
 
 		// assign the rest
-		TreeSet<Seat> regularSortedSeats = new TreeSet<Seat>(
-				new regularSeatCompare());
+		// now we assign anyone without a special need to whatever seats are
+		// left...
+		// still in order of past quality.
+		TreeSet<Seat> regularSortedSeats = new TreeSet<Seat>(new regularSeatCompare());
 		regularSortedSeats.addAll(rearSortedSeats);
 		dumpSeats("regular sorted", regularSortedSeats);
 		assignSeats(show, regularSortedSeats, sortedRequests, Customer.NONE);
@@ -139,8 +185,7 @@ public class LotteryManagerImpl implements LotteryManager {
 		// calculate price
 		int show_price = show.getPrice();
 		if (req.getDiscount() > 0) {
-			show_price = (int) ((double) show_price * (1 - (double) req
-					.getDiscount() / 100.0));
+			show_price = (int) ((double) show_price * (1 - (double) req.getDiscount() / 100.0));
 		}
 
 		// create ticket records
@@ -151,8 +196,7 @@ public class LotteryManagerImpl implements LotteryManager {
 			tkt.setCustomer(req.getCustomer());
 			tkt.setSeat(s);
 			tkt.setShow(show);
-			logger.info("Assigning Ticket: " + req.getCustomerName() + ":"
-					+ s.getRow() + "/" + s.getSeat());
+			logger.info("Assigning Ticket: " + req.getCustomerName() + ":" + s.getRow() + "/" + s.getSeat());
 
 			// assign price from show with discount from request
 
@@ -162,7 +206,7 @@ public class LotteryManagerImpl implements LotteryManager {
 			total_quality += s.getWeight();
 		}
 
-		// update the quality counts for the customero
+		// update the quality counts for the customer
 		Customer cust = req.getCustomer();
 		cust.setTotalTickets(req.getTickets() + cust.getTotalTickets());
 		cust.setTotalQuality(total_quality + cust.getTotalQuality());
@@ -173,9 +217,8 @@ public class LotteryManagerImpl implements LotteryManager {
 
 	}
 
-	private Collection<Seat> getContiguousSeats(Show show,
-			Collection<Seat> availableSeats, Seat startingSeat, int number,
-			boolean aisle) throws NotEnoughSeats {
+	private Collection<Seat> getContiguousSeats(Show show, Collection<Seat> availableSeats, Seat startingSeat,
+			int number, boolean aisle) throws NotEnoughSeats {
 
 		Collection<Seat> seats = new ArrayList<Seat>();
 		seats.add(startingSeat);
@@ -213,8 +256,7 @@ public class LotteryManagerImpl implements LotteryManager {
 
 			curseat = null;
 			for (Seat ns : availableSeats) {
-				if (ns.getSeat() == nextseat
-						&& ns.getRow().equals(startingSeat.getRow())) {
+				if (ns.getSeat() == nextseat && ns.getRow().equals(startingSeat.getRow())) {
 					curseat = ns;
 					seats.add(curseat);
 					break;
@@ -230,8 +272,7 @@ public class LotteryManagerImpl implements LotteryManager {
 		return seats;
 	}
 
-	private void assignAisleSeats(Show show, Collection<Seat> availableSeats,
-			Collection<Request> requests) {
+	private void assignAisleSeats(Show show, Collection<Seat> availableSeats, Collection<Request> requests) {
 
 		Collection<Seat> aisleSeats = getAisleSeats(availableSeats);
 
@@ -254,9 +295,8 @@ public class LotteryManagerImpl implements LotteryManager {
 
 						// see if this aisle seat has enough contiguous seats to
 						// satisfy the requested number of seats
-						Collection<Seat> seats = getContiguousSeats(show,
-								availableSeats, seatit.next(), tr.getTickets(),
-								true);
+						Collection<Seat> seats = getContiguousSeats(show, availableSeats, seatit.next(),
+								tr.getTickets(), true);
 
 						// assign the seats
 						assignTickets(show, tr, seats);
@@ -278,8 +318,8 @@ public class LotteryManagerImpl implements LotteryManager {
 		}
 	}
 
-	private void assignSeats(Show show, Collection<Seat> sortedSeats,
-			Collection<Request> requests, String special_needs) {
+	private void assignSeats(Show show, Collection<Seat> sortedSeats, Collection<Request> requests,
+			String special_needs) {
 
 		logger.info("Assigning seats: " + special_needs);
 
@@ -287,19 +327,28 @@ public class LotteryManagerImpl implements LotteryManager {
 		Iterator<Request> it = requests.iterator();
 		while (it.hasNext()) {
 
+			// skip any requests that are not for the special need that we are
+			// assigning
 			Request tr = it.next();
 			if (!tr.getSpecialNeeds().equals(special_needs))
 				continue;
 
-			// loop through the aisle seats
+			// loop through the seats, which are sorted from best to worst
+			// we will hunt for seats starting with every seat in the place
+			// until we find a bunch of available seats or give up
+			// the seats are sorted from best to worst and the requests are
+			// sorted
+			// with the most deserving on top - so each request will get the best
+			// seats available
+			// that can satisfy it.
 			Iterator<Seat> seatit = sortedSeats.iterator();
 			while (seatit.hasNext()) {
 				try {
 
 					// see if this seat has enough contiguous seats to
 					// satisfy the requested number of seats
-					Collection<Seat> seats = getContiguousSeats(show, sortedSeats,
-							seatit.next(), tr.getTickets(), false);
+					Collection<Seat> seats = getContiguousSeats(show, sortedSeats, seatit.next(), tr.getTickets(),
+							false);
 
 					// assign the seats
 					assignTickets(show, tr, seats);
@@ -336,14 +385,15 @@ public class LotteryManagerImpl implements LotteryManager {
 		return seats;
 	}
 
-	private Collection<Request> getRequests(Show show,int n) {
-		//Collection<Request> req = show.getRequestsCollection();
+	private Collection<Request> getRequests(Show show, int capacity) {
+
 		Collection<Request> req = requestbean.getPaidRequestsForShow(show);
 		logger.info("total requests for show:" + req.size());
 		dumpRequests(req);
 
 		Collection<Request> winners = new ArrayList<Request>();
 		Random ran = new Random();
+		int winningseats = 0;
 
 		ArrayList<Request> pool = new ArrayList<Request>(req);
 		while (pool.size() > 0) {
@@ -352,6 +402,13 @@ public class LotteryManagerImpl implements LotteryManager {
 
 			winners.add(tr);
 			tr.setLotteryPosition(winners.size());
+			winningseats += tr.getTickets();
+			
+			if (capacity != -1 && winningseats > capacity) {
+				logger.info("Sold-out picked winners...");
+				break;
+			}
+
 		}
 
 		logger.info("winners:" + winners.size());
@@ -369,13 +426,10 @@ public class LotteryManagerImpl implements LotteryManager {
 			// only compare quality for prior customers. New customers
 			// will be random
 
-			if (r1.getCustomer().getTotalTickets() != 0
-					&& r2.getCustomer().getTotalTickets() != 0) {
-				int quality1 = (100000 * r1.getCustomer().getTotalQuality())
-						/ r1.getCustomer().getTotalTickets();
+			if (r1.getCustomer().getTotalTickets() != 0 && r2.getCustomer().getTotalTickets() != 0) {
+				int quality1 = (100000 * r1.getCustomer().getTotalQuality()) / r1.getCustomer().getTotalTickets();
 
-				int quality2 = (100000 * r2.getCustomer().getTotalQuality())
-						/ r2.getCustomer().getTotalTickets();
+				int quality2 = (100000 * r2.getCustomer().getTotalQuality()) / r2.getCustomer().getTotalTickets();
 
 				if (quality2 != quality1)
 					return quality1 - quality2;
@@ -421,7 +475,8 @@ public class LotteryManagerImpl implements LotteryManager {
 	private static int seatNumberCompare(Seat s1, Seat s2) {
 		// int center = Prefs.getIntPref(PrefName.NUMSEATS) / 2;
 		int center = s1.getLayout().getCenterseat();
-		if( center == 0 ) center = s1.getLayout().getNumSeats()/2;
+		if (center == 0)
+			center = s1.getLayout().getNumSeats() / 2;
 		int seat1dist = Math.abs(center - s1.getSeat());
 		int seat2dist = Math.abs(center - s2.getSeat());
 		return (seat1dist - seat2dist);
@@ -512,12 +567,98 @@ public class LotteryManagerImpl implements LotteryManager {
 			StringBuffer sb = new StringBuffer();
 			for (Request s : reqs) {
 
-				sb.append(s.getCustomerName() + " " + s.getSpecialNeeds() + " "
-						+ s.getCustomer().getTotalTickets() + " "
-						+ s.getCustomer().getTotalQuality() + "\n");
+				sb.append(s.getCustomerName() + " " + s.getSpecialNeeds() + " " + s.getCustomer().getTotalTickets()
+						+ " " + s.getCustomer().getTotalQuality() + "\n");
 			}
 			logger.info(sb.toString());
 
 		}
+	}
+
+	/**
+	 * Undo a lottery. This method will convert all assgined tickets for a show back
+	 * inot the original requests. It also undoes the updates to a customer's past
+	 * ticket quality. It has to group tickets together to build up requests for
+	 * multiple tickets.
+	 *
+	 * @throws Exception the exception
+	 */
+	public void undoLottery(Show show) {
+
+		// hashmap to hold requests
+		HashMap<Integer, Request> rmap = new HashMap<Integer, Request>();
+
+		// hashmap to hold weights
+		HashMap<Integer, Integer> wmap = new HashMap<Integer, Integer>();
+
+		// collect up all tickets
+		Collection<Ticket> tkts = ticketbean.getTicketsForShow(show);
+
+		for (Ticket t : tkts) {
+			Integer custid = t.getCustomer().getRecordId();
+			Request req = rmap.get(custid);
+			if (req == null) {
+				// add a new request for this customer
+				req = new Request();
+				req.setCustomer(t.getCustomer());
+				req.setShow(t.getShow());
+				req.setTickets(Integer.valueOf(1));
+				req.setPaid(true);
+				// calculate the discount
+				double d = 100.0 * (1.0 - Integer.valueOf(t.getTicketPrice()).doubleValue()
+						/ Integer.valueOf(show.getPrice()).doubleValue());
+				req.setDiscount(Double.valueOf(d));
+				rmap.put(custid, req);
+
+				// add an entry for the seat weight being deleted in this
+				// ticket
+				wmap.put(custid, t.getSeat().getWeight());
+			} else {
+				// found a request - just bump the number of tickets
+				req.setTickets(Integer.valueOf(req.getTickets() + 1));
+
+				// add to the weight total so we can subtract it from the
+				// customer later
+				Integer w = wmap.get(custid);
+				wmap.put(custid, Integer.valueOf(t.getSeat().getWeight() + w.intValue()));
+			}
+
+		}
+
+		// save requests
+		for (Request r : rmap.values()) {
+			try {
+				requestbean.save(r);
+			} catch (Exception e) {
+				// got here if request already exists - only happens if they
+				// added a second request after the lottery for the same
+				// customer
+				// and show - so we need to add to that request
+				List<Request> currentRequests = requestbean.getRequestsForCustomer(r.getCustomer());
+				for (Request current : currentRequests) {
+					if (current.getShow().getRecordId() == r.getShow().getRecordId()) {
+						current.setTickets(current.getTickets() + r.getTickets());
+						requestbean.save(current);
+						break;
+					}
+				}
+
+			}
+
+			// adjust customer's quality
+			Customer c = r.getCustomer();
+			c.setTotalTickets(Integer.valueOf(c.getTotalTickets() - r.getTickets()));
+			int w = wmap.get(r.getCustomer().getRecordId()).intValue();
+			c.setTotalQuality(Integer.valueOf(c.getTotalQuality() - w));
+			if (c.getTotalTickets() < 0)
+				c.setTotalTickets(0);
+			if (c.getTotalQuality() < 0)
+				c.setTotalQuality(0);
+			custbean.save(c);
+		}
+
+		// delete all tickets for show
+		ticketbean.deleteTicketsForShow(show);
+
 	}
 }

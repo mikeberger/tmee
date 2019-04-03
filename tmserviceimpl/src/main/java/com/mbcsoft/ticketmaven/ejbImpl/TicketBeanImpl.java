@@ -60,4 +60,10 @@ public class TicketBeanImpl extends BaseEntityFacadeImpl<Ticket> implements Tick
 		query.setParameter("show", s);
 		return (List<Ticket>) query.getResultList();
 	}
+	
+	public void deleteTicketsForShow(Show s) {
+		Query query = em.createQuery("delete FROM Ticket e WHERE e.show = :show");
+		query.setParameter("show", s);
+		query.executeUpdate();
+	}
 }

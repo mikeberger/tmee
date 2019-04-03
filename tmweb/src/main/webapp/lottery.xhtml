@@ -7,25 +7,45 @@
 	<ui:param name="pageTitle" value="Lottery" />
 	<ui:define name="panel-main">
 		<h:form>
-			<p:outputLabel for="reqs" value="Outstanding Paid Requests: " />
-			<h:outputText id="reqs" value="#{lotteryBB.requests}" />
-			<br />
-			<p:outputLabel for="seats" value="Requested Seats: " />
-			<h:outputText id="seats" value="#{lotteryBB.seatsRequested}" />
-			<br />
-			<p:outputLabel for="ticks" value="Assigned Tickets: " />
-			<h:outputText id="ticks" value="#{lotteryBB.tickets}" />
-			<br />
-			<p:outputLabel for="avail" value="Available Seats: " />
-			<h:outputText id="avail" value="#{lotteryBB.seatsAvailable}" />
-			<br />
-			<br />
+			<h:messages />
 
-			<p:commandButton actionListener="#{lotteryBB.run}" action="lottery" value="Run Lottery"
-				disabled="#{lotteryBB.requests == 0}" />
+			<p:panel id="panel" header="Run Lottery">
+
+				<h:panelGrid columns="2" cellpadding="5">
+
+					<p:outputLabel for="show" value="Show: " />
+					<p:inputText id="show" value="#{lotteryBB.showName}"
+						readonly="true" size="60"/>
+					<p:outputLabel for="reqs" value="Outstanding Paid Requests: " />
+					<p:inputText id="reqs" value="#{lotteryBB.requests}"
+						readonly="true" />
+					<p:outputLabel for="seats" value="Requested Seats: " />
+					<p:inputText id="seats" value="#{lotteryBB.seatsRequested}"
+						readonly="true" />
+					<p:outputLabel for="ticks" value="Assigned Tickets: " />
+					<p:inputText id="ticks" value="#{lotteryBB.tickets}"
+						readonly="true" />
+					<p:outputLabel for="avail" value="Available Seats: " />
+					<p:inputText id="avail" value="#{lotteryBB.seatsAvailable}"
+						readonly="true" />
+
+					<p:commandButton actionListener="#{lotteryBB.run}" action="lottery?faces-redirect=true"
+						value="Run Lottery" disabled="#{lotteryBB.requests == 0}">
+						<p:confirm header="Confirmation" message="Really Run Lottery?"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+
+					<p:commandButton actionListener="#{lotteryBB.undo}"
+						action="lottery?faces-redirect=true" value="Undo Lottery"
+						disabled="#{lotteryBB.tickets == 0}">
+						<p:confirm header="Confirmation" message="Really Undo Lottery?"
+							icon="ui-icon-alert" />
+
+					</p:commandButton>
+				</h:panelGrid>
+			</p:panel>
 
 		</h:form>
-		<h:messages />
 
 	</ui:define>
 </ui:composition>

@@ -102,19 +102,6 @@ public class StartupBean {
 
 		em.persist(mbb);
 
-		Customer uuu = new Customer();
-
-		uuu.setFirstName("Joe");
-		uuu.setLastName("User");
-		uuu.setUserid(is + "user");
-		uuu.setPassword("user");
-		uuu.setRoles("tmuser");
-		uuu.setInstance(inst);
-		uuu.setResident("Y");
-		uuu.setSpecialNeeds(Customer.NONE);
-
-		em.persist(uuu);
-
 		ArrayList<Zone> zonelist = new ArrayList<Zone>();
 
 		for (String zone : new String[] { "Mobility Impaired", "Hearing Impaired", "Lavatory", "Vision Impaired",
@@ -162,14 +149,6 @@ public class StartupBean {
 		}
 
 		loadCusts(inst, l, show1, zonelist);
-
-		Request r = new Request();
-		r.setCustomer(mbb);
-		r.setInstance(inst);
-		r.setShow(show1);
-		r.setTickets(3);
-		r.setPaid(true);
-		em.persist(r);
 
 		logger.info("Initialization Complete for " + is);
 
@@ -256,6 +235,8 @@ public class StartupBean {
 					r.setTickets(3);
 					r.setPaid(true);
 					em.persist(r);
+					
+					if( i > 100 ) break;
 
 				}
 			} catch (IOException e) {
