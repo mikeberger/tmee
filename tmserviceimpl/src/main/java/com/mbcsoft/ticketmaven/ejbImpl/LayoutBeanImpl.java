@@ -15,6 +15,7 @@ import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 
 import com.mbcsoft.ticketmaven.ejb.LayoutBean;
 import com.mbcsoft.ticketmaven.entity.Layout;
@@ -29,6 +30,12 @@ public class LayoutBeanImpl extends BaseEntityFacadeImpl<Layout> implements Layo
 
 	public Layout newRecord() {
 		return (new Layout());
+	}
+	
+	public Layout get(String name) {
+		Query query = em.createQuery("SELECT e FROM Layout e WHERE e.name = :name");
+		query.setParameter("name", name);
+		return (Layout) (query.getSingleResult());
 	}
 	
 

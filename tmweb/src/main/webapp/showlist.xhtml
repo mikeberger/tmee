@@ -11,8 +11,8 @@
 
 				<p:dataTable var="show" value="#{showBB.showList}"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-					paginator="true" rows="20" style="margin-bottom:20px">>
-				<p:column headerText="Name" sortBy="#{show.name}">
+					paginator="true" rows="20" style="margin-bottom:20px" sortBy="#{show.time}">
+					<p:column headerText="Name" sortBy="#{show.name}">
 						<h:outputText value="#{show.name}" />
 					</p:column>
 
@@ -35,7 +35,8 @@
 						<p:commandButton action="showlist?faces-redirect=true"
 							icon="ui-icon-circle-close" actionListener="#{showBB.delete}">
 							<f:param name="show_id" value="#{show.recordId}" />
-							<p:confirm header="Confirmation" message="Really Delete?"
+							<p:confirm header="Confirmation"
+								message="Really Delete #{show.name} and all associated records?"
 								icon="ui-icon-alert" />
 						</p:commandButton>
 						<h:outputText value="  " />

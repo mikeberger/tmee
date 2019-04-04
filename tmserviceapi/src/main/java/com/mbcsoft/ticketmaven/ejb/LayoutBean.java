@@ -19,5 +19,6 @@ import com.mbcsoft.ticketmaven.entity.Layout;
 @Local
 public interface LayoutBean extends BaseEntityFacade<Layout> {
 
+	public Layout get(String name);
 	
 }

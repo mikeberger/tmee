@@ -29,13 +29,18 @@
 					actionListener="#{ticketBB.loadAdminList}"
 					rendered="#{p:ifGranted('tmadmin')}" />
 				<p:menuButton value="Theater" rendered="#{p:ifGranted('tmadmin')}">
-					<p:menuitem value="Layouts" />
+					<p:menuitem value="Layouts"
+						action="layoutlist?faces-redirect=true"
+						actionListener="#{layoutBB.refreshList}" />
 					<p:menuitem value="Seat Grid" />
-					<p:menuitem value="Zones (Special Needs)" />
+					<p:menuitem value="Zones (Special Needs)" action="zonelist?faces-redirect=true"
+						actionListener="#{zoneBB.refreshList}"/>
 				</p:menuButton>
 
-				<p:menuButton value="Reports" rendered="#{p:ifGranted('tmadmin')}" icon="ui-icon-script">
-					<p:menuitem value="Customers" url="#{request.contextPath}/report?id=cust" />
+				<p:menuButton value="Reports" rendered="#{p:ifGranted('tmadmin')}"
+					icon="ui-icon-script">
+					<p:menuitem value="Customers"
+						url="#{request.contextPath}/report?id=cust" />
 				</p:menuButton>
 			</f:facet>
 			<f:facet name="right">

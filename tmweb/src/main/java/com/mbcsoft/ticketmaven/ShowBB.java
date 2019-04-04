@@ -22,7 +22,9 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
+import com.mbcsoft.ticketmaven.ejb.LayoutBean;
 import com.mbcsoft.ticketmaven.ejb.ShowBean;
+import com.mbcsoft.ticketmaven.entity.Layout;
 import com.mbcsoft.ticketmaven.entity.Show;
 
 @Named("showBB")
@@ -40,6 +42,8 @@ public class ShowBB implements Serializable {
 
 	@EJB
 	private ShowBean rbean;
+	@EJB
+	private LayoutBean lbean;
 
 	private String selectedShow;
 
@@ -50,6 +54,8 @@ public class ShowBB implements Serializable {
 	private String showid;
 
 	private List<Show> showList = new ArrayList<Show>();
+	
+	private String layoutName;
 
 	public void delete() {
 
@@ -76,6 +82,7 @@ public class ShowBB implements Serializable {
 
 			show = rbean.get(Show.class, id);
 			inputDate = new Date(show.getTime().getTime());
+			layoutName = show.getLayout().getName();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -117,6 +124,7 @@ public class ShowBB implements Serializable {
 		try {
 
 			show.setTime(new Timestamp(inputDate.getTime()));
+			show.setLayout(lbean.get(layoutName));
 			rbean.save(show);
 			refreshList();
 
@@ -163,5 +171,17 @@ public class ShowBB implements Serializable {
 
 	public void setInputDate(Date inputDate) {
 		this.inputDate = inputDate;
+	}
+	
+	public List<Layout> getAllLayouts(){
+		return lbean.getAll();
+	}
+
+	public String getLayoutName() {
+		return layoutName;
+	}
+
+	public void setLayoutName(String layoutName) {
+		this.layoutName = layoutName;
 	}
 }

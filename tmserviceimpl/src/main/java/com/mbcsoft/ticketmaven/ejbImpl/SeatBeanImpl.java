@@ -120,7 +120,7 @@ public class SeatBeanImpl extends BaseEntityFacadeImpl<Seat> implements
 
 		for (Seat seat : seats) {
 			if (seat.getZone() != null
-					&& "Y".equals(seat.getZone().getExclusive()))
+					&& seat.getZone().getExclusive())
 				continue;
 
 			if (z != null) {

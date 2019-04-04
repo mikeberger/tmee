@@ -20,7 +20,17 @@
 					<p:inputText id="name" value="#{showBB.show.name}" required="true" />
 					<p:outputLabel for="time" value="Show Time:" />
 					<p:calendar id="time" value="#{showBB.inputDate}"
-						pattern="MM/dd/yyyy HH:mm" required="true"/>
+						pattern="MM/dd/yyyy HH:mm" required="true" />
+					<p:outputLabel for="price" value="Ticket Price:" />
+					<p:inputNumber id="price" value="#{showBB.show.price}" minValue="0"
+						decimalPlaces="2" required="true" />
+					<p:outputLabel for="cost" value="Cost:" />
+					<p:inputNumber id="cost" value="#{showBB.show.cost}" minValue="0"
+						decimalPlaces="2" />
+					<p:outputLabel for="layout" value="Layout: " />
+					<p:selectOneMenu id="layout" value="#{showBB.layoutName}">
+						<f:selectItems value="#{showBB.allLayouts}" />
+					</p:selectOneMenu>
 				</p:panelGrid>
 
 				<h:panelGrid columns="2" cellpadding="5">

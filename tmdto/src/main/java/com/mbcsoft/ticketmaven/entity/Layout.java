@@ -43,7 +43,7 @@ public class Layout extends BaseAppTable implements Serializable {
 	private int centerseat;
 	private int numRows;
 	private int numSeats;
-	private String seating;
+	//private String seating;
 
 	@OneToMany(mappedBy="layout")
 	@EqualsAndHashCode.Exclude private Set<Show> showsCollection;

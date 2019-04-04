@@ -7,8 +7,8 @@
 	<ui:param name="pageTitle" value="Requests" />
 	<ui:define name="panel-main">
 		<h:form>
-			<p:panel header="Requests" rendered="#{p:ifGranted('tmadmin')}">
-				<h:panelGrid columns="6" cellpadding="10" frame="box" style="margin-bottom:20px">
+			<p:panel header="Requests">
+				<h:panelGrid columns="6" cellpadding="10" frame="box" style="margin-bottom:20px"  rendered="#{p:ifGranted('tmadmin')}">
 					<p:outputLabel for="cust" value="Customer:" />
 					<p:selectOneMenu id="cust" value="#{requestBB.selectedCustomer}">
 						<f:selectItem itemLabel="" itemValue="" />

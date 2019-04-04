@@ -37,7 +37,7 @@ public class Zone extends BaseAppTable implements Serializable {
 	private String name;
 
 	@Column(name="EXCL",nullable=false)
-	private String exclusive;
+	private Boolean exclusive;
 
 	@EqualsAndHashCode.Exclude
 	@OneToMany(mappedBy = "zone")

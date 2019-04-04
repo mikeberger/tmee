@@ -107,7 +107,7 @@ public class StartupBean {
 		for (String zone : new String[] { "Mobility Impaired", "Hearing Impaired", "Lavatory", "Vision Impaired",
 				"Front Row", "Lip Reader" }) {
 			Zone bzone = new Zone();
-			bzone.setExclusive("N");
+			bzone.setExclusive(false);
 			bzone.setInstance(inst);
 			bzone.setName(zone);
 			em.persist(bzone);
@@ -115,7 +115,7 @@ public class StartupBean {
 		}
 
 		Zone bzone = new Zone();
-		bzone.setExclusive("Y");
+		bzone.setExclusive(true);
 		bzone.setInstance(inst);
 		bzone.setName("Wheel Chair");
 		em.persist(bzone);
@@ -126,7 +126,7 @@ public class StartupBean {
 		l.setInstance(inst);
 		l.setNumRows(10);
 		l.setNumSeats(20);
-		l.setSeating(Layout.AUDITORIUM);
+		//l.setSeating(Layout.AUDITORIUM);
 		em.persist(l);
 
 		generateMissingSeats(l, inst);
@@ -214,8 +214,9 @@ public class StartupBean {
 					c.setFirstName(fields[1]);
 					c.setLastName(fields[0]);
 					c.setResident("Y");
-					c.setUserid(inst.getName() + "cust" + i);
+					c.setUserid(inst.getName() + i);
 					c.setPassword(c.getUserid());
+					c.setPassword("user");
 					c.setRoles("tmuser");
 					c.setInstance(inst);
 					c.setPhone("908-" + i);
