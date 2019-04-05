@@ -25,7 +25,7 @@ import com.mbcsoft.ticketmaven.entity.TMPackage;
 import com.mbcsoft.ticketmaven.entity.TMTable;
 
 @Stateless
-@RolesAllowed({"tmuser", "tmadmin"})
+@RolesAllowed({"tmuser", "tmadmin", "tmsite"})
 
 public class TableBeanImpl extends BaseEntityFacadeImpl<TMTable> implements TableBean  {
 

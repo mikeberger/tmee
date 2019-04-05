@@ -20,7 +20,7 @@ import com.mbcsoft.ticketmaven.ejb.ZoneBean;
 import com.mbcsoft.ticketmaven.entity.Zone;
 
 @Stateless
-@RolesAllowed({"tmuser", "tmadmin"})
+@RolesAllowed({"tmuser", "tmadmin", "tmsite"})
 
 public class ZoneBeanImpl extends BaseEntityFacadeImpl<Zone> implements ZoneBean {
 

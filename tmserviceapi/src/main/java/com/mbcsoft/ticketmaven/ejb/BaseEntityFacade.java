@@ -30,6 +30,6 @@ public interface BaseEntityFacade<T extends BaseAppTable> {
     public T get(Class<? extends T> c, String id);
     
 	public Customer getCurrentCustomer();
-
+	
     
 }

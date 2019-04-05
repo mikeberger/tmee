@@ -23,7 +23,7 @@ import com.mbcsoft.ticketmaven.entity.Show;
 import com.mbcsoft.ticketmaven.entity.Ticket;
 
 @Stateless
-@RolesAllowed({"tmuser", "tmadmin"})
+@RolesAllowed({"tmuser", "tmadmin", "tmsite"})
 
 public class TicketBeanImpl extends BaseEntityFacadeImpl<Ticket> implements TicketBean   {
 

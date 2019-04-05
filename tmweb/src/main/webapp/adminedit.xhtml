@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/page-template.xhtml">
+	<ui:param name="pageTitle" value="Edit Admin" />
+	<ui:define name="panel-main">
+		<h:form>
+			<p:messages id="messages" showDetail="false" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+			<p:panel id="panel" header="Admin Information">
+
+				<p:panelGrid columns="2" cellpadding="5">
+					<p:outputLabel for="firstname" value="Firstname:" />
+					<p:inputText id="firstname" value="#{adminBB.cust.firstName}"
+						required="true" label="Firstname" />
+
+					<p:outputLabel for="lastname" value="Lastname:" />
+					<p:inputText id="lastname" value="#{adminBB.cust.lastName}"
+						label="Lastname" required="true" />
+
+					<p:outputLabel for="userid" value="User Id:" />
+					<p:inputText id="userid" value="#{adminBB.cust.userid}"
+						label="userid" required="true" />
+
+					<h:outputLabel for="pwd1" value="Password:" />
+					<p:password id="pwd1" value="#{adminBB.cust.password}"
+						match="pwd2" label="Password" required="true" />
+
+					<h:outputLabel for="pwd2" value="Confirm Password:" />
+					<p:password id="pwd2" value="#{adminBB.cust.password}"
+						label="Password2" required="true" />
+
+					<p:outputLabel for="address" value="Address:" />
+					<p:inputText id="address" value="#{adminBB.cust.address}"
+						label="Address" required="false" />
+
+					<p:outputLabel for="phone" value="Phone:" />
+					<p:inputText id="phone" value="#{adminBB.cust.phone}" label="Phone"
+						required="false" />
+
+					<p:outputLabel for="email" value="Email:" />
+					<p:inputText id="email" value="#{adminBB.cust.email}" label="Email"
+						required="false" />
+
+
+					<p:outputLabel for="comm" value="Community: " />
+					<p:selectOneMenu id="comm" value="#{adminBB.instname}" required="true">
+						<f:selectItems value="#{adminBB.allInstances}" />
+					</p:selectOneMenu>
+
+
+				</p:panelGrid>
+
+				<h:panelGrid columns="2" cellpadding="5">
+					<p:commandButton value="Save" action="adminlist"
+						actionListener="#{adminBB.save}" icon="ui-icon-check" />
+					<p:commandButton value="Cancel" immediate="true" action="adminlist"
+						icon="ui-icon-circle-close" />
+				</h:panelGrid>
+			</p:panel>
+
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>
+</html>

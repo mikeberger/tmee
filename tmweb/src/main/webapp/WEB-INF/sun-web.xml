@@ -11,4 +11,8 @@ Application Server 9.0 Servlet 2.5//EN'
 		<role-name>tmuser</role-name>
 		<group-name>tmuser</group-name>
 	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>tmsite</role-name>
+		<group-name>tmsite</group-name>
+	</security-role-mapping>
 </sun-web-app>

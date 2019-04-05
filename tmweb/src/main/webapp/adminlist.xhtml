@@ -6,15 +6,16 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <ui:composition template="/templates/page-template.xhtml">
-	<ui:param name="pageTitle" value="Customers" />
+	<ui:param name="pageTitle" value="Admins" />
 	<ui:define name="panel-main">
 		<h:form id="clform">
 			<p:growl id="message" showDetail="true" />
-			<p:panel header="Customers">
+			<p:panel header="Admins">
 
-				<p:dataTable id="cltable" var="cust" value="#{custBB.list}"
+				<p:dataTable id="cltable" var="cust" value="#{adminBB.list}"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-					paginator="true" rows="20" style="margin-bottom:20px" sortBy="#{cust.lastName}">
+					paginator="true" rows="20" style="margin-bottom:20px"
+					sortBy="#{cust.lastName}">
 					<p:column headerText="First" sortBy="#{cust.firstName}">
 						<h:outputText value="#{cust.firstName}" />
 					</p:column>
@@ -22,23 +23,20 @@
 					<p:column headerText="Last" sortBy="#{cust.lastName}">
 						<h:outputText value="#{cust.lastName}" />
 					</p:column>
-					
+
 					<p:column headerText="Userid" sortBy="#{cust.userid}">
 						<h:outputText value="#{cust.userid}" />
 					</p:column>
 
-					<p:column headerText="Special Needs" sortBy="#{cust.specialNeeds}">
-						<h:outputText value="#{cust.specialNeeds}" />
-					</p:column>
 
 					<p:column headerText="Action">
-						<p:commandButton action="custedit" icon="ui-icon-pencil"
-							actionListener="#{custBB.get}" >
+						<p:commandButton action="adminedit" icon="ui-icon-pencil"
+							actionListener="#{adminBB.get}">
 							<f:param name="cust_id" value="#{cust.recordId}" />
 						</p:commandButton>
 						<h:outputText value="  " />
-						<p:commandButton action="custlist?faces-redirect=true"
-							icon="ui-icon-circle-close" actionListener="#{custBB.delete}">
+						<p:commandButton action="adminlist?faces-redirect=true"
+							icon="ui-icon-circle-close" actionListener="#{adminBB.delete}">
 							<f:param name="cust_id" value="#{cust.recordId}" />
 							<p:confirm header="Confirmation"
 								message="Really Delete #{cust.firstName} #{cust.lastName}?"
@@ -46,8 +44,8 @@
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
-				<p:commandButton action="custedit" value="Enter New Customer"
-					actionListener="#{custBB.newRecord}" />
+				<p:commandButton action="adminedit" value="Enter New Admin"
+					actionListener="#{adminBB.newRecord}" />
 			</p:panel>
 
 		</h:form>

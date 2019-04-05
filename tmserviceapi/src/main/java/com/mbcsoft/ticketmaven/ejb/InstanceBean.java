@@ -13,13 +13,20 @@ package com.mbcsoft.ticketmaven.ejb;
 
 import java.util.List;
 
-import com.mbcsoft.ticketmaven.entity.Customer;
+import com.mbcsoft.ticketmaven.entity.Instance;
 
+public interface InstanceBean {
 
-public interface CustomerBean extends BaseEntityFacade<Customer> {
+	public List<Instance> getAllInstances();
 
+	public Instance newRecord();
+
+	public Instance save(Instance c);
+
+	public void delete(Instance c);
 	
-	public Customer getCustomer(String id);
-	public List<Customer> getAllAdmins();
-	public void saveAdmin(Customer cust);
+	public Instance getInstance(String instname);
+	
+	public Instance getById(String id);
+
 }

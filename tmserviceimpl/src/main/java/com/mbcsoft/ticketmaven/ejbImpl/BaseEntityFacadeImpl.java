@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBContext;
-import javax.ejb.EJBException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -26,7 +25,7 @@ import com.mbcsoft.ticketmaven.entity.BaseAppTable;
 import com.mbcsoft.ticketmaven.entity.Customer;
 import com.mbcsoft.ticketmaven.entity.Instance;
 
-@RolesAllowed({"tmuser", "tmadmin"})
+@RolesAllowed({"tmuser", "tmadmin", "tmsite"})
 public abstract class BaseEntityFacadeImpl<T extends BaseAppTable>  {
 
 	static protected Logger logger = Logger
@@ -66,22 +65,8 @@ public abstract class BaseEntityFacadeImpl<T extends BaseAppTable>  {
 		return (List<T>) query.getResultList();
 	}
 
-	static public Instance getInstance(EJBContext context, EntityManager em) {
 
-		// also set instance from user tbl
-		String userid = context.getCallerPrincipal().getName();
-		try {
-
-			Customer c = (Customer) em.createNamedQuery("findCustomerByUserid")
-					.setParameter("id", userid).getSingleResult();
-
-			return c.getInstance();
-
-		} catch (Throwable t) {
-			throw new EJBException("User " + userid + " not found");
-		}
-	}
-
+	
 	public Customer getCurrentCustomer() {
 
 		// also set instance from user tbl
@@ -111,6 +96,6 @@ public abstract class BaseEntityFacadeImpl<T extends BaseAppTable>  {
 
 	protected Instance getInstance()
 	{
-		return BaseEntityFacadeImpl.getInstance(ejbContext, em);
+		return InstanceBeanImpl.getInstance(ejbContext, em);
 	}
 }

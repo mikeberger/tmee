@@ -24,7 +24,7 @@ import com.mbcsoft.ticketmaven.ejb.SeatBean;
 import com.mbcsoft.ticketmaven.entity.Layout;
 
 @Stateless
-@RolesAllowed({"tmuser", "tmadmin"})
+@RolesAllowed({"tmuser", "tmadmin", "tmsite"})
 
 public class LayoutBeanImpl extends BaseEntityFacadeImpl<Layout> implements LayoutBean  {
 	

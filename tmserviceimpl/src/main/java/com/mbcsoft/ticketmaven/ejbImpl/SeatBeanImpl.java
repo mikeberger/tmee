@@ -28,7 +28,7 @@ import com.mbcsoft.ticketmaven.entity.Ticket;
 import com.mbcsoft.ticketmaven.entity.Zone;
 
 @Stateless
-@RolesAllowed( { "tmuser", "tmadmin" })
+@RolesAllowed( { "tmuser", "tmadmin", "tmsite" })
 public class SeatBeanImpl extends BaseEntityFacadeImpl<Seat> implements
 		SeatBean {
 

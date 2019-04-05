@@ -12,6 +12,12 @@
 		<p:toolbar id="mb">
 
 			<f:facet name="left">
+				<p:commandButton value="Instances" action="instlist"
+					icon="ui-icon-person" actionListener="#{instBB.refreshList}"
+					rendered="#{p:ifGranted('tmsite')}" />
+				<p:commandButton value="Admins" action="adminlist"
+					icon="ui-icon-person" actionListener="#{adminBB.refreshList}"
+					rendered="#{p:ifGranted('tmsite')}" />
 				<p:commandButton value="Customers" action="custlist"
 					icon="ui-icon-person" actionListener="#{custBB.refreshList}"
 					rendered="#{p:ifGranted('tmadmin')}" />
@@ -29,11 +35,11 @@
 					actionListener="#{ticketBB.loadAdminList}"
 					rendered="#{p:ifGranted('tmadmin')}" />
 				<p:menuButton value="Theater" rendered="#{p:ifGranted('tmadmin')}">
-					<p:menuitem value="Layouts"
-						action="layoutlist?faces-redirect=true"
+					<p:menuitem value="Layouts" action="layoutlist?faces-redirect=true"
 						actionListener="#{layoutBB.refreshList}" />
-					<p:menuitem value="Zones (Special Needs)" action="zonelist?faces-redirect=true"
-						actionListener="#{zoneBB.refreshList}"/>
+					<p:menuitem value="Zones (Special Needs)"
+						action="zonelist?faces-redirect=true"
+						actionListener="#{zoneBB.refreshList}" />
 				</p:menuButton>
 
 				<p:menuButton value="Reports" rendered="#{p:ifGranted('tmadmin')}"

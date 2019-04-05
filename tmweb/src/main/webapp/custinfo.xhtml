@@ -12,34 +12,33 @@
 
 				<p:messages id="msgs" />
 
-				<h:panelGrid columns="3" cellpadding="5">
+				<h:panelGrid columns="2" cellpadding="5">
 					<p:outputLabel for="firstname" value="Firstname:" />
 					<p:inputText id="firstname" value="#{custBB.cust.firstName}"
 						required="true" readonly="true" label="Firstname" />
-					<p:message for="firstname" display="icon" />
 
 					<p:outputLabel for="lastname" value="Lastname:" />
 					<p:inputText id="lastname" value="#{custBB.cust.lastName}"
 						label="Lastname" readonly="true" required="true" />
-					<p:message for="lastname" id="msgLastname" display="icon" />
+					
+					<p:outputLabel for="roles" value="Roles:" rendered="#{p:ifAnyGranted('tmadmin,tmsite')}"/>
+					<p:inputText id="roles" value="#{custBB.cust.roles}"
+						label="Roles" readonly="true" required="false" rendered="#{p:ifAnyGranted('tmadmin,tmsite')}"/>
 
 					<p:outputLabel for="address" value="Address:" />
 					<p:inputText id="address" value="#{custBB.cust.address}"
 						label="Address" readonly="true" required="false" />
-					<p:message for="address" id="msgAddress" display="icon" />
 
 					<p:outputLabel for="email" value="Email:" />
 					<p:inputText id="email" value="#{custBB.cust.email}" readonly="true" label="Email"
 						required="false" />
-					<p:message for="email" id="msgEmail" display="icon" />
 
-					<p:outputLabel for="allowed" value="Allowed Tickets:" />
+					<p:outputLabel for="allowed" value="Allowed Tickets:" rendered="#{p:ifGranted('tmuser')}"/>
 					<p:inputNumber id="allowed" value="#{custBB.cust.allowedTickets}"
-						minValue="0" maxValue="100" readonly="true" decimalPlaces="0" required="true" />
-					<p:message for="allowed" id="msgAllowed" display="icon" />
+						minValue="0" maxValue="100" readonly="true" decimalPlaces="0" required="true" rendered="#{p:ifGranted('tmuser')}"/>
 
-					<p:outputLabel for="special" value="Special Needs: " />
-					<p:inputText readonly="true" id="special" value="#{custBB.cust.specialNeeds}"/>
+					<p:outputLabel for="special" value="Special Needs: " rendered="#{p:ifGranted('tmuser')}"/>
+					<p:inputText readonly="true" id="special" value="#{custBB.cust.specialNeeds}" rendered="#{p:ifGranted('tmuser')}"/>
 						
 					
 				</h:panelGrid>

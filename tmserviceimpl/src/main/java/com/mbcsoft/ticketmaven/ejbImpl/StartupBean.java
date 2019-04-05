@@ -78,6 +78,25 @@ public class StartupBean {
 
 		createInstData(em, "bellaggio");
 		createInstData(em, "valencia");
+		
+		Instance inst = new Instance();
+		inst.setEnabled(true);
+		inst.setName("TicketMaven Site");
+		em.persist(inst);
+
+		Customer mbb = new Customer();
+
+		mbb.setFirstName("Site");
+		mbb.setLastName("Admin");
+		mbb.setUserid("admin");
+		mbb.setPassword("admin");
+		mbb.setRoles("tmsite");
+		mbb.setInstance(inst);
+		mbb.setResident("Y");
+		mbb.setSpecialNeeds(Customer.NONE);
+
+		em.persist(mbb);
+
 
 	}
 

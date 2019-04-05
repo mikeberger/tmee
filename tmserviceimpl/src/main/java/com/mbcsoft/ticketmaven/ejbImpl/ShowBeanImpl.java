@@ -26,7 +26,7 @@ import com.mbcsoft.ticketmaven.entity.Show;
 import com.mbcsoft.ticketmaven.util.AuditLogger;
 
 @Stateless
-@RolesAllowed({"tmuser", "tmadmin"})
+@RolesAllowed({"tmuser", "tmadmin", "tmsite"})
 @Interceptors({AuditLogger.class})
 
 public class ShowBeanImpl extends BaseEntityFacadeImpl<Show> implements ShowBean {
