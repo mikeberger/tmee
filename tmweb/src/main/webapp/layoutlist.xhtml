@@ -14,8 +14,8 @@
 
 				<p:dataTable id="cltable" var="layout" value="#{layoutBB.list}"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-					paginator="true" rows="20" style="margin-bottom:20px">>
-				<p:column headerText="Name" sortBy="#{layout.name}">
+					paginator="true" rows="20" style="margin-bottom:20px">
+					<p:column headerText="Name" sortBy="#{layout.name}">
 						<h:outputText value="#{layout.name}" />
 					</p:column>
 
@@ -26,18 +26,24 @@
 					<p:column headerText="Seats" sortBy="#{layout.numSeats}">
 						<h:outputText value="#{layout.numSeats}" />
 					</p:column>
-					
+
 					<p:column headerText="Action">
 						<p:commandButton action="layoutedit" icon="ui-icon-pencil"
 							actionListener="#{layoutBB.get}">
 							<f:param name="layout_id" value="#{layout.recordId}" />
 						</p:commandButton>
 						<h:outputText value="  " />
+
+						<p:commandButton action="seatgrid" value="Grid"
+							actionListener="#{seatgridBB.get}">
+							<f:param name="layout_id" value="#{layout.recordId}" />
+						</p:commandButton>
+						<h:outputText value="  " />
 						<p:commandButton action="layoutlist?faces-redirect=true"
 							icon="ui-icon-circle-close" actionListener="#{layoutBB.delete}">
 							<f:param name="layout_id" value="#{layout.recordId}" />
-							<p:confirm header="Confirmation" message="Really Delete #{layout.name}?"
-								icon="ui-icon-alert" />
+							<p:confirm header="Confirmation"
+								message="Really Delete #{layout.name}?" icon="ui-icon-alert" />
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>

@@ -298,7 +298,7 @@ public class StartupBean {
 					q = 1;
 				seat.setWeight(q);
 
-				seat.setAvailable("Y");
+				seat.setAvailable(true);
 				seat.setLayout(layout);
 				seat.setInstance(inst);
 				seat.setLabel(Integer.toString(s));

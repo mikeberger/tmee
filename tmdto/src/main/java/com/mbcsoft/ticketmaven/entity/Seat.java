@@ -57,7 +57,7 @@ public class Seat extends BaseAppTable implements Serializable {
 	@Column(name="ENDCOL")
 	private String end;
 
-	private String available;
+	private Boolean available;
 
 	@ManyToOne(optional=false)
 	private Layout layout;

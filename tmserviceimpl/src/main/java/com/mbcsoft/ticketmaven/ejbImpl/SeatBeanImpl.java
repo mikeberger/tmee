@@ -64,7 +64,7 @@ public class SeatBeanImpl extends BaseEntityFacadeImpl<Seat> implements
 	@SuppressWarnings("unchecked")
 	public List<Seat> getSeats(Layout l) {
 		Query query = em
-				.createQuery("SELECT e FROM Seat e WHERE e.layout = :layout");
+				.createQuery("SELECT e FROM Seat e WHERE e.layout = :layout ORDER BY e.row, e.seat");
 		query.setParameter("layout", l);
 		return (List<Seat>) query.getResultList();
 	}
@@ -98,7 +98,7 @@ public class SeatBeanImpl extends BaseEntityFacadeImpl<Seat> implements
 					q = 1;
 				seat.setWeight(q);
 
-				seat.setAvailable("Y");
+				seat.setAvailable(true);
 				seat.setLayout(layout);
 				save(seat);
 			}
@@ -129,7 +129,7 @@ public class SeatBeanImpl extends BaseEntityFacadeImpl<Seat> implements
 					continue;
 			}
 
-			if ("N".equals(seat.getAvailable()))
+			if (!seat.getAvailable())
 				continue;
 
 			avail.add(seat);
