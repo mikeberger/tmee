@@ -22,10 +22,16 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+@XmlRootElement(name = "Customer")
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -65,14 +71,17 @@ public class Customer extends BaseAppTable implements Serializable {
 	private String address;
 	private String resident;
 
+	@XmlTransient
 	@OneToMany(mappedBy = "customer", cascade = REMOVE)
 	@EqualsAndHashCode.Exclude
 	private Set<Ticket> ticketsCollection;
-
+	
+	@XmlTransient
 	@OneToMany(mappedBy = "customer", cascade = REMOVE)
 	@EqualsAndHashCode.Exclude
 	private Set<Reservation> reservationsCollection;
 
+	@XmlTransient
 	@OneToMany(mappedBy = "customer", cascade = REMOVE)
 	@EqualsAndHashCode.Exclude
 	private Set<Request> requestsCollection;

@@ -21,10 +21,16 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+@XmlRootElement(name = "Layout")
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Data
 @EqualsAndHashCode(callSuper=true)
@@ -45,12 +51,15 @@ public class Layout extends BaseAppTable implements Serializable {
 	private int numSeats;
 	//private String seating;
 
+	@XmlTransient
 	@OneToMany(mappedBy="layout")
 	@EqualsAndHashCode.Exclude private Set<Show> showsCollection;
 
+	@XmlTransient
 	@OneToMany(mappedBy="layout", cascade = REMOVE)
 	@EqualsAndHashCode.Exclude private Set<Seat> seatsCollection;
 
+	@XmlTransient
 	@OneToMany(mappedBy="layout", cascade = REMOVE)
 	@EqualsAndHashCode.Exclude private Set<TMTable> tmtablesCollection;
 

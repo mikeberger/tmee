@@ -40,7 +40,7 @@ public class Seat extends BaseAppTable implements Serializable {
 	static public final String RIGHT = "Right";
 	static public final String FRONT = "Front";
 
-	// max number fo weight values
+	// max number for weight values
 	static public final int MAX_WEIGHT = 30;
 
 	public static final  String rowletters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

@@ -26,10 +26,16 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+@XmlRootElement(name = "Show")
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Data
 @EqualsAndHashCode(callSuper=true)
@@ -50,18 +56,22 @@ public class Show extends BaseAppTable implements Serializable {
 	@JoinColumn
 	private Layout layout;
 
+	@XmlTransient
 	@EqualsAndHashCode.Exclude
 	@OneToMany(mappedBy="show", cascade = REMOVE)
 	private Set<Ticket> ticketsCollection;
 
+	@XmlTransient
 	@EqualsAndHashCode.Exclude
 	@OneToMany(mappedBy="show", cascade = REMOVE)
 	private Set<Reservation> reservationsCollection;
 
+	@XmlTransient
 	@EqualsAndHashCode.Exclude
 	@OneToMany(mappedBy="show", cascade = REMOVE)
 	private Set<Request> requestsCollection;
 
+	@XmlTransient
 	@EqualsAndHashCode.Exclude
 	@ManyToMany(mappedBy="showsCollection", cascade = REMOVE)
 	private Set<TMPackage> packagesCollection;

@@ -12,9 +12,20 @@
 package com.mbcsoft.ticketmaven.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+@XmlRootElement(name = "Instance")
+@XmlAccessorType(XmlAccessType.FIELD)
 @MappedSuperclass
 public abstract class BaseAppTable implements Serializable {
 
@@ -28,10 +39,12 @@ public abstract class BaseAppTable implements Serializable {
 	@Version
 	private int version;
 	
+	@XmlTransient
 	@ManyToOne(optional=false)
 	@JoinColumn(name="instance_id")
 	private Instance instance;
 	
+	@XmlTransient
 	public Instance getInstance() {
 		return instance;
 	}
