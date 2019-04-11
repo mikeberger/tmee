@@ -38,8 +38,9 @@ public class LayoutBeanImpl extends BaseEntityFacadeImpl<Layout> implements Layo
 	}
 	
 	public Layout get(String name) {
-		Query query = em.createQuery("SELECT e FROM Layout e WHERE e.name = :name");
+		Query query = em.createQuery("SELECT e FROM Layout e WHERE e.name = :name and e.instance = :inst");
 		query.setParameter("name", name);
+		query.setParameter("inst", getInstance());
 		try {
 			Layout l = (Layout) (query.getSingleResult());
 			return l;
@@ -56,13 +57,16 @@ public class LayoutBeanImpl extends BaseEntityFacadeImpl<Layout> implements Layo
 	}
 
 	@Override
-	public Layout save(Layout c) {
+	public Layout save(Layout c, boolean createSeats) {
 		
 		// if layout is being created, add seats
 		Layout ex = get(c.getName());
 		if( ex == null) {
 			Layout l = super.save(c);
-			sbean.generateMissingSeats(l);
+			if( createSeats)
+			{
+				sbean.generateMissingSeats(l);
+			}
 			return l;
 		}
 		return super.save(c);

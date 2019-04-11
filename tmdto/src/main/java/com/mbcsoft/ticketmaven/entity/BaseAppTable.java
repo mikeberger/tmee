@@ -34,9 +34,11 @@ public abstract class BaseAppTable implements Serializable {
 	
 	@Id
 	@GeneratedValue
+	@XmlTransient
 	private int recordId;
 	
 	@Version
+	@XmlTransient
 	private int version;
 	
 	@XmlTransient

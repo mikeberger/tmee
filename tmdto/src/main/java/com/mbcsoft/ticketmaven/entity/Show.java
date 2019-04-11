@@ -26,10 +26,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -44,14 +46,19 @@ public class Show extends BaseAppTable implements Serializable {
 
 	@Column(nullable=false)
 	private String name;
+	
+	@XmlJavaTypeAdapter(TimeDateAdapter.class)
 	@Column(nullable=false)
 	private Timestamp time;
 	@Column(nullable=false)
 	private int price;
 	private int cost;
 	private String format;
+	
+	@Transient
+	private String layoutName; // for import/export only
 
-
+	@XmlTransient
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn
 	private Layout layout;
@@ -93,5 +100,7 @@ public class Show extends BaseAppTable implements Serializable {
 	{
 		return this.getName() + " " + sdf.format(this.getTime());
 	}
+
+	
 
 }

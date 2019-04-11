@@ -15,6 +15,8 @@ import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 import com.mbcsoft.ticketmaven.ejb.ZoneBean;
 import com.mbcsoft.ticketmaven.entity.Zone;
@@ -27,6 +29,20 @@ public class ZoneBeanImpl extends BaseEntityFacadeImpl<Zone> implements ZoneBean
 	public ZoneBeanImpl() {
 	}
 
+	public Zone get(String name) {
+		Query query = em.createQuery("SELECT e FROM Zone e WHERE e.name = :name and e.instance = :inst");
+		query.setParameter("name", name);
+		query.setParameter("inst", getInstance());
+
+		try {
+			Zone l = (Zone) (query.getSingleResult());
+			return l;
+		}
+		catch(NoResultException e)
+		{
+			return null;
+		}
+	}
 	
 	public Zone newRecord() {
 		return (new Zone());

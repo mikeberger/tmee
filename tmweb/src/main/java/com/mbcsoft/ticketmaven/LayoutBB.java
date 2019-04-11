@@ -98,7 +98,7 @@ public class LayoutBB implements Serializable {
 	public void save() {
 		try {
 
-			lbean.save(layout);
+			lbean.save(layout, true);
 			refreshList();
 
 		} catch (Exception e) {

@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.Collection;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -18,12 +17,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import com.mbcsoft.ticketmaven.ejb.CustomerBean;
+import com.mbcsoft.ticketmaven.ejb.LayoutBean;
+import com.mbcsoft.ticketmaven.ejb.SeatBean;
 import com.mbcsoft.ticketmaven.ejb.ShowBean;
-import com.mbcsoft.ticketmaven.entity.Customer;
+import com.mbcsoft.ticketmaven.ejb.ZoneBean;
 import com.mbcsoft.ticketmaven.entity.Instance;
+import com.mbcsoft.ticketmaven.entity.Seat;
 import com.mbcsoft.ticketmaven.entity.Show;
 
 
@@ -31,16 +32,11 @@ import com.mbcsoft.ticketmaven.entity.Show;
 public class ExportServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	@XmlRootElement(name = "DBExport")
-	@SuppressWarnings("unused")
-	private static class XmlContainer {
-		public Instance instance;
-		public Collection<Customer> customer;
-		public Collection<Show> show;
-	}
-
 	@EJB private CustomerBean cbean;
 	@EJB private ShowBean sbean;
+	@EJB private LayoutBean lbean;
+	@EJB private ZoneBean zbean;
+	@EJB private SeatBean seatbean;
 	static private final Logger logger = Logger.getLogger(ExportServlet.class.getName());
 
 	/**
@@ -76,6 +72,21 @@ public class ExportServlet extends HttpServlet {
 	        cc.instance = inst;
 	        cc.customer = cbean.getAll();
 	        cc.show = sbean.getAll();
+	        cc.layout = lbean.getAll();
+	        cc.zone = zbean.getAll();
+	        cc.seat = seatbean.getAll();
+	        
+	        for(Show s : cc.show)
+	        {
+	        	s.setLayoutName(s.getLayout().getName());
+	        }
+	        
+	        for(Seat s : cc.seat)
+	        {
+	        	s.setLayoutName(s.getLayout().getName());
+	        	if( s.getZone() != null)
+	        		s.setZoneName(s.getZone().getName());
+	        }
 	        
 		    marshaller.marshal(cc, out);
 		    fw.flush();

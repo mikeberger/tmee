@@ -20,11 +20,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+@XmlRootElement(name = "Seat")
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Data
 @EqualsAndHashCode(callSuper=true)
@@ -58,16 +65,25 @@ public class Seat extends BaseAppTable implements Serializable {
 	private String end;
 
 	private Boolean available;
-
+	
+	@Transient
+	private String layoutName; // for import/export only
+	
+	@XmlTransient
 	@ManyToOne(optional=false)
 	private Layout layout;
 
+	@Transient
+	private String zoneName; // for import/export only
+	
+	@XmlTransient
 	@ManyToOne
 	@JoinColumn
 	private Zone zone;
 
 	private String label;
 
+	@XmlTransient
 	@OneToMany(mappedBy="seat")
 	@EqualsAndHashCode.Exclude
 	private Set<Ticket> ticketsCollection;

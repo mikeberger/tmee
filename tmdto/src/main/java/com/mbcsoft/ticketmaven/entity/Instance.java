@@ -20,6 +20,7 @@ import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import lombok.Data;
 
@@ -34,6 +35,7 @@ public class Instance implements Serializable {
 
 	@Id
 	@GeneratedValue
+	@XmlTransient
 	private int recordId;
 	
 	@Column(unique = true, nullable = false)

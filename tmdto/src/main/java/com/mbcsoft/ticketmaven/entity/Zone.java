@@ -19,6 +19,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlTransient;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -39,6 +40,7 @@ public class Zone extends BaseAppTable implements Serializable {
 	@Column(name="EXCL",nullable=false)
 	private Boolean exclusive;
 
+	@XmlTransient
 	@EqualsAndHashCode.Exclude
 	@OneToMany(mappedBy = "zone")
 	private Set<Seat> seatsCollection;

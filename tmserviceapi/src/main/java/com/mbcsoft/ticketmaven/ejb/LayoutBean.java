@@ -20,5 +20,7 @@ import com.mbcsoft.ticketmaven.entity.Layout;
 public interface LayoutBean extends BaseEntityFacade<Layout> {
 
 	public Layout get(String name);
+
+	Layout save(Layout c, boolean createSeats);
 	
 }

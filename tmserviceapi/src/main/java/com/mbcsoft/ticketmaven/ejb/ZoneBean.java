@@ -18,5 +18,8 @@ import com.mbcsoft.ticketmaven.entity.Zone;
 
 @Local
 public interface ZoneBean extends BaseEntityFacade<Zone>{
+	
+	public Zone get(String name);
+
 
 }
