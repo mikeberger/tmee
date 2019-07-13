@@ -13,8 +13,8 @@
 			<p:panel header="Instances">
 
 				<p:dataTable id="cltable" var="inst" value="#{instBB.list}"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-					paginator="true" rows="20" style="margin-bottom:20px"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="25,50,100" paginator="true" rows="25" style="margin-bottom:20px"
 					sortBy="#{inst.name}">
 					<p:column headerText="Name" sortBy="#{inst.name}">
 						<h:outputText value="#{inst.name}" />

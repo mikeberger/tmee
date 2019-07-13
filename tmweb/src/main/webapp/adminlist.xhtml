@@ -13,8 +13,8 @@
 			<p:panel header="Admins">
 
 				<p:dataTable id="cltable" var="cust" value="#{adminBB.list}"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-					paginator="true" rows="20" style="margin-bottom:20px"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="25,50,100" paginator="true" rows="25" style="margin-bottom:20px"
 					sortBy="#{cust.lastName}">
 					<p:column headerText="First" sortBy="#{cust.firstName}">
 						<h:outputText value="#{cust.firstName}" />

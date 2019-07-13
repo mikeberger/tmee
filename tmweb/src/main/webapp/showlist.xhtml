@@ -10,8 +10,9 @@
 			<p:panel header="Shows">
 
 				<p:dataTable var="show" value="#{showBB.showList}"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-					paginator="true" rows="20" style="margin-bottom:20px" sortBy="#{show.time}">
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="25,50,100" paginator="true" rows="25"
+					 style="margin-bottom:20px" sortBy="#{show.time}">
 					<p:column headerText="Name" sortBy="#{show.name}">
 						<h:outputText value="#{show.name}" />
 					</p:column>

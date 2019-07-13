@@ -53,9 +53,9 @@ public class AuditLogger {
 		
 		log.append("]");
 		
-		logger.info("Is tmadmin: " + ejbContext.isCallerInRole("tmadmin"));
-		logger.info("Is tmuser: " + ejbContext.isCallerInRole("tmuser"));
-		logger.info("Is tmsite: " + ejbContext.isCallerInRole("tmsite"));
+		logger.fine("Is tmadmin: " + ejbContext.isCallerInRole("tmadmin"));
+		logger.fine("Is tmuser: " + ejbContext.isCallerInRole("tmuser"));
+		logger.fine("Is tmsite: " + ejbContext.isCallerInRole("tmsite"));
 
 	
 		logger.info("ENTER :"+ log.toString());

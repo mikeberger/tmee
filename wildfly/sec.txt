@@ -1,0 +1,36 @@
+add tmrealm to elytron - jdbc realm
+ <jdbc-realm name="tmrealm">
+                    <principal-query sql="SELECT password,roles FROM customer WHERE userid=?" data-source="tmdb">
+                        <attribute-mapping>
+                            <attribute to="groups" index="2"/>
+                        </attribute-mapping>
+                        <clear-password-mapper password-index="1"/>
+                    </principal-query>
+                </jdbc-realm>
+
+add tmdomain to elytron
+ <security-domain name="tmdomain" default-realm="tmrealm" permission-mapper="default-permission-mapper">
+                    <realm name="tmrealm" role-decoder="groups-to-roles"/>
+                </security-domain>
+
+add auth 
+ <sasl-authentication-factory name="tm-sasl-authentication" sasl-server-factory="configured" security-domain="tmdomain">
+                    <mechanism-configuration>
+                        <mechanism mechanism-name="PLAIN">
+                            <mechanism-realm realm-name="tmrealm"/>
+                        </mechanism>
+                    </mechanism-configuration>
+                </sasl-authentication-factory>
+
+add undertow domain
+ <application-security-domains>
+                <application-security-domain name="tmdomain" security-domain="tmdomain"/>
+            </application-security-domains>
+
+
+add ejb domain <application-security-domains>
+                <application-security-domain name="tmdomain" security-domain="tmdomain"/>
+            </application-security-domains>
+
+
+

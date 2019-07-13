@@ -60,7 +60,7 @@ public class RESTInvoker {
     }
     
     public static void main(String[] args) {
-    	RESTInvoker ri = new RESTInvoker("http://localhost:8080/tmweb/tmrest/api", "mike", "mike");
+    	RESTInvoker ri = new RESTInvoker("http://localhost:8080/tmweb/tmrest/api", "bellaggio", "mike");
     	System.out.println(ri.getDataFromServer("/ping"));
     	System.out.println(ri.getDataFromServer("/customers"));
     	

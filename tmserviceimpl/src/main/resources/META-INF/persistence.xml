@@ -21,7 +21,7 @@
 	<persistence-unit name="tmdb">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 
-		<jta-data-source>java:/tm/tmdbpg</jta-data-source>
+		<jta-data-source>java:/tm/tmdb</jta-data-source>
 		<class>com.mbcsoft.ticketmaven.entity.Customer</class>
 		<class>com.mbcsoft.ticketmaven.entity.Instance</class>
 		<class>com.mbcsoft.ticketmaven.entity.Layout</class>
@@ -35,7 +35,7 @@
 		<class>com.mbcsoft.ticketmaven.entity.Zone</class>
 		<properties>
 
-			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
 			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
 			<property name="hibernate.cache.use_second_level_cache"
 				value="false" />

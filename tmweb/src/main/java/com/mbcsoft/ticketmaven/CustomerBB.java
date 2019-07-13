@@ -19,6 +19,7 @@ package com.mbcsoft.ticketmaven;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -39,6 +40,9 @@ public class CustomerBB implements Serializable {
 	@EJB private CustomerBean rbean;
 	@EJB private ZoneBean zbean;
 
+	static private final Logger logger = Logger
+			.getLogger(CustomerBB.class.getName());
+	
 	private List<Customer> list = new ArrayList<Customer>();
 	
 	static public void refreshSessionList() {
@@ -72,6 +76,7 @@ public class CustomerBB implements Serializable {
 
 			// get requests for current logged in customer
 			setList(rbean.getAll());
+			logger.fine("refresh: size=" + list.size());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -103,6 +108,7 @@ public class CustomerBB implements Serializable {
 		try {
 
 			cust = rbean.newRecord();
+			cust.setRoles("tmuser");
 
 		} catch (Exception e) {
 			e.printStackTrace();

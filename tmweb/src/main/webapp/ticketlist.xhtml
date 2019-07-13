@@ -7,32 +7,16 @@
 	<ui:param name="pageTitle" value="Tickets" />
 	<ui:define name="panel-main">
 		<h:form>
-			<p:panel header="Tickets" >
-				<h:panelGrid columns="6" cellpadding="10" frame="box" rendered="#{p:ifGranted('tmadmin')}"
-					style="margin-bottom:20px">
-					<p:outputLabel for="cust" value="Customer:" />
-					<p:selectOneMenu id="cust" value="#{ticketBB.selectedCustomer}">
-						<f:selectItem itemLabel="" itemValue="" />
-						<f:selectItems var="item" itemValue="#{item.recordId}"
-							itemLabel="#{item}" value="#{custBB.allCusts}" />
-					</p:selectOneMenu>
-					<p:outputLabel for="show" value="Show:" />
-					<p:selectOneMenu id="show" value="#{ticketBB.selectedShow}">
-						<f:selectItem itemLabel="" itemValue="" />
-						<f:selectItems var="item" itemValue="#{item.recordId}"
-							itemLabel="#{item}" value="#{showBB.allShows}" />
-					</p:selectOneMenu>
-					<p:outputLabel />
-					<p:commandButton actionListener="#{ticketBB.loadAdminList}"
-						action="ticketlist?faces-redirect=true" value="Apply" />
-				</h:panelGrid>
+			<p:panel header="Tickets">
+
 				<p:dataTable var="tick" value="#{ticketBB.ticketList}"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-					paginator="true" rows="20" style="margin-bottom:20px">>
-				<p:column headerText="Customer" sortBy="#{req.show.name}">
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="25,50,100" paginator="true" rows="25"
+					 style="margin-bottom:20px">
+					<p:column headerText="Customer" sortBy="#{tick.customer}" filterBy="#{tick.customer}" filterMatchMode="contains">
 						<h:outputText value="#{tick.customer}" />
 					</p:column>
-					<p:column headerText="Show" sortBy="#{tick.show.name}">
+					<p:column headerText="Show" sortBy="#{tick.show.name}" filterBy="#{req.show.name}" filterMatchMode="contains">
 						<h:outputText value="#{tick.show.name}" />
 					</p:column>
 
@@ -54,7 +38,8 @@
 					</p:column>
 				</p:dataTable>
 				<p:commandButton action="ticket" value="Enter New Ticket"
-					actionListener="#{ticketBB.newRecord}" rendered="#{p:ifGranted('tmadmin')}"/>
+					actionListener="#{ticketBB.newRecord}"
+					rendered="#{p:ifGranted('tmadmin')}" />
 			</p:panel>
 
 		</h:form>

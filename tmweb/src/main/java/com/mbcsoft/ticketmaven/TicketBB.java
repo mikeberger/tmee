@@ -50,19 +50,6 @@ public class TicketBB implements Serializable {
 			if (all) {
 				ticketList = rbean.getAll();
 				
-				if( selectedCustomer != null || selectedShow != null)
-				{
-					List<Ticket> list2 = new ArrayList<Ticket>();
-					for( Ticket r : ticketList) {
-						if( selectedCustomer != null && !Integer.toString(r.getCustomer().getRecordId()).equals(selectedCustomer) )
-							continue;
-						if( selectedShow != null && !Integer.toString(r.getShow().getRecordId()).equals(selectedShow) )
-							continue;
-						list2.add(r);
-					}
-					ticketList = list2;
-				}
-				
 			} else {
 				ticketList = rbean.getTicketsForCustomer(null);
 			}

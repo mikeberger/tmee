@@ -8,30 +8,18 @@
 	<ui:define name="panel-main">
 		<h:form>
 			<p:panel header="Requests">
-				<h:panelGrid columns="6" cellpadding="10" frame="box" style="margin-bottom:20px"  rendered="#{p:ifGranted('tmadmin')}">
-					<p:outputLabel for="cust" value="Customer:" />
-					<p:selectOneMenu id="cust" value="#{requestBB.selectedCustomer}">
-						<f:selectItem itemLabel="" itemValue="" />
-						<f:selectItems var="item" itemValue="#{item.recordId}"
-							itemLabel="#{item}" value="#{custBB.allCusts}" />
-					</p:selectOneMenu>
-					<p:outputLabel for="show" value="Show:" />
-					<p:selectOneMenu id="show" value="#{requestBB.selectedShow}">
-						<f:selectItem itemLabel="" itemValue="" />
-						<f:selectItems var="item" itemValue="#{item.recordId}"
-							itemLabel="#{item}" value="#{showBB.allShows}" />
-					</p:selectOneMenu>
-					<p:outputLabel />
-					<p:commandButton actionListener="#{requestBB.loadAdminList}"
-						action="requestlist?faces-redirect=true" value="Apply" />
-				</h:panelGrid>
+				
 				<p:dataTable var="req" value="#{requestBB.list}"
-					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-					paginator="true" rows="20" style="margin-bottom:20px">>
-				<p:column headerText="Customer" sortBy="#{req.show.name}">
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="25,50,100" paginator="true" rows="25"
+					style="margin-bottom:20px"
+					widgetVar="rtbl">
+					
+					
+					<p:column headerText="Customer" sortBy="#{req.customerName}" filterBy="#{req.customerName}" filterMatchMode="contains">
 						<h:outputText value="#{req.customerName}" />
 					</p:column>
-					<p:column headerText="Show" sortBy="#{req.show.name}">
+					<p:column headerText="Show" sortBy="#{req.show.name}" filterBy="#{req.show.name}" filterMatchMode="contains">
 						<h:outputText value="#{req.show.name}" />
 					</p:column>
 

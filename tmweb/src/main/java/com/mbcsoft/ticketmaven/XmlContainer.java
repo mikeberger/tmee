@@ -27,8 +27,7 @@ import com.mbcsoft.ticketmaven.entity.Seat;
 import com.mbcsoft.ticketmaven.entity.Show;
 import com.mbcsoft.ticketmaven.entity.Zone;
 
-@XmlRootElement(name = "DBExport")
-@SuppressWarnings("unused") class XmlContainer {
+@XmlRootElement(name = "DBExport") class XmlContainer {
 	public Instance instance;
 	public Collection<Customer> customer;
 	public Collection<Layout> layout;

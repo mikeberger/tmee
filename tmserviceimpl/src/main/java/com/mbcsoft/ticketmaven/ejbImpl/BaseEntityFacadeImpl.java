@@ -49,7 +49,7 @@ public abstract class BaseEntityFacadeImpl<T extends BaseAppTable>  {
 
 		c.setInstance(getInstance());
 		c = em.merge(c);
-		//logger.warning("saving T: " + c.toString() + " instance: " + c.getInstance().getName());
+		logger.fine("saving T: " + c.toString() + " instance: " + c.getInstance().getName());
 		return c;
 	}
 
