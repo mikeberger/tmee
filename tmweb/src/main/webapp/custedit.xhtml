@@ -41,12 +41,12 @@
 						required="false" />
 
 					<p:outputLabel for="allowed" value="Allowed Tickets:" />
-					<p:inputNumber id="allowed" value="#{custBB.cust.allowedTickets}"
-						minValue="0" maxValue="100" decimalPlaces="0" required="true" />
+					<p:spinner id="allowed" value="#{custBB.cust.allowedTickets}"
+						min="1" maxValue="100" decimalPlaces="0" required="true" />
 
 					<p:outputLabel for="special" value="Special Needs: " />
 					<p:selectOneMenu id="special" value="#{custBB.cust.specialNeeds}">
-						<f:selectItem itemLabel="None" itemValue="" />
+						<f:selectItem itemLabel="None" itemValue="None" />
 						<f:selectItems value="#{custBB.allneeds}" />
 					</p:selectOneMenu>
 

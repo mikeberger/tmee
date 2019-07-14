@@ -10,28 +10,32 @@
 			<p:messages id="messages" showDetail="true" closable="true">
 				<p:autoUpdate />
 			</p:messages>
-						<p:panel id="panel" header="Request Information">
-			
-			<p:panelGrid columns="2">
-				<p:outputLabel rendered="#{p:ifGranted('tmadmin')}" for="cust" value="Customer:" />
-				<p:selectOneMenu rendered="#{p:ifGranted('tmadmin')}" required="true" id="cust" value="#{requestBB.selectedCustomer}">
-					<f:selectItem itemLabel="Select One" itemValue="" />
-					<f:selectItems var="item" itemValue="#{item.recordId}" itemLabel="#{item}" value="#{custBB.list}" />
-				</p:selectOneMenu>
-				<p:outputLabel for="show" value="Show:" />
-				<p:selectOneMenu required="true" id="show" value="#{requestBB.selectedShow}">
-					<f:selectItem itemLabel="Select One" itemValue="" />
-					<f:selectItems var="item" itemValue="#{item.recordId}" itemLabel="#{item}" value="#{showBB.showList}" />
-				</p:selectOneMenu>
-				<p:outputLabel for="ticks" value="Number of Tickets: " />
-				<p:inputText id="ticks" value="#{requestBB.request.tickets}"
-					required="true">
-					<f:validateLongRange minimum="1" />
-				</p:inputText>
-				<p:commandButton value="Save" action="requestlist" actionListener="#{requestBB.save}" icon="ui-icon-check"/>
-				<p:commandButton value="Cancel" immediate="true" action="requestlist"
-						icon="ui-icon-circle-close" />
-			</p:panelGrid>
+			<p:panel id="panel" header="Request Information">
+
+				<p:panelGrid columns="2">
+					<p:outputLabel rendered="#{p:ifGranted('tmadmin')}" for="cust"
+						value="Customer:" />
+					<p:selectOneMenu rendered="#{p:ifGranted('tmadmin')}"
+						required="true" id="cust" value="#{requestBB.selectedCustomer}">
+						<f:selectItem itemLabel="Select One" itemValue="" />
+						<f:selectItems var="item" itemValue="#{item.recordId}"
+							itemLabel="#{item}" value="#{custBB.list}" />
+					</p:selectOneMenu>
+					<p:outputLabel for="show" value="Show:" />
+					<p:selectOneMenu required="true" id="show"
+						value="#{requestBB.selectedShow}">
+						<f:selectItem itemLabel="Select One" itemValue="" />
+						<f:selectItems var="item" itemValue="#{item.recordId}"
+							itemLabel="#{item}" value="#{showBB.showList}" />
+					</p:selectOneMenu>
+					<p:outputLabel for="ticks" value="Number of Tickets: " />
+					<p:spinner id="ticks" value="#{requestBB.request.tickets}" min="1"
+						max="100" required="true" />
+					<p:commandButton value="Save" action="requestlist"
+						actionListener="#{requestBB.save}" icon="ui-icon-check" />
+					<p:commandButton value="Cancel" immediate="true"
+						action="requestlist" icon="ui-icon-circle-close" />
+				</p:panelGrid>
 			</p:panel>
 
 		</h:form>

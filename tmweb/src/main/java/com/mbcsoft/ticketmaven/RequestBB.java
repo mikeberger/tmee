@@ -23,6 +23,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 
@@ -32,6 +33,7 @@ import com.mbcsoft.ticketmaven.ejb.ShowBean;
 import com.mbcsoft.ticketmaven.entity.Customer;
 import com.mbcsoft.ticketmaven.entity.Request;
 import com.mbcsoft.ticketmaven.entity.Show;
+import com.mbcsoft.ticketmaven.util.Message;
 
 @Named("requestBB")
 @SessionScoped
@@ -125,6 +127,11 @@ public class RequestBB implements Serializable {
 
 		if (request.getCustomer() == null) {
 			request.setCustomer(cbean.getCurrentCustomer());
+		}
+		
+		if( request.getTickets() > request.getCustomer().getAllowedTickets()) {
+			Message.validationError("Only " + request.getCustomer().getAllowedTickets() + " tickets are allowed for this customer");
+			throw new AbortProcessingException();
 		}
 
 		rbean.save(request);

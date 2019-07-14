@@ -290,7 +290,7 @@ public class LotteryManagerImpl implements LotteryManager {
 
 			// if not an AISLE request, then stop, AISLE requests should sort
 			// first
-			if (tr.getSpecialNeeds().equals(Customer.AISLE)) {
+			if (tr.getSpecialNeeds() != null && tr.getSpecialNeeds().equals(Customer.AISLE)) {
 				// assign N contiguous seats
 
 				// loop through the aisle seats
@@ -335,7 +335,7 @@ public class LotteryManagerImpl implements LotteryManager {
 			// skip any requests that are not for the special need that we are
 			// assigning
 			Request tr = it.next();
-			if (!tr.getSpecialNeeds().equals(special_needs))
+			if (tr.getSpecialNeeds() == null || !tr.getSpecialNeeds().equals(special_needs))
 				continue;
 
 			// loop through the seats, which are sorted from best to worst
