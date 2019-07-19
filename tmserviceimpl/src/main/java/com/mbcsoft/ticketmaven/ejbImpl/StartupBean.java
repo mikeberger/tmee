@@ -16,7 +16,6 @@
  *******************************************************************************/
 package com.mbcsoft.ticketmaven.ejbImpl;
 
-import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -29,6 +28,7 @@ import javax.persistence.Query;
 
 import com.mbcsoft.ticketmaven.entity.Customer;
 import com.mbcsoft.ticketmaven.entity.Instance;
+import com.mbcsoft.ticketmaven.util.GenTestData;
 
 @Singleton
 @Startup
@@ -81,41 +81,8 @@ public class StartupBean {
 		}
 		
 		// load test data
-		loadTestData();
+		new GenTestData().generateTestData(em);
 	}
-	
-	public void loadTestData() {
-		
-		
-		String fname = "c:/tmp/bellaggio.xml";
-		File in = new File(fname);
-		if( in.exists() && in.canRead()) {
-			logger.info("Creating Test Data");
-			
-			// create instance admin account first
-			Instance inst = new Instance();
-			inst.setEnabled(true);
-			inst.setName("bellaggio");
-			em.persist(inst);
 
-			Customer admin = new Customer();
-			admin.setFirstName("bellaggio");
-			admin.setLastName("Admin");
-			admin.setUserid("bellaggio");
-			admin.setPassword("mike");
-			admin.setRoles("tmadmin");
-			admin.setInstance(inst);
-			admin.setResident("Y");
-			admin.setSpecialNeeds(Customer.NONE);
-
-			em.persist(admin);
-			
-			// do not import the file here - that will be done via the UI
-			// only the tmadmin user is created here
-			
-			
-		}
-	}
-	
 	
 }

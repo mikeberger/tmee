@@ -18,15 +18,39 @@
 
 				<p:dataGrid var="seat" value="#{seatgridBB.list}"
 					columns="#{seatgridBB.layout.numSeats}" cellpadding="5"
-					 paginator="false">
-					<p:selectBooleanButton value="#{seat.available}" onLabel="#{seat.row}#{seat.seat}" offLabel="X" style="font-size:8px;padding:0"/>
+					paginator="false">
+					<p:selectBooleanButton onLabel="#{seat.editLabel}"
+						offLabel="#{seat.editLabel}" value="#{seat.selected}"
+						style="font-size:8px;padding:0" />
+
 				</p:dataGrid>
 
 				<h:panelGrid columns="2" cellpadding="5">
-					<p:commandButton value="Save" action="showlist"
-						actionListener="#{showBB.save}" icon="ui-icon-check" />
-					<p:commandButton value="Cancel" immediate="true" action="layoutlist"
-						icon="ui-icon-circle-close" />
+					<p:outputLabel for="param" value="Edit/View:" />
+
+					<p:selectOneRadio id="param" value="#{seatgridBB.editParam}"
+						unselectable="false">
+						<p:ajax process="@this" update="@form"
+							listener="#{seatgridBB.refreshList}" />
+						<f:selectItem itemLabel="Availability" itemValue="availability" />
+						<f:selectItem itemLabel="Quality" itemValue="quality" />
+						<f:selectItem itemLabel="Zone" itemValue="zone" />
+						<f:selectItem itemLabel="Aisle" itemValue="aisle" />
+					</p:selectOneRadio>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" cellpadding="5">
+					<p:outputLabel for="val" value="New Value:" />
+					<p:selectOneMenu id="val" value="#{seatgridBB.selectedValue}">
+						<f:selectItems value="#{seatgridBB.values}" />
+					</p:selectOneMenu>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" cellpadding="5">
+					<p:commandButton value="Save" action="seatgrid?faces-redirect=true"
+						actionListener="#{seatgridBB.save}" icon="ui-icon-check" />
+					<p:commandButton value="Cancel" immediate="true"
+						action="layoutlist" icon="ui-icon-circle-close" />
 				</h:panelGrid>
 			</p:panel>
 

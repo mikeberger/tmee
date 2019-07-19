@@ -81,6 +81,9 @@ public class Seat extends BaseAppTable implements Serializable {
 	@Transient
 	private String zoneName; // for import/export only
 	
+	@Transient String editLabel; // for grid editor
+	@Transient boolean selected;
+	
 	@XmlTransient
 	@ManyToOne
 	@JoinColumn
@@ -98,6 +101,8 @@ public class Seat extends BaseAppTable implements Serializable {
 	public Seat() {
 		super();
 	}
+	
+	
 
 
 }
