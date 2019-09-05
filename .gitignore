@@ -2,3 +2,4 @@
 .project
 .classpath
 faces-config.pageflow
+/target/

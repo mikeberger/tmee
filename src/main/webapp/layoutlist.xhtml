@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/templates/page-template.xhtml">
+	<ui:param name="pageTitle" value="Layouts" />
+	<ui:define name="panel-main">
+		<h:form id="clform">
+			<p:growl id="message" showDetail="true" />
+			<p:panel header="Theater Layouts">
+
+				<p:dataTable id="cltable" var="layout" value="#{layoutBB.list}"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="15,25,50,100" paginator="true" rows="25" style="margin-bottom:20px">
+					<p:column headerText="Name" sortBy="#{layout.name}">
+						<h:outputText value="#{layout.name}" />
+					</p:column>
+
+					<p:column headerText="Rows" sortBy="#{layout.numRows}">
+						<h:outputText value="#{layout.numRows}" />
+					</p:column>
+
+					<p:column headerText="Seats" sortBy="#{layout.numSeats}">
+						<h:outputText value="#{layout.numSeats}" />
+					</p:column>
+
+					<p:column headerText="Action">
+						<p:commandButton action="layoutedit" icon="ui-icon-pencil"
+							actionListener="#{layoutBB.get}">
+							<f:param name="layout_id" value="#{layout.recordId}" />
+						</p:commandButton>
+						<h:outputText value="  " />
+
+						<p:commandButton action="seatgrid" value="Grid"
+							actionListener="#{seatgridBB.get}">
+							<f:param name="layout_id" value="#{layout.recordId}" />
+						</p:commandButton>
+						<h:outputText value="  " />
+						<p:commandButton action="layoutlist?faces-redirect=true"
+							icon="ui-icon-circle-close" actionListener="#{layoutBB.delete}">
+							<f:param name="layout_id" value="#{layout.recordId}" />
+							<p:confirm header="Confirmation"
+								message="Really Delete #{layout.name}?" icon="ui-icon-alert" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+				<p:commandButton action="layoutedit" value="Enter New Layout"
+					actionListener="#{layoutBB.newRecord}" />
+			</p:panel>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>
