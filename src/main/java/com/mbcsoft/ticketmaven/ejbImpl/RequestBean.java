@@ -29,7 +29,7 @@ import com.mbcsoft.ticketmaven.entity.Show;
 import com.mbcsoft.ticketmaven.util.AuditLogger;
 
 @Stateless
-@RolesAllowed({"tmuser", "tmadmin", "tmsite"})
+@RolesAllowed({"tmuser", "tmadmin"})
 @Interceptors({AuditLogger.class})
 public class RequestBean extends BaseEntityFacadeImpl<Request>  {
 
@@ -61,7 +61,7 @@ public class RequestBean extends BaseEntityFacadeImpl<Request>  {
 	}
 
 	@SuppressWarnings("unchecked")
-	@RolesAllowed({"tmadmin", "tmsite"})
+	@RolesAllowed({"tmadmin"})
 	public List<Request> getRequestsForShow(Show s) {
 
 		Query query = em.createQuery("SELECT e FROM Request e WHERE e.show = :show");
@@ -70,7 +70,7 @@ public class RequestBean extends BaseEntityFacadeImpl<Request>  {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@RolesAllowed({"tmadmin", "tmsite"})
+	@RolesAllowed({"tmadmin"})
 	public List<Request> getPaidRequestsForShow(Show s) {
 
 		Query query = em.createQuery("SELECT e FROM Request e WHERE e.show = :show AND e.paid = true");

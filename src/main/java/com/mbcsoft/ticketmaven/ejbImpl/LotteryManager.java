@@ -41,7 +41,7 @@ import com.mbcsoft.ticketmaven.entity.Ticket;
 import com.mbcsoft.ticketmaven.entity.Zone;
 
 @Stateless
-@RolesAllowed({"tmadmin", "tmsite"})
+@RolesAllowed({"tmadmin"})
 public class LotteryManager  {
 
 	final private static Logger logger = Logger.getLogger("com.mbcsoft.ticketmaven.ejb");

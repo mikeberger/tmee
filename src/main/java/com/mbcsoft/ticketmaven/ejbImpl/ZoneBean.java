@@ -26,7 +26,7 @@ import javax.persistence.Query;
 import com.mbcsoft.ticketmaven.entity.Zone;
 
 @Stateless
-@RolesAllowed({"tmuser", "tmadmin", "tmsite"})
+@RolesAllowed({"tmuser", "tmadmin"})
 
 public class ZoneBean extends BaseEntityFacadeImpl<Zone> {
 

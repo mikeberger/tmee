@@ -49,7 +49,7 @@ public class CustomerBean extends BaseEntityFacadeImpl<Customer>  {
 	}
 
 	@SuppressWarnings("unchecked")
-	@RolesAllowed({"tmadmin", "tmsite"})
+	@RolesAllowed({"tmadmin"})
 	public List<Customer> getAll() {
 
 		//return getAll("Customer");
@@ -84,6 +84,7 @@ public class CustomerBean extends BaseEntityFacadeImpl<Customer>  {
 		}
 	}
 
+	@RolesAllowed({ "tmsite"})
 	public void saveAdmin(Customer cust) {
 		cust.setRoles("tmadmin");
 		em.merge(cust);

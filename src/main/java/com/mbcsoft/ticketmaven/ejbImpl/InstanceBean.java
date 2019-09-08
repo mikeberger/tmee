@@ -88,16 +88,19 @@ public class InstanceBean  {
 			return null;
 		}
 	}
-
+	
+	@RolesAllowed({ "tmsite" })
 	public Instance newRecord() {
 		return (new Instance());
 	}
 
+	@RolesAllowed({ "tmsite" })
 	public Instance save(Instance c) {
 		c = em.merge(c);
 		return c;
 	}
 
+	@RolesAllowed({ "tmsite" })
 	public void delete(Instance c) {
 		if (!em.contains(c))
 			c = em.merge(c);

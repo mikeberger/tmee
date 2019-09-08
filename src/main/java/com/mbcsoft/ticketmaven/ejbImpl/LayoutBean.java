@@ -27,7 +27,7 @@ import javax.persistence.Query;
 import com.mbcsoft.ticketmaven.entity.Layout;
 
 @Stateless
-@RolesAllowed({"tmuser", "tmadmin", "tmsite"})
+@RolesAllowed({ "tmadmin"})
 
 public class LayoutBean extends BaseEntityFacadeImpl<Layout>   {
 	
