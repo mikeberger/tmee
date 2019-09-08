@@ -39,6 +39,7 @@ public class StartupBean {
 
 	@PersistenceContext
 	private EntityManager em;
+	
 
 	@SuppressWarnings("unchecked")
 	@PostConstruct

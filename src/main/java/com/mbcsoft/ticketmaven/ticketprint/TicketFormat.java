@@ -22,6 +22,7 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.HashMap;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -32,20 +33,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.mbcsoft.ticketmaven.util.PrefName;
-import com.mbcsoft.ticketmaven.util.Prefs;
-
 /**
- * This class holds Ticketing format information and marshalls and unmarshalls
- * it to/from XML for storage in the show Entitys. It also manages the legacy
- * preferences used to store the global ticket formats.
- */
+ This whole class needs a rewrite as it is just cut&paste from a desktop app
+ **/
 @XmlRootElement(name = "TicketFormat")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TicketFormat {
 
 	public TicketFormat() {
-		super();
+		initPrefs();
 	}
 
 	/** available number of lines of text per ticket */
@@ -54,9 +50,6 @@ public class TicketFormat {
 	public static final String PREFIX = "line";
 	public static final String STUB_PREFIX = "stub";
 
-	public static final PrefName USE_STUB = new PrefName("use_stub", "false");
-	public static final PrefName RUSE_STUB = new PrefName("ruse_stub", "false");
-
 	// default line texts for Tickets
 	private static final String lineDefaults[] = { "{club}", "Presents", "{show}", "{date}",
 			"{price} per person (Tax Included)", "{name}", "Row {row}   Seat {seat}", "No Refunds or Exchanges" };
@@ -64,10 +57,7 @@ public class TicketFormat {
 	// default line texts for stubs
 	private static final String stubLineDefaults[] = { "{name}", "Row {row} Seat {seat}" };
 
-	static {
-		initPrefs();
-	}
-
+	
 	/**
 	 * Class Line holds the formatting info for 1 line of a Ticket
 	 */
@@ -142,25 +132,25 @@ public class TicketFormat {
 	 * 
 	 * @param layoutType the layout type
 	 */
-	static private void initPrefs() {
-		String f = Prefs.getPref(PREFIX + "0font", "not-set");
+	 private void initPrefs() {
+		String f = getPref(PREFIX + "0font", "not-set");
 		if (f.equals("not-set")) {
 			String fonts[] = { "Arial-BOLD-11", "", "Arial-BOLD-11", "", "", "", "", "" };
 			Color colors[] = { Color.RED, Color.BLACK, Color.BLUE, Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK,
 					Color.BLACK };
 			for (int i = 0; i < NUM_LINES; i++) {
-				Prefs.putPref(PREFIX + i + "color", Integer.valueOf(colors[i].getRGB()));
-				Prefs.putPref(PREFIX + i + "text", getLineDefaults()[i]);
-				Prefs.putPref(PREFIX + i + "font", fonts[i]);
+				putPref(PREFIX + i + "color", Integer.toString(colors[i].getRGB()));
+				putPref(PREFIX + i + "text", getLineDefaults()[i]);
+				putPref(PREFIX + i + "font", fonts[i]);
 
 			}
 		}
-		f = Prefs.getPref(STUB_PREFIX + "0font", "not-set");
+		f = getPref(STUB_PREFIX + "0font", "not-set");
 		if (f.equals("not-set")) {
 			for (int i = 0; i < NUM_STUB_LINES; i++) {
-				Prefs.putPref(STUB_PREFIX + i + "color", Integer.valueOf(Color.BLACK.getRGB()));
-				Prefs.putPref(STUB_PREFIX + i + "text", stubLineDefaults[i]);
-				Prefs.putPref(STUB_PREFIX + i + "font", "");
+				putPref(STUB_PREFIX + i + "color", Integer.toString(Color.BLACK.getRGB()));
+				putPref(STUB_PREFIX + i + "text", stubLineDefaults[i]);
+				putPref(STUB_PREFIX + i + "font", "");
 
 			}
 		}
@@ -227,27 +217,27 @@ public class TicketFormat {
 	 */
 	public void loadDefault() {
 
-		setImageFilename(Prefs.getPref(PrefName.LOGOFILE));
+		//setImageFilename(getPref(PrefName.LOGOFILE));
 
 		for (int i = 0; i < NUM_LINES; i++) {
 			Line l = new Line();
-			l.setText(Prefs.getPref(PREFIX + i + "text", ""));
-			l.setFont(Prefs.getPref(PREFIX + i + "font", ""));
-			int ci = Prefs.getIntPref(PREFIX + i + "color", 0);
+			l.setText(getPref(PREFIX + i + "text", ""));
+			l.setFont(getPref(PREFIX + i + "font", ""));
+			int ci = getIntPref(PREFIX + i + "color", 0);
 			l.setColor(new Color(ci));
 			lines.line[i] = l;
 		}
 
 		for (int i = 0; i < NUM_STUB_LINES; i++) {
 			Line l = new Line();
-			l.setText(Prefs.getPref(STUB_PREFIX + i + "text", ""));
-			l.setFont(Prefs.getPref(STUB_PREFIX + i + "font", ""));
-			int ci = Prefs.getIntPref(STUB_PREFIX + i + "color", 0);
+			l.setText(getPref(STUB_PREFIX + i + "text", ""));
+			l.setFont(getPref(STUB_PREFIX + i + "font", ""));
+			int ci = getIntPref(STUB_PREFIX + i + "color", 0);
 			l.setColor(new Color(ci));
 			lines.stubline[i] = l;
 		}
 
-		use_stub = Prefs.getBoolPref(USE_STUB);
+		//use_stub = getBoolPref(USE_STUB);
 
 	}
 
@@ -256,23 +246,23 @@ public class TicketFormat {
 	 */
 	public void saveDefault() {
 
-		Prefs.putPref(PrefName.LOGOFILE, this.imageFilename);
+		//putPref(PrefName.LOGOFILE, this.imageFilename);
 
 		for (int i = 0; i < NUM_LINES; i++) {
 			Line l = lines.line[i];
-			Prefs.putPref(PREFIX + i + "text", l.getText());
-			Prefs.putPref(PREFIX + i + "font", l.getFont());
-			Prefs.putPref(PREFIX + i + "color", Integer.valueOf(l.getColor().getRGB()));
+			putPref(PREFIX + i + "text", l.getText());
+			putPref(PREFIX + i + "font", l.getFont());
+			putPref(PREFIX + i + "color", Integer.toString(l.getColor().getRGB()));
 		}
 
 		for (int i = 0; i < NUM_STUB_LINES; i++) {
 			Line l = lines.stubline[i];
-			Prefs.putPref(STUB_PREFIX + i + "text", l.getText());
-			Prefs.putPref(STUB_PREFIX + i + "font", l.getFont());
-			Prefs.putPref(STUB_PREFIX + i + "color", Integer.valueOf(l.getColor().getRGB()));
+			putPref(STUB_PREFIX + i + "text", l.getText());
+			putPref(STUB_PREFIX + i + "font", l.getFont());
+			putPref(STUB_PREFIX + i + "color", Integer.toString(l.getColor().getRGB()));
 		}
 
-		Prefs.putPref(USE_STUB, use_stub ? "true" : "false");
+		//putPref(USE_STUB, use_stub ? "true" : "false");
 
 	}
 
@@ -331,7 +321,7 @@ public class TicketFormat {
 	 * 
 	 * @throws Exception the exception
 	 */
-	static public TicketFormat fromXml(String s) throws Exception {
+	 public TicketFormat fromXml(String s) throws Exception {
 		JAXBContext jc = JAXBContext.newInstance(TicketFormat.class);
 		Unmarshaller u = jc.createUnmarshaller();
 		TicketFormat tf = (TicketFormat) u.unmarshal(new StringReader(s));
@@ -341,9 +331,9 @@ public class TicketFormat {
 
 			for (int i = 0; i < NUM_STUB_LINES; i++) {
 				Line l = new Line();
-				l.setText(Prefs.getPref(STUB_PREFIX + i + "text", ""));
-				l.setFont(Prefs.getPref(STUB_PREFIX + i + "font", ""));
-				int ci = Prefs.getIntPref(STUB_PREFIX + i + "color", 0);
+				l.setText(getPref(STUB_PREFIX + i + "text", ""));
+				l.setFont(getPref(STUB_PREFIX + i + "font", ""));
+				int ci = getIntPref(STUB_PREFIX + i + "color", 0);
 				l.setColor(new Color(ci));
 				tf.lines.stubline[i] = l;
 			}
@@ -366,12 +356,6 @@ public class TicketFormat {
 		return sw.toString();
 	}
 
-	public static void main(String args[]) throws Exception {
-		TicketFormat tf = new TicketFormat();
-		tf.loadDefault();
-		System.out.println(tf.toXml());
-
-	}
 
 	public boolean hasStub() {
 		return use_stub;
@@ -380,5 +364,28 @@ public class TicketFormat {
 	public void setHasStub(boolean use_stub) {
 		this.use_stub = use_stub;
 	}
-
+	
+	//
+	// stub out the desktop preferences stuff for now
+	//
+	private HashMap<String,String> prefmap = new HashMap<String,String>();
+	private String getPref(String name, String def) {
+		String p =  prefmap.get(name);
+		if( p == null )
+			return def;
+		return p;
+	}
+	
+	private int getIntPref(String name, int def) {
+		String v = prefmap.get(name);
+		if( v == null )
+		{
+			return def;
+		}
+		return Integer.parseInt(v);
+	}
+	
+	private void putPref(String name, String val) {
+		prefmap.put(name, val);
+	}
 }

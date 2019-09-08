@@ -39,8 +39,6 @@ import javax.swing.JPanel;
 
 import com.mbcsoft.ticketmaven.entity.Ticket;
 import com.mbcsoft.ticketmaven.util.Money;
-import com.mbcsoft.ticketmaven.util.PrefName;
-import com.mbcsoft.ticketmaven.util.Prefs;
 
 public class TicketPanel extends JPanel implements Printable {
 
@@ -54,7 +52,7 @@ public class TicketPanel extends JPanel implements Printable {
 
 	private int pages_ = 1;
 
-	private final SimpleDateFormat sdf = new SimpleDateFormat(Prefs.getPref(PrefName.DATEFORMAT));
+	private final SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd yyyy  h:mm a");
 
 	private ArrayList<Ticket> tickets;
 
@@ -275,7 +273,7 @@ public class TicketPanel extends JPanel implements Printable {
 
 	private String getToken(Ticket t, String token) {
 		if (token.equals("club")) {
-			return Prefs.getPref(PrefName.COMMUNITY);
+			return t.getInstance().getName();
 		} else if (token.equals("show")) {
 			return t.getShow().getName();
 		} else if (token.equals("name")) {

@@ -2,6 +2,7 @@ package com.mbcsoft.ticketmaven.util;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -20,12 +21,12 @@ import com.mbcsoft.ticketmaven.entity.Zone;
 public class GenTestData {
 	final static protected Logger logger = Logger.getLogger("com.mbcsoft.ticketmaven.ejb");
 
-	public void generateTestData(EntityManager em)  {
+	public void generateTestData(EntityManager em) {
 
 		createInstData(em, "bellaggio");
 	}
 
-	private void createInstData(EntityManager em, String is)  {
+	private void createInstData(EntityManager em, String is) {
 
 		logger.info("Creating Test Data");
 
@@ -67,7 +68,7 @@ public class GenTestData {
 		zonelist.add(bzone);
 
 		Layout l = new Layout();
-		l.setName("Aud 1");
+		l.setName("Full Auditorium");
 		l.setInstance(inst);
 		l.setNumRows(20);
 		l.setNumSeats(40);
@@ -76,7 +77,8 @@ public class GenTestData {
 		generateMissingSeats(em, l, inst);
 
 		Show show1 = null;
-		for (int i = 1; i <= 40; i++) {
+		Show show2 = null;
+		for (int i = 1; i <= 10; i++) {
 			Show s = new Show();
 			Faker faker = new Faker();
 			s.setName(faker.funnyName().name());
@@ -88,15 +90,44 @@ public class GenTestData {
 			em.persist(s);
 			if (i == 1)
 				show1 = s;
+			else if( i == 2)
+				show2 = s;
 		}
 
-		loadCusts(em, inst, l, show1, zonelist);
+		loadCusts(em, inst, zonelist);
+		createRequests(em, inst, show1);
+		createRequests(em, inst, show2);
+		
+		
 
 		logger.info("Initialization Complete for " + is);
 
 	}
 
-	private void loadCusts(EntityManager em, Instance inst, Layout l, Show show1, ArrayList<Zone> zonelist) {
+	@SuppressWarnings("unchecked")
+	public Collection<Customer> getCusts(EntityManager em) {
+		Query query = em.createQuery("SELECT e FROM Customer e WHERE e.roles = 'tmuser'");
+		return (Collection<Customer>) query.getResultList();
+	}
+
+	private void createRequests(EntityManager em, Instance inst, Show show) {
+		
+		for( Customer c : getCusts(em)) {
+			try {
+				Request r = new Request();
+				r.setCustomer(c);
+				r.setInstance(inst);
+				r.setShow(show);
+				r.setTickets(2);
+				r.setPaid(true);
+				em.persist(r);
+			} catch (Exception e) {
+				logger.warning(e.getMessage());
+			}
+		}
+	}
+
+	private void loadCusts(EntityManager em, Instance inst, ArrayList<Zone> zonelist) {
 
 		for (int i = 1; i < 250; i++) {
 			Faker faker = new Faker();
@@ -116,21 +147,8 @@ public class GenTestData {
 
 			if (i <= 20)
 				c.setSpecialNeeds(zonelist.get(i % zonelist.size()).getName());
-			try {
-				em.persist(c);
-				Request r = new Request();
-				r.setCustomer(c);
-				r.setInstance(inst);
-				r.setShow(show1);
-				r.setTickets(2);
-				r.setPaid(true);
-				em.persist(r);
-			} catch (Exception e) {
-				logger.warning(e.getMessage());
-			}
 
-		
-
+			em.persist(c);
 		}
 
 	}

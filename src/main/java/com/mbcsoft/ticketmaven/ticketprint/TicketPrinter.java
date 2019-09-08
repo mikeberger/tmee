@@ -96,26 +96,5 @@ public class TicketPrinter {
 		document.close();
 	}
 
-	/*
-	 * static public void main(String args[]) throws Exception {
-	 * 
-	 * 
-	 * Show sh = new Show(); sh.setCost(1); sh.setName("my show"); sh.setPrice(2);
-	 * sh.setTime(new Timestamp(System.currentTimeMillis())); Set<Ticket> tkts = new
-	 * HashSet<Ticket>();
-	 * 
-	 * 
-	 * for( int i = 0; i < 25; i++) { Customer c = new Customer();
-	 * c.setFirstName("mike"); c.setLastName("b" + i); Seat s = new Seat();
-	 * s.setLabel("" + i); s.setRow("A"); s.setSeat(i);
-	 * 
-	 * Ticket t = new Ticket(); t.setSeat(s); t.setCustomer(c); t.setShow(sh);
-	 * 
-	 * tkts.add(t);
-	 * 
-	 * } sh.setTicketsCollection(tkts);
-	 * 
-	 * new TicketPrinter().printShow(sh); }
-	 */
 
 }
