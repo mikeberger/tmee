@@ -46,15 +46,12 @@ import lombok.EqualsAndHashCode;
 	)
 public class Layout extends BaseAppTable implements Serializable {
 	
-	static public final String AUDITORIUM = "Auditorium";
-	static public final String TABLE = "Table";
-	
+
 	@Column(nullable=false)
 	private String name;
 	private int centerseat;
 	private int numRows;
 	private int numSeats;
-	//private String seating;
 
 	@XmlTransient
 	@OneToMany(mappedBy="layout")
@@ -63,10 +60,6 @@ public class Layout extends BaseAppTable implements Serializable {
 	@XmlTransient
 	@OneToMany(mappedBy="layout", cascade = REMOVE)
 	@EqualsAndHashCode.Exclude private Set<Seat> seatsCollection;
-
-	@XmlTransient
-	@OneToMany(mappedBy="layout", cascade = REMOVE)
-	@EqualsAndHashCode.Exclude private Set<TMTable> tmtablesCollection;
 
 	private static final long serialVersionUID = 1L;
 

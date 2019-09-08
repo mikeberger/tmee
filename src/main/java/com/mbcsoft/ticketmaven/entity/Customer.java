@@ -84,11 +84,6 @@ public class Customer extends BaseAppTable implements Serializable {
 	@XmlTransient
 	@OneToMany(mappedBy = "customer", cascade = REMOVE)
 	@EqualsAndHashCode.Exclude
-	private Set<Reservation> reservationsCollection;
-
-	@XmlTransient
-	@OneToMany(mappedBy = "customer", cascade = REMOVE)
-	@EqualsAndHashCode.Exclude
 	private Set<Request> requestsCollection;
 
 	private static final long serialVersionUID = 1L;

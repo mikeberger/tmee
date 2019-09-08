@@ -76,11 +76,6 @@ public class Show extends BaseAppTable implements Serializable {
 	@XmlTransient
 	@EqualsAndHashCode.Exclude
 	@OneToMany(mappedBy="show", cascade = REMOVE)
-	private Set<Reservation> reservationsCollection;
-
-	@XmlTransient
-	@EqualsAndHashCode.Exclude
-	@OneToMany(mappedBy="show", cascade = REMOVE)
 	private Set<Request> requestsCollection;
 
 	@XmlTransient
