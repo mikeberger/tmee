@@ -15,7 +15,7 @@
 			</p:messages>
 			<p:panel id="panel" header="Customer Information">
 
-				<p:panelGrid columns="2"  cellpadding="5">
+				<p:panelGrid columns="2" cellpadding="5">
 					<p:outputLabel for="firstname" value="Firstname:" />
 					<p:inputText id="firstname" value="#{custBB.cust.firstName}"
 						required="true" label="Firstname" />
@@ -23,10 +23,19 @@
 					<p:outputLabel for="lastname" value="Lastname:" />
 					<p:inputText id="lastname" value="#{custBB.cust.lastName}"
 						label="Lastname" required="true" />
-						
+
 					<p:outputLabel for="userid" value="User Id:" />
 					<p:inputText id="userid" value="#{custBB.cust.userid}"
 						label="userid" required="true" />
+
+					<h:outputLabel for="pwd1" value="Password:" />
+					<p:password id="pwd1" value="#{custBB.cust.password}" match="pwd2"
+						label="Password" required="false" />
+
+					<h:outputLabel for="pwd2" value="Confirm Password:" />
+					<p:password id="pwd2" value="#{custBB.cust.password}"
+						label="Password2" required="false" />
+
 
 					<p:outputLabel for="address" value="Address:" />
 					<p:inputText id="address" value="#{custBB.cust.address}"

@@ -29,6 +29,7 @@ import com.mbcsoft.ticketmaven.ejbImpl.CustomerBean;
 import com.mbcsoft.ticketmaven.ejbImpl.InstanceBean;
 import com.mbcsoft.ticketmaven.entity.Customer;
 import com.mbcsoft.ticketmaven.entity.Instance;
+import com.mbcsoft.ticketmaven.util.PasswordUtil;
 
 @Named("adminBB")
 @SessionScoped
@@ -117,6 +118,9 @@ public class AdminBB implements Serializable {
 		try {
 
 			cust.setInstance(ibean.getInstance(instname));
+			
+			cust.setPassword(PasswordUtil.hexHash(cust.getPassword()));
+			
 			rbean.saveAdmin(cust);
 			refreshList();
 

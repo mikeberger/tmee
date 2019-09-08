@@ -20,12 +20,12 @@ import com.mbcsoft.ticketmaven.entity.Zone;
 public class GenTestData {
 	final static protected Logger logger = Logger.getLogger("com.mbcsoft.ticketmaven.ejb");
 
-	public void generateTestData(EntityManager em) {
+	public void generateTestData(EntityManager em)  {
 
 		createInstData(em, "bellaggio");
 	}
 
-	private void createInstData(EntityManager em, String is) {
+	private void createInstData(EntityManager em, String is)  {
 
 		logger.info("Creating Test Data");
 
@@ -39,7 +39,7 @@ public class GenTestData {
 		admin.setFirstName(is);
 		admin.setLastName("Admin");
 		admin.setUserid(is);
-		admin.setPassword("mike");
+		admin.setPassword(PasswordUtil.hexHash("mike"));
 		admin.setRoles("tmadmin");
 		admin.setInstance(inst);
 		admin.setResident("Y");
@@ -106,7 +106,7 @@ public class GenTestData {
 			c.setLastName(faker.name().lastName());
 			c.setResident("Y");
 			c.setUserid(inst.getName() + "cust" + i);
-			c.setPassword(c.getUserid());
+			c.setPassword(PasswordUtil.hexHash(c.getUserid()));
 			c.setRoles("tmuser");
 			c.setInstance(inst);
 			c.setSpecialNeeds(Customer.NONE);

@@ -18,9 +18,7 @@
 				<p:commandButton value="Admins" action="adminlist"
 					icon="ui-icon-person" actionListener="#{adminBB.refreshList}"
 					rendered="#{p:ifGranted('tmsite')}" />
-				<p:commandButton value="Customers" action="custlist"
-					icon="ui-icon-person" actionListener="#{custBB.refreshList}"
-					rendered="#{p:ifGranted('tmadmin')}" />
+
 				<p:commandButton value="Shows" action="showlist"
 					icon="ui-icon-calendar" actionListener="#{showBB.refreshList}"
 					rendered="#{p:ifGranted('tmadmin')}" />
@@ -42,6 +40,10 @@
 					action="ticketlist?faces-redirect=true"
 					actionListener="#{ticketBB.loadUserList}"
 					rendered="#{p:ifGranted('tmuser')}" />
+
+				<p:commandButton value="Customers" action="custlist"
+					icon="ui-icon-person" actionListener="#{custBB.refreshList}"
+					rendered="#{p:ifGranted('tmadmin')}" />
 				<p:menuButton value="Theater" rendered="#{p:ifGranted('tmadmin')}">
 					<p:menuitem value="Layouts" action="layoutlist?faces-redirect=true"
 						actionListener="#{layoutBB.refreshList}" />

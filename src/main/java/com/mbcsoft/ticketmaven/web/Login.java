@@ -30,6 +30,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.mbcsoft.ticketmaven.ejbImpl.CustomerBean;
+import com.mbcsoft.ticketmaven.entity.Instance;
 
 @SessionScoped
 @Named("login")
@@ -73,6 +74,16 @@ public class Login implements Serializable {
 			logger.info("login success");
 			logger.info("is tmadmin: " + request.isUserInRole("tmadmin"));
 			logger.info("is tmuser: " + request.isUserInRole("tmuser"));
+			
+			Instance instance = custbean.getCurrentCustomer().getInstance();
+			
+			if( !instance.isEnabled())
+			{
+				logger.log(Level.WARNING, "Login failed. Community " + instance.getName() + " is not enabled");
+				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "","Login failed. Community " + instance.getName() + " is not enabled"));
+				request.logout();
+				return;
+			}
 			
 			community = custbean.getCurrentCustomer().getInstance().getName();
 			logger.info("community: " + community);

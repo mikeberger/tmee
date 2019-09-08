@@ -29,6 +29,7 @@ import javax.persistence.Query;
 import com.mbcsoft.ticketmaven.entity.Customer;
 import com.mbcsoft.ticketmaven.entity.Instance;
 import com.mbcsoft.ticketmaven.util.GenTestData;
+import com.mbcsoft.ticketmaven.util.PasswordUtil;
 
 @Singleton
 @Startup
@@ -41,7 +42,7 @@ public class StartupBean {
 
 	@SuppressWarnings("unchecked")
 	@PostConstruct
-	public void createDefaultData() {
+	public void createDefaultData()  {
 
 		// create site instance if needed
 		Instance siteInstance = null;
@@ -70,7 +71,7 @@ public class StartupBean {
 			admin.setFirstName("Site");
 			admin.setLastName("Admin");
 			admin.setUserid("admin");
-			admin.setPassword("admin"); // TODO - encrypt
+			admin.setPassword(PasswordUtil.hexHash("admin")); // TODO - need to set this dynamically
 			admin.setRoles("tmsite");
 			admin.setInstance(siteInstance);
 			admin.setResident("N");

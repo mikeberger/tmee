@@ -30,6 +30,7 @@ import com.mbcsoft.ticketmaven.ejbImpl.CustomerBean;
 import com.mbcsoft.ticketmaven.ejbImpl.ZoneBean;
 import com.mbcsoft.ticketmaven.entity.Customer;
 import com.mbcsoft.ticketmaven.entity.Zone;
+import com.mbcsoft.ticketmaven.util.PasswordUtil;
 
 @Named("custBB")
 @SessionScoped
@@ -37,6 +38,7 @@ public class CustomerBB implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Customer cust;
+	private String origPassword;
 	@EJB private CustomerBean rbean;
 	@EJB private ZoneBean zbean;
 
@@ -63,6 +65,8 @@ public class CustomerBB implements Serializable {
 			} else {
 				cust = rbean.get(Customer.class, id);
 			}
+			
+			origPassword = cust.getPassword();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -109,6 +113,8 @@ public class CustomerBB implements Serializable {
 
 			cust = rbean.newRecord();
 			cust.setRoles("tmuser");
+			String pw = "FFFFDDEEAAFFAACCBBFF";
+			origPassword = pw;
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -118,6 +124,17 @@ public class CustomerBB implements Serializable {
 	
 	public void save() {
 		try {
+			
+			logger.info("origpw=" + origPassword + " custpw=" + cust.getPassword());
+			
+			if( cust.getPassword() == null || cust.getPassword().isEmpty())
+			{
+				cust.setPassword(origPassword);
+			} else {
+				cust.setPassword(PasswordUtil.hexHash(cust.getPassword()));
+			}
+
+			logger.info("newpw=" + cust.getPassword());
 
 			rbean.save(cust);
 			refreshList();

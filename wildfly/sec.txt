@@ -4,7 +4,7 @@ add tmrealm to elytron - jdbc realm
                         <attribute-mapping>
                             <attribute to="groups" index="2"/>
                         </attribute-mapping>
-                        <clear-password-mapper password-index="1"/>
+                         <simple-digest-mapper algorithm="simple-digest-sha-256" password-index="1" hash-encoding="hex"/>
                     </principal-query>
                 </jdbc-realm>
 
@@ -31,6 +31,9 @@ add undertow domain
 add ejb domain <application-security-domains>
                 <application-security-domain name="tmdomain" security-domain="tmdomain"/>
             </application-security-domains>
+            
+            
+         
 
 
 

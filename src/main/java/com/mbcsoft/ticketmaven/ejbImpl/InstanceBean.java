@@ -72,7 +72,8 @@ public class InstanceBean  {
 	@RolesAllowed({ "tmsite" })
 	public List<Instance> getAllInstances() {
 
-		Query query = em.createQuery("SELECT e FROM Instance e ORDER BY name");
+		// don't show site instance - it is not to be edited or deleted
+		Query query = em.createQuery("SELECT e FROM Instance e WHERE e.name <> 'TicketMaven Site' ORDER BY name");
 		return (List<Instance>) query.getResultList();
 
 	}
