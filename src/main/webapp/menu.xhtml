@@ -30,10 +30,18 @@
 					action="requestlist?faces-redirect=true"
 					actionListener="#{requestBB.loadAdminList}"
 					rendered="#{p:ifGranted('tmadmin')}" />
+				<p:commandButton value="My Requests" icon="ui-icon-help"
+					action="requestlist?faces-redirect=true"
+					actionListener="#{requestBB.loadUserList}"
+					rendered="#{p:ifGranted('tmuser')}" />
 				<p:commandButton value="Tickets" icon="ui-icon-cart"
 					action="ticketlist?faces-redirect=true"
 					actionListener="#{ticketBB.loadAdminList}"
 					rendered="#{p:ifGranted('tmadmin')}" />
+				<p:commandButton value="My Tickets" icon="ui-icon-cart"
+					action="ticketlist?faces-redirect=true"
+					actionListener="#{ticketBB.loadUserList}"
+					rendered="#{p:ifGranted('tmuser')}" />
 				<p:menuButton value="Theater" rendered="#{p:ifGranted('tmadmin')}">
 					<p:menuitem value="Layouts" action="layoutlist?faces-redirect=true"
 						actionListener="#{layoutBB.refreshList}" />
@@ -55,12 +63,6 @@
 				<p:menuButton value="User">
 					<p:menuitem value="My Profile" action="custinfo"
 						actionListener="#{custBB.get}" />
-					<p:menuitem rendered="#{p:ifGranted('tmuser')}" value="My Requests"
-						action="requestlist?faces-redirect=true"
-						actionListener="#{requestBB.loadUserList}" />
-					<p:menuitem rendered="#{p:ifGranted('tmuser')}" value="My Tickets"
-						action="ticketlist?faces-redirect=true"
-						actionListener="#{ticketBB.loadUserList}" />
 					<p:menuitem value="Logout" action="index"
 						actionListener="#{login.logout}" />
 				</p:menuButton>
