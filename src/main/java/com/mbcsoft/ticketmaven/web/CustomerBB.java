@@ -171,5 +171,13 @@ public class CustomerBB implements Serializable {
 	public List<Customer> getAllCusts() {
 		return rbean.getAll();
 	}
+	
+	public void eraseQualityTotals() {
+		rbean.eraseQualityTotals();
+	}
+	
+	public void recalculateQualityTotals() {
+		rbean.recalculateQualityTotals();
+	}
 
 }

@@ -58,7 +58,18 @@
 				</p:menuButton>
 				<p:menuButton value="Admin" rendered="#{p:ifGranted('tmadmin')}">
 					<p:menuitem value="Export" url="#{request.contextPath}/export" />
-					<p:menuitem value="Import" action="import" />
+					<p:menuitem value="Erase Quality Totals"
+						actionListener="#{custBB.eraseQualityTotals}">
+						<p:confirm header="Confirmation"
+							message="Really Erase All Customer Quality Totals?"
+							icon="ui-icon-alert" />
+					</p:menuitem>
+					<p:menuitem value="Recalculate Quality Totals"
+						actionListener="#{custBB.recalculateQualityTotals}">
+						<p:confirm header="Confirmation"
+							message="Really Recalculate All Customer Quality Totals?"
+							icon="ui-icon-alert" />
+					</p:menuitem>
 				</p:menuButton>
 			</f:facet>
 			<f:facet name="right">

@@ -17,6 +17,7 @@
 package com.mbcsoft.ticketmaven.ejbImpl;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -24,6 +25,8 @@ import javax.interceptor.Interceptors;
 import javax.persistence.Query;
 
 import com.mbcsoft.ticketmaven.entity.Customer;
+import com.mbcsoft.ticketmaven.entity.Seat;
+import com.mbcsoft.ticketmaven.entity.Ticket;
 import com.mbcsoft.ticketmaven.util.AuditLogger;
 
 /**
@@ -87,6 +90,33 @@ public class CustomerBean extends BaseEntityFacadeImpl<Customer>  {
 		
 	}
 
+	@RolesAllowed({"tmadmin"})
+	public void eraseQualityTotals() {
+		
+		Query query = em.createQuery("UPDATE Customer SET totalTickets = 0, totalQuality = 0");
+		query.executeUpdate();
+		
+	}
+	
+	@RolesAllowed({"tmadmin"})
+	public void recalculateQualityTotals() {
+		
+		for( Customer c : getAll()) {
+			Set<Ticket> tickets = c.getTicketsCollection();
+			if (tickets.size() == c.getTotalTickets())
+				continue;
+
+			c.setTotalTickets(tickets.size());
+			int q = 0;
+			for (Ticket t : tickets) {
+				Seat s = t.getSeat();
+				q += s.getWeight();
+			}
+			c.setTotalQuality(q);
+			save(c);
+		}
+		
+	}
 
 
 
