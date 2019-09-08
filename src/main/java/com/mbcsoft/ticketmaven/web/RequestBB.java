@@ -97,6 +97,19 @@ public class RequestBB implements Serializable {
 	}
 
 	public void newRecord(ActionEvent evt) {
+		
+		newUserRecord(evt);
+
+		try {
+			CustomerBB.refreshSessionList();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void newUserRecord(ActionEvent evt) {
 
 		try {
 
@@ -106,7 +119,6 @@ public class RequestBB implements Serializable {
 
 			// we are going to the editor
 			ShowBB.refreshSessionShowList();
-			CustomerBB.refreshSessionList();
 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -81,7 +81,7 @@ public class Login implements Serializable {
 			context.getExternalContext().redirect("index.xhtml");
 
 		} catch (ServletException e) {
-			logger.log(Level.INFO, "login failed", e);
+			logger.log(Level.INFO, "login failed", e.getMessage());
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "","Login failed."));
 
 		} catch (IOException e2) {

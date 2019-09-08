@@ -8,18 +8,19 @@
 	<ui:define name="panel-main">
 		<h:form>
 			<p:panel header="Requests">
-				
+
 				<p:dataTable var="req" value="#{requestBB.list}"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="15,25,50,100" paginator="true" rows="25"
-					style="margin-bottom:20px"
-					widgetVar="rtbl">
-					
-					
-					<p:column headerText="Customer" sortBy="#{req.customerName}" filterBy="#{req.customerName}" filterMatchMode="contains">
+					style="margin-bottom:20px" widgetVar="rtbl">
+
+
+					<p:column headerText="Customer" sortBy="#{req.customerName}"
+						filterBy="#{req.customerName}" filterMatchMode="contains">
 						<h:outputText value="#{req.customerName}" />
 					</p:column>
-					<p:column headerText="Show" sortBy="#{req.show.name}" filterBy="#{req.show.name}" filterMatchMode="contains">
+					<p:column headerText="Show" sortBy="#{req.show.name}"
+						filterBy="#{req.show.name}" filterMatchMode="contains">
 						<h:outputText value="#{req.show.name}" />
 					</p:column>
 
@@ -40,8 +41,12 @@
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
-				<p:commandButton action="request" value="Enter New Request"
+				<p:commandButton rendered="#{p:ifGranted('tmadmin')}"
+					action="request" value="Enter New Request"
 					actionListener="#{requestBB.newRecord}" />
+				<p:commandButton rendered="#{p:ifNoneGranted('tmadmin')}"
+					action="request" value="Enter New Request"
+					actionListener="#{requestBB.newUserRecord}" />
 			</p:panel>
 
 		</h:form>
