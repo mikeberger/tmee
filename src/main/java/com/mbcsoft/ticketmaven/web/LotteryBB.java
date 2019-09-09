@@ -86,7 +86,7 @@ public class LotteryBB implements Serializable {
 
 	public void load() throws AbortProcessingException {
 			showid = FacesContext.getCurrentInstance().getExternalContext()
-			.getRequestParameterMap().get("showid");
+			.getRequestParameterMap().get("show_id");
 			loadInternal();
 	}
 

@@ -80,6 +80,14 @@ public class ShowBB implements Serializable {
 
 	}
 	
+	public void edit() {
+		get();
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		LotteryBB bb = ctx.getApplication().evaluateExpressionGet(ctx, "#{lotteryBB}", LotteryBB.class);
+		bb.load();
+
+	}
+	
 	public void get() {
 
 		try {

@@ -13,33 +13,85 @@
 			<p:messages id="messages" showDetail="false" closable="true">
 				<p:autoUpdate />
 			</p:messages>
-			<p:panel id="panel" header="Show Information">
+			<h:panelGrid columns="2" cellpadding="5">
 
-				<p:panelGrid columns="2" cellpadding="5">
-					<p:outputLabel for="name" value="Show Name:" />
-					<p:inputText id="name" value="#{showBB.show.name}" required="true" />
-					<p:outputLabel for="time" value="Show Time:" />
-					<p:calendar id="time" value="#{showBB.inputDate}"
-						pattern="MM/dd/yyyy HH:mm" required="true" />
-					<p:outputLabel for="price" value="Ticket Price:" />
-					<p:inputNumber id="price" value="#{showBB.show.price}" minValue="0"
-						decimalPlaces="2" required="true" />
-					<p:outputLabel for="cost" value="Cost:" />
-					<p:inputNumber id="cost" value="#{showBB.show.cost}" minValue="0"
-						decimalPlaces="2" />
-					<p:outputLabel for="layout" value="Layout: " />
-					<p:selectOneMenu id="layout" value="#{showBB.layoutName}">
-						<f:selectItems value="#{showBB.allLayouts}" />
-					</p:selectOneMenu>
-				</p:panelGrid>
+				<p:panel id="spanel" header="Show Information">
 
-				<h:panelGrid columns="2" cellpadding="5">
-					<p:commandButton value="Save" action="showlist"
-						actionListener="#{showBB.save}" icon="ui-icon-check" />
-					<p:commandButton value="Cancel" immediate="true" action="showlist"
-						icon="ui-icon-circle-close" />
-				</h:panelGrid>
-			</p:panel>
+					<p:panelGrid columns="2" cellpadding="5">
+						<p:outputLabel for="name" value="Show Name:" />
+						<p:inputText id="name" value="#{showBB.show.name}" required="true" />
+						<p:outputLabel for="time" value="Show Time:" />
+						<p:calendar id="time" value="#{showBB.inputDate}"
+							pattern="MM/dd/yyyy HH:mm" required="true" />
+						<p:outputLabel for="price" value="Ticket Price:" />
+						<p:inputNumber id="price" value="#{showBB.show.price}"
+							minValue="0" decimalPlaces="2" required="true" />
+						<p:outputLabel for="cost" value="Cost:" />
+						<p:inputNumber id="cost" value="#{showBB.show.cost}" minValue="0"
+							decimalPlaces="2" />
+						<p:outputLabel for="layout" value="Layout: " />
+						<p:selectOneMenu id="layout" value="#{showBB.layoutName}">
+							<f:selectItems value="#{showBB.allLayouts}" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+					<h:panelGrid columns="2" cellpadding="5">
+						<p:commandButton value="Update" action="showedit"
+							actionListener="#{showBB.save}" icon="ui-icon-check" />
+						<p:commandButton action="showlist?faces-redirect=true"
+							value="Delete Show" icon="ui-icon-circle-close"
+							actionListener="#{showBB.delete}">
+							<f:param name="show_id" value="#{show.recordId}" />
+							<p:confirm header="Confirmation"
+								message="Really Delete #{show.name} and all associated records?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+					</h:panelGrid>
+				</p:panel>
+				<p:panel id="lpanel" header="Lottery">
+
+					<p:panelGrid columns="2" cellpadding="5">
+						<p:outputLabel for="show" value="Show: " />
+						<p:inputText id="show" value="#{lotteryBB.showName}"
+							readonly="true" size="60" />
+						<p:outputLabel for="reqs" value="Outstanding Paid Requests: " />
+						<p:inputText id="reqs" value="#{lotteryBB.requests}"
+							readonly="true" />
+						<p:outputLabel for="seats" value="Requested Seats: " />
+						<p:inputText id="seats" value="#{lotteryBB.seatsRequested}"
+							readonly="true" />
+						<p:outputLabel for="ticks" value="Assigned Tickets: " />
+						<p:inputText id="ticks" value="#{lotteryBB.tickets}"
+							readonly="true" />
+						<p:outputLabel for="avail" value="Available Seats: " />
+						<p:inputText id="avail" value="#{lotteryBB.seatsAvailable}"
+							readonly="true" />
+					</p:panelGrid>
+
+					<h:panelGrid columns="2" cellpadding="5">
+						<p:commandButton actionListener="#{lotteryBB.run}"
+							action="showedit?faces-redirect=true" value="Run Lottery"
+							disabled="#{lotteryBB.requests == 0}">
+							<p:confirm header="Confirmation" message="Really Run Lottery?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+
+						<p:commandButton actionListener="#{lotteryBB.undo}"
+							action="showedit?faces-redirect=true" value="Undo Lottery"
+							disabled="#{lotteryBB.tickets == 0}">
+							<p:confirm header="Confirmation" message="Really Undo Lottery?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+					</h:panelGrid>
+
+
+				</p:panel>
+			</h:panelGrid>
+			<h:panelGrid columns="3" cellpadding="5">
+				<p:commandButton value="Back To Show List" immediate="true"
+					action="showlist" icon="ui-icon-circle-close" />
+				<p:button value="Print Tickets" action="tickets" icon="ui-icon-print"
+					href="#{request.contextPath}/tickets?id=#{showBB.show.recordId}"/>
+			</h:panelGrid>
 
 		</h:form>
 

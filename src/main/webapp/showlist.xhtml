@@ -28,34 +28,14 @@
 					</p:column>
 
 					<p:column headerText="Action">
-						<p:commandButton action="showedit" icon="ui-icon-pencil"
-							actionListener="#{showBB.get}">
+						<p:commandButton action="showedit" value="Open"
+							actionListener="#{showBB.edit}">
 							<f:param name="show_id" value="#{show.recordId}" />
 						</p:commandButton>
-						<h:outputText value="  " />
-						<p:commandButton action="showlist?faces-redirect=true"
-							icon="ui-icon-circle-close" actionListener="#{showBB.delete}">
-							<f:param name="show_id" value="#{show.recordId}" />
-							<p:confirm header="Confirmation"
-								message="Really Delete #{show.name} and all associated records?"
-								icon="ui-icon-alert" />
-						</p:commandButton>
-						<h:outputText value="  " />
 
-						<p:commandButton id="lott" action="lottery" value="Lottery"
-							actionListener="#{lotteryBB.load}">
-							<f:param name="showid" value="#{show.recordId}" />
-						</p:commandButton>
-						<p:tooltip for="lott" value="Run Lottery" />
-						<h:outputText value="  " />
-
-						<p:button id="ticks" action="tickets" icon="ui-icon-print"
-							href="#{request.contextPath}/tickets?id=#{show.recordId}">
-						</p:button>
-						<p:tooltip for="ticks" value="Print Tickets" />
 					</p:column>
 				</p:dataTable>
-				<p:commandButton action="showedit" value="Enter New Show"
+				<p:commandButton action="showeditnew" value="Enter New Show"
 					actionListener="#{showBB.newRecord}" />
 			</p:panel>
 		</h:form>
