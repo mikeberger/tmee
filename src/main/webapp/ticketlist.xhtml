@@ -12,21 +12,24 @@
 				<p:dataTable var="tick" value="#{ticketBB.ticketList}"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="15,25,50,100" paginator="true" rows="25"
-					 style="margin-bottom:20px">
-					<p:column headerText="Customer" sortBy="#{tick.customer}" filterBy="#{tick.customer}" filterMatchMode="contains">
-						<h:outputText value="#{tick.customer}" />
+					style="margin-bottom:20px">
+					<p:column headerText="Customer" sortBy="#{tick.customer.fullName}"
+						filterBy="#{tick.customer}" filterMatchMode="contains">
+						<h:outputText value="#{tick.customer.fullName}" />
 					</p:column>
-					<p:column headerText="Show" sortBy="#{tick.show.name}" filterBy="#{tick.show.name}" filterMatchMode="contains">
+					<p:column headerText="Show" sortBy="#{tick.show.name}"
+						filterBy="#{tick.show.name}" filterMatchMode="contains">
 						<h:outputText value="#{tick.show.name}" />
 					</p:column>
 
 					<p:column headerText="Time" sortBy="#{tick.show.time}">
-						<h:outputText value="#{tick.show.time}" />
+						<h:outputText value="#{tick.show.time}">
+							<f:convertDateTime pattern="MMM dd yyyy kk:mm" />
+						</h:outputText>
 					</p:column>
 
-					<p:column headerText="Seat">
-						<h:outputText value="#{tick.rowAisle}">
-							<f:convertDateTime pattern="MMM dd yyyy kk:mm" />
+					<p:column headerText="Seat" sortBy="#{tick.rowAisle}" filterBy="#{tick.rowAisle}" filterMatchMode="contains">
+						<h:outputText value="#{tick.rowAisle}" >
 						</h:outputText>
 					</p:column>
 

@@ -102,5 +102,9 @@ public class Customer extends BaseAppTable implements Serializable {
 	{
 		return firstName + " " + lastName;
 	}
+	
+	public String getFullName() {
+		return firstName + " " + lastName;
+	}
 
 }

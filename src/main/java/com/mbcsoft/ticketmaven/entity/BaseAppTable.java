@@ -94,6 +94,10 @@ public abstract class BaseAppTable implements Serializable {
 		return this.recordId;
 	}
 	
+	public String toString() {
+		return "["  + recordId + "]";
+	}
+	
 	
    
 }

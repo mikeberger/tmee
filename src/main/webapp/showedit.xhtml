@@ -10,7 +10,7 @@
 	<ui:param name="pageTitle" value="Edit Show" />
 	<ui:define name="panel-main">
 		<h:form>
-			<p:messages id="messages" showDetail="false" closable="true">
+			<p:messages id="messages" showDetail="true" closable="true">
 				<p:autoUpdate />
 			</p:messages>
 			<h:panelGrid columns="2" cellpadding="5">
@@ -19,7 +19,8 @@
 
 					<p:panelGrid columns="2" cellpadding="5">
 						<p:outputLabel for="name" value="Show Name:" />
-						<p:inputText id="name" value="#{showBB.show.name}" required="true" />
+						<p:inputText id="name" value="#{showBB.show.name}" required="true"
+							size="60" />
 						<p:outputLabel for="time" value="Show Time:" />
 						<p:calendar id="time" value="#{showBB.inputDate}"
 							pattern="MM/dd/yyyy HH:mm" required="true" />
@@ -30,7 +31,8 @@
 						<p:inputNumber id="cost" value="#{showBB.show.cost}" minValue="0"
 							decimalPlaces="2" />
 						<p:outputLabel for="layout" value="Layout: " />
-						<p:selectOneMenu id="layout" value="#{showBB.layoutName}">
+						<p:selectOneMenu id="layout" value="#{showBB.layoutName}"
+							disabled="#{lotteryBB.tickets > 0}">
 							<f:selectItems value="#{showBB.allLayouts}" />
 						</p:selectOneMenu>
 					</p:panelGrid>
@@ -40,9 +42,9 @@
 						<p:commandButton action="showlist?faces-redirect=true"
 							value="Delete Show" icon="ui-icon-circle-close"
 							actionListener="#{showBB.delete}">
-							<f:param name="show_id" value="#{show.recordId}" />
+							<f:param name="show_id" value="#{showBB.show.recordId}" />
 							<p:confirm header="Confirmation"
-								message="Really Delete #{show.name} and all associated records?"
+								message="Really delete #{showBB.show.name} and all associated requests and tickets?"
 								icon="ui-icon-alert" />
 						</p:commandButton>
 					</h:panelGrid>
@@ -89,8 +91,10 @@
 			<h:panelGrid columns="3" cellpadding="5">
 				<p:commandButton value="Back To Show List" immediate="true"
 					action="showlist" icon="ui-icon-circle-close" />
-				<p:button value="Print Tickets" action="tickets" icon="ui-icon-print"
-					href="#{request.contextPath}/tickets?id=#{showBB.show.recordId}"/>
+				
+				<p:button value="Print Tickets" action="tickets"
+					icon="ui-icon-print" disabled="#{lotteryBB.requests == 0}"
+					href="#{request.contextPath}/tickets?id=#{showBB.show.recordId}" />
 			</h:panelGrid>
 
 		</h:form>

@@ -102,7 +102,9 @@ public class Seat extends BaseAppTable implements Serializable {
 		super();
 	}
 	
-	
+	public String toString() {
+		return row + "/" + seat;
+	}
 
 
 }

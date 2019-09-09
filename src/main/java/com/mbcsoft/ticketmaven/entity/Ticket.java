@@ -65,5 +65,8 @@ public class Ticket extends BaseAppTable implements Serializable {
 		return seat.getRow() + "/" + seat.getSeat();
 	}
 
+	public String toString() {
+		return "[" + this.getRecordId() + "]";
+	}
 
 }
