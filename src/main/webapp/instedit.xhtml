@@ -13,26 +13,29 @@
 			<p:messages id="messages" showDetail="false" closable="true">
 				<p:autoUpdate />
 			</p:messages>
-			<p:panel id="panel" header="Instance Information">
+			<h:panelGrid cellpadding="5">
 
-				<p:panelGrid columns="2" cellpadding="5">
-					<p:outputLabel for="name" value="Name:" />
-					<p:inputText id="name" value="#{instBB.instance.name}" required="true"
-						label="Name" />
+				<p:panel id="panel" header="Instance Information">
 
-					<p:outputLabel for="enabled" value="Enabled:" />
-					<p:selectBooleanCheckbox id="enabled" value="#{instBB.instance.enabled}" />
+					<p:panelGrid columns="2" cellpadding="5">
+						<p:outputLabel for="name" value="Name:" />
+						<p:inputText id="name" value="#{instBB.instance.name}"
+							required="true" label="Name" />
 
-				</p:panelGrid>
+						<p:outputLabel for="enabled" value="Enabled:" />
+						<p:selectBooleanCheckbox id="enabled"
+							value="#{instBB.instance.enabled}" />
 
-				<h:panelGrid columns="2" cellpadding="5">
-					<p:commandButton value="Save" action="instlist"
-						actionListener="#{instBB.save}" icon="ui-icon-check" />
-					<p:commandButton value="Cancel" immediate="true" action="instlist"
-						icon="ui-icon-circle-close" />
-				</h:panelGrid>
-			</p:panel>
+					</p:panelGrid>
 
+					<h:panelGrid columns="2" cellpadding="5">
+						<p:commandButton value="Save" action="instlist"
+							actionListener="#{instBB.save}" icon="ui-icon-check" />
+						<p:commandButton value="Cancel" immediate="true" action="instlist"
+							icon="ui-icon-circle-close" />
+					</h:panelGrid>
+				</p:panel>
+			</h:panelGrid>
 		</h:form>
 
 

@@ -13,66 +13,69 @@
 			<p:messages id="messages" showDetail="false" closable="true">
 				<p:autoUpdate />
 			</p:messages>
-			<p:panel id="panel" header="Customer Information">
+			<h:panelGrid columns="2" cellpadding="5">
 
-				<p:panelGrid columns="2" cellpadding="5">
-					<p:outputLabel for="firstname" value="Firstname:" />
-					<p:inputText id="firstname" value="#{custBB.cust.firstName}"
-						required="true" label="Firstname" />
+				<p:panel id="panel" header="Customer Information">
 
-					<p:outputLabel for="lastname" value="Lastname:" />
-					<p:inputText id="lastname" value="#{custBB.cust.lastName}"
-						label="Lastname" required="true" />
+					<p:panelGrid columns="2" cellpadding="5">
+						<p:outputLabel for="firstname" value="Firstname:" />
+						<p:inputText id="firstname" value="#{custBB.cust.firstName}"
+							required="true" label="Firstname" />
 
-					<p:outputLabel for="userid" value="User Id:" />
-					<p:inputText id="userid" value="#{custBB.cust.userid}"
-						label="userid" required="true" />
+						<p:outputLabel for="lastname" value="Lastname:" />
+						<p:inputText id="lastname" value="#{custBB.cust.lastName}"
+							label="Lastname" required="true" />
 
-					<h:outputLabel for="pwd1" value="Password:" />
-					<p:password id="pwd1" value="#{custBB.cust.password}" match="pwd2"
-						label="Password" required="false" />
+						<p:outputLabel for="userid" value="User Id:" />
+						<p:inputText id="userid" value="#{custBB.cust.userid}"
+							label="userid" required="true" />
 
-					<h:outputLabel for="pwd2" value="Confirm Password:" />
-					<p:password id="pwd2" value="#{custBB.cust.password}"
-						label="Password2" required="false" />
+						<h:outputLabel for="pwd1" value="Password:" />
+						<p:password id="pwd1" value="#{custBB.cust.password}" match="pwd2"
+							label="Password" required="false" />
+
+						<h:outputLabel for="pwd2" value="Confirm Password:" />
+						<p:password id="pwd2" value="#{custBB.cust.password}"
+							label="Password2" required="false" />
 
 
-					<p:outputLabel for="address" value="Address:" />
-					<p:inputText id="address" value="#{custBB.cust.address}"
-						label="Address" required="false" />
+						<p:outputLabel for="address" value="Address:" />
+						<p:inputText id="address" value="#{custBB.cust.address}"
+							label="Address" required="false" />
 
-					<p:outputLabel for="phone" value="Phone:" />
-					<p:inputText id="phone" value="#{custBB.cust.phone}" label="Phone"
-						required="false" />
+						<p:outputLabel for="phone" value="Phone:" />
+						<p:inputText id="phone" value="#{custBB.cust.phone}" label="Phone"
+							required="false" />
 
-					<p:outputLabel for="email" value="Email:" />
-					<p:inputText id="email" value="#{custBB.cust.email}" label="Email"
-						required="false" />
+						<p:outputLabel for="email" value="Email:" />
+						<p:inputText id="email" value="#{custBB.cust.email}" label="Email"
+							required="false" />
 
-					<p:outputLabel for="allowed" value="Allowed Tickets:" />
-					<p:spinner id="allowed" value="#{custBB.cust.allowedTickets}"
-						min="1" maxValue="100" decimalPlaces="0" required="true" />
+						<p:outputLabel for="allowed" value="Allowed Tickets:" />
+						<p:spinner id="allowed" value="#{custBB.cust.allowedTickets}"
+							min="1" maxValue="100" decimalPlaces="0" required="true" />
 
-					<p:outputLabel for="special" value="Special Needs: " />
-					<p:selectOneMenu id="special" value="#{custBB.cust.specialNeeds}">
-						<f:selectItem itemLabel="None" itemValue="None" />
-						<f:selectItems value="#{custBB.allneeds}" />
-					</p:selectOneMenu>
+						<p:outputLabel for="special" value="Special Needs: " />
+						<p:selectOneMenu id="special" value="#{custBB.cust.specialNeeds}">
+							<f:selectItem itemLabel="None" itemValue="None" />
+							<f:selectItems value="#{custBB.allneeds}" />
+						</p:selectOneMenu>
 
-					<p:outputLabel for="assigned" value="AssignedTickets: " />
-					<p:outputLabel id="assigned" value="#{custBB.cust.totalTickets} " />
+						<p:outputLabel for="assigned" value="AssignedTickets: " />
+						<p:outputLabel id="assigned" value="#{custBB.cust.totalTickets} " />
 
-					<p:outputLabel for="avg" value="Average Quality " />
-					<p:outputLabel id="avg" value="#{custBB.cust.averageQuality} " />
-				</p:panelGrid>
+						<p:outputLabel for="avg" value="Average Quality " />
+						<p:outputLabel id="avg" value="#{custBB.cust.averageQuality} " />
+					</p:panelGrid>
 
-				<h:panelGrid columns="2" cellpadding="5">
-					<p:commandButton value="Save" action="custlist"
-						actionListener="#{custBB.save}" icon="ui-icon-check" />
-					<p:commandButton value="Cancel" immediate="true" action="custlist"
-						icon="ui-icon-circle-close" />
-				</h:panelGrid>
-			</p:panel>
+					<h:panelGrid columns="2" cellpadding="5">
+						<p:commandButton value="Save" action="custlist"
+							actionListener="#{custBB.save}" icon="ui-icon-check" />
+						<p:commandButton value="Cancel" immediate="true" action="custlist"
+							icon="ui-icon-circle-close" />
+					</h:panelGrid>
+				</p:panel>
+			</h:panelGrid>
 
 		</h:form>
 

@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
@@ -39,6 +40,8 @@ public class CustomerBB implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Customer cust;
 	private String origPassword;
+	private String oldpw;
+	private String newpw;
 	@EJB private CustomerBean rbean;
 	@EJB private ZoneBean zbean;
 
@@ -122,10 +125,26 @@ public class CustomerBB implements Serializable {
 
 	}
 	
+	public void chgpw() {
+		//logger.info("origpw=" + oldpw + " newpw=" + newpw);
+		
+		if( !cust.getPassword().equals(PasswordUtil.hexHash(oldpw))) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Old password is incorrect"));
+			return;
+		}
+		
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Password has been changed"));
+		
+		cust.setPassword(PasswordUtil.hexHash(newpw));
+		rbean.save(cust);
+
+
+	}
+	
 	public void save() {
 		try {
 			
-			logger.info("origpw=" + origPassword + " custpw=" + cust.getPassword());
+			//logger.info("origpw=" + origPassword + " custpw=" + cust.getPassword());
 			
 			if( cust.getPassword() == null || cust.getPassword().isEmpty())
 			{
@@ -134,7 +153,7 @@ public class CustomerBB implements Serializable {
 				cust.setPassword(PasswordUtil.hexHash(cust.getPassword()));
 			}
 
-			logger.info("newpw=" + cust.getPassword());
+			//logger.info("newpw=" + cust.getPassword());
 
 			rbean.save(cust);
 			refreshList();
@@ -178,6 +197,22 @@ public class CustomerBB implements Serializable {
 	
 	public void recalculateQualityTotals() {
 		rbean.recalculateQualityTotals();
+	}
+
+	public String getOldpw() {
+		return oldpw;
+	}
+
+	public void setOldpw(String oldpw) {
+		this.oldpw = oldpw;
+	}
+
+	public String getNewpw() {
+		return newpw;
+	}
+
+	public void setNewpw(String newpw) {
+		this.newpw = newpw;
 	}
 
 }

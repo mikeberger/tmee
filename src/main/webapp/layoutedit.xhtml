@@ -13,35 +13,37 @@
 			<p:messages id="messages" showDetail="false" closable="true">
 				<p:autoUpdate />
 			</p:messages>
-			<p:panel id="panel" header="Layout Information">
+			<h:panelGrid cellpadding="5">
 
-				<p:panelGrid columns="2"  cellpadding="5">
-					<p:outputLabel for="name" value="Name:" />
-					<p:inputText id="name" value="#{layoutBB.layout.name}"
-						required="true" label="Name" />
+				<p:panel id="panel" header="Layout Information">
 
-					<p:outputLabel for="rows" value="Number of Rows:" />
-					<p:inputNumber id="rows" value="#{layoutBB.layout.numRows}"
-						minValue="1" maxValue="5000" decimalPlaces="0" required="true" />
-						
-					<p:outputLabel for="seats" value="Number of Seats:" />
-					<p:inputNumber id="seats" value="#{layoutBB.layout.numSeats}"
-						minValue="1" maxValue="5000" decimalPlaces="0" required="true" />
+					<p:panelGrid columns="2" cellpadding="5">
+						<p:outputLabel for="name" value="Name:" />
+						<p:inputText id="name" value="#{layoutBB.layout.name}"
+							required="true" label="Name" />
 
-					<p:outputLabel for="center" value="Center Seat" />
-					<p:inputNumber id="center" value="#{layoutBB.layout.centerseat}"
-						minValue="0" maxValue="5000" decimalPlaces="0" required="false" />
-						
-				</p:panelGrid>
+						<p:outputLabel for="rows" value="Number of Rows:" />
+						<p:inputNumber id="rows" value="#{layoutBB.layout.numRows}"
+							minValue="1" maxValue="5000" decimalPlaces="0" required="true" />
 
-				<h:panelGrid columns="2" cellpadding="5">
-					<p:commandButton value="Save" action="layoutlist"
-						actionListener="#{layoutBB.save}" icon="ui-icon-check" />
-					<p:commandButton value="Cancel" immediate="true" action="layoutlist"
-						icon="ui-icon-circle-close" />
-				</h:panelGrid>
-			</p:panel>
+						<p:outputLabel for="seats" value="Number of Seats:" />
+						<p:inputNumber id="seats" value="#{layoutBB.layout.numSeats}"
+							minValue="1" maxValue="5000" decimalPlaces="0" required="true" />
 
+						<p:outputLabel for="center" value="Center Seat" />
+						<p:inputNumber id="center" value="#{layoutBB.layout.centerseat}"
+							minValue="0" maxValue="5000" decimalPlaces="0" required="false" />
+
+					</p:panelGrid>
+
+					<h:panelGrid columns="2" cellpadding="5">
+						<p:commandButton value="Save" action="layoutlist"
+							actionListener="#{layoutBB.save}" icon="ui-icon-check" />
+						<p:commandButton value="Cancel" immediate="true"
+							action="layoutlist" icon="ui-icon-circle-close" />
+					</h:panelGrid>
+				</p:panel>
+			</h:panelGrid>
 		</h:form>
 
 
