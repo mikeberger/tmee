@@ -28,7 +28,6 @@ import javax.persistence.Query;
 
 import com.mbcsoft.ticketmaven.entity.Customer;
 import com.mbcsoft.ticketmaven.entity.Instance;
-import com.mbcsoft.ticketmaven.util.GenTestData;
 import com.mbcsoft.ticketmaven.util.PasswordUtil;
 
 @Singleton
@@ -82,8 +81,6 @@ public class StartupBean {
 
 		}
 		
-		// load test data
-		new GenTestData().generateTestData(em);
 	}
 
 	

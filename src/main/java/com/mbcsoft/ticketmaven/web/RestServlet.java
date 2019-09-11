@@ -17,7 +17,10 @@
 package com.mbcsoft.ticketmaven.web;
 
 import java.net.HttpURLConnection;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
@@ -31,17 +34,46 @@ import javax.ws.rs.WebApplicationException;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONObject;
 
+import com.github.javafaker.Faker;
 import com.mbcsoft.ticketmaven.ejbImpl.CustomerBean;
+import com.mbcsoft.ticketmaven.ejbImpl.InstanceBean;
+import com.mbcsoft.ticketmaven.ejbImpl.LayoutBean;
+import com.mbcsoft.ticketmaven.ejbImpl.LotteryManager;
+import com.mbcsoft.ticketmaven.ejbImpl.RequestBean;
+import com.mbcsoft.ticketmaven.ejbImpl.SeatBean;
+import com.mbcsoft.ticketmaven.ejbImpl.ShowBean;
+import com.mbcsoft.ticketmaven.ejbImpl.ZoneBean;
 import com.mbcsoft.ticketmaven.entity.Customer;
+import com.mbcsoft.ticketmaven.entity.Instance;
+import com.mbcsoft.ticketmaven.entity.Layout;
+import com.mbcsoft.ticketmaven.entity.Request;
+import com.mbcsoft.ticketmaven.entity.Show;
+import com.mbcsoft.ticketmaven.entity.Zone;
+import com.mbcsoft.ticketmaven.util.PasswordUtil;
 
 @Stateless
 @Path("/api")
 @Produces({ "application/json;charset=UTF-8" })
-@RolesAllowed({"tmuser", "tmadmin"})
+@RolesAllowed({ "tmsite", "tmadmin" })
 public class RestServlet {
 
 	@EJB
 	private CustomerBean cb;
+
+	@EJB
+	private InstanceBean ib;
+	@EJB
+	private ZoneBean zoneb;
+	@EJB
+	private SeatBean seatb;
+	@EJB
+	private ShowBean showb;
+	@EJB
+	private LayoutBean layoutb;
+	@EJB
+	private RequestBean requestb;
+	@EJB
+	private LotteryManager lotteryb;
 
 	@GET
 	@Path("/customer/{id}")
@@ -67,8 +99,8 @@ public class RestServlet {
 				JSONObject jsonObj = new JSONObject();
 				jsonObj.put("firstname", c.getFirstName());
 				jsonObj.put("lastname", c.getLastName());
-				jsonObj.put("recordid", c.getRecordId() );
-				jsonObj.put("userid", c.getUserid() );
+				jsonObj.put("recordid", c.getRecordId());
+				jsonObj.put("userid", c.getUserid());
 				list.put(jsonObj);
 			}
 			ret.append("customers", list);
@@ -87,5 +119,137 @@ public class RestServlet {
 		return "{\"resp\":\"I am Here!\"}";
 
 	}
+
+	@GET
+	@Path("/genTestInstance/{instance}")
+	@RolesAllowed({ "tmsite" })
+	public Object genTestInstance(@PathParam("instance") String is) {
+
+		// create instance admin account first
+		Instance inst = new Instance();
+		inst.setEnabled(true);
+		inst.setName(is);
+		inst = ib.save(inst);
+
+		Customer admin = new Customer();
+		admin.setFirstName(is);
+		admin.setLastName("Admin");
+		admin.setUserid(is);
+		admin.setPassword(PasswordUtil.hexHash(is));
+		admin.setRoles("tmadmin");
+		admin.setInstance(inst);
+		admin.setResident("Y");
+		admin.setSpecialNeeds(Customer.NONE);
+
+		cb.saveAdmin(admin);
+
+		return "Test Instance Generated";
+	}
+
+	@GET
+	@Path("/genTestData")
+	@RolesAllowed({ "tmadmin" })
+	public Object genTestData() {
+
+		createInstanceData();
+
+		return "Test Data Generated";
+	}
+
+	private void createInstanceData() {
+
+
+		ArrayList<Zone> zonelist = new ArrayList<Zone>();
+
+		for (String zone : new String[] { "Mobility Impaired", "Hearing Impaired", "Lavatory", "Vision Impaired",
+				"Front Row", "Lip Reader" }) {
+			Zone bzone = new Zone();
+			bzone.setExclusive(false);
+			bzone.setName(zone);
+			bzone = zoneb.save(bzone);
+			zonelist.add(bzone);
+		}
+
+		Zone bzone = new Zone();
+		bzone.setExclusive(true);
+		bzone.setName("Wheel Chair");
+		bzone = zoneb.save(bzone);
+		zonelist.add(bzone);
+
+		Layout l = new Layout();
+		l.setName("Full Auditorium");
+		l.setNumRows(20);
+		l.setNumSeats(40);
+		l = layoutb.save(l,true);
+
+		Show show1 = null;
+		Show show2 = null;
+		for (int i = 1; i <= 10; i++) {
+			Show s = new Show();
+			Faker faker = new Faker();
+			s.setName(faker.funnyName().name());
+			s.setCost(i * 1000);
+			s.setLayout(l);
+			s.setPrice(i * 100);
+			s.setTime(new Timestamp(faker.date().future(100, 7, TimeUnit.DAYS).getTime()));
+			s = showb.save(s);
+			if (i == 1)
+				show1 = s;
+			else if (i == 2)
+				show2 = s;
+		}
+
+		loadCusts( zonelist);
+		createRequests( show1);
+		createRequests( show2);
+
+		lotteryb.runLottery(show1);
+
+	}
+
+	private void createRequests( Show show) {
+
+		for (Customer c : cb.getAll()) {
+			Request r = new Request();
+			r.setCustomer(c);
+			r.setShow(show);
+			r.setTickets(2);
+			r.setPaid(true);
+			requestb.save(r);
+
+		}
+	}
+
+	private void loadCusts( ArrayList<Zone> zonelist) {
+
+		for (int i = 1; i < 250; i++) {
+			Faker faker = new Faker();
+
+			Customer c = new Customer();
+			c.setFirstName(faker.name().firstName());
+			c.setLastName(faker.name().lastName());
+			c.setResident("Y");
+			c.setUserid( "cust" + i);
+			c.setPassword(PasswordUtil.hexHash(c.getUserid()));
+			c.setRoles("tmuser");
+			c.setSpecialNeeds(Customer.NONE);
+			c.setPhone(faker.phoneNumber().phoneNumber());
+			c.setAddress(faker.address().fullAddress());
+			c.setAllowedTickets(2);
+
+			if (i <= 20)
+				c.setSpecialNeeds(zonelist.get(i % zonelist.size()).getName());
+
+			try {
+				cb.save(c);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	
+	
 
 }

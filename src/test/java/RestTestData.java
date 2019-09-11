@@ -21,12 +21,12 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Base64;
  
-public class RESTInvoker {
+public class RestTestData {
     private final String baseUrl;
     private final String username;
     private final String password;
  
-    public RESTInvoker(String baseUrl, String username, String password) {
+    public RestTestData(String baseUrl, String username, String password) {
         this.baseUrl = baseUrl;
         this.username = username;
         this.password = password;
@@ -60,8 +60,11 @@ public class RESTInvoker {
     }
     
     public static void main(String[] args) {
-    	RESTInvoker ri = new RESTInvoker("http://localhost:8080/tmee/tmrest/api", "bellaggio", "mike");
+    	RestTestData ri = new RestTestData("http://localhost:8080/tmee/tmrest/api", "admin", "admin");
     	System.out.println(ri.getDataFromServer("/ping"));
-    	System.out.println(ri.getDataFromServer("/customers"));	
+    	System.out.println(ri.getDataFromServer("/genTestInstance/bellaggio"));	
+    	
+    	ri = new RestTestData("http://localhost:8080/tmee/tmrest/api", "bellaggio", "bellaggio");
+    	System.out.println(ri.getDataFromServer("/genTestData"));	
     }
 }

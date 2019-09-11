@@ -60,6 +60,7 @@ public class InstanceBean  {
 			return c.getInstance();
 
 		} catch (Throwable t) {
+			t.printStackTrace();
 			throw new EJBException("User " + userid + " not found");
 		}
 	}
