@@ -195,7 +195,7 @@ public class LotteryManager  {
 			tkt.setCustomer(req.getCustomer());
 			tkt.setSeat(s);
 			tkt.setShow(show);
-			logger.fine("Assigning Ticket: " + req.getCustomerName() + ":" + s.getRow() + "/" + s.getSeat());
+			logger.info("Assigning Ticket: " + req.getCustomerName() + ":" + s.getRow() + "/" + s.getSeat());
 
 			// assign price from show with discount from request
 
@@ -548,28 +548,28 @@ public class LotteryManager  {
 	}
 
 	private static void dumpSeats(String title, Collection<Seat> seats) {
-		if (logger.isLoggable(Level.FINE)) {
+		if (logger.isLoggable(Level.INFO)) {
 			StringBuffer sb = new StringBuffer();
 			sb.append(title + ":\n");
 			for (Seat s : seats) {
 				sb.append(s.getRow() + "/" + s.getSeat() + " ");
 			}
-			logger.fine(seats.size() + " seats");
-			logger.fine(sb.toString());
+			logger.info(seats.size() + " seats");
+			logger.info(sb.toString());
 
 		}
 	}
 
 	private static void dumpRequests(Collection<Request> reqs) {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine(reqs.size() + " requests");
+		if (logger.isLoggable(Level.INFO)) {
+			logger.info(reqs.size() + " requests");
 			StringBuffer sb = new StringBuffer();
 			for (Request s : reqs) {
 
 				sb.append(s.getCustomerName() + " " + s.getSpecialNeeds() + " " + s.getCustomer().getTotalTickets()
 						+ " " + s.getCustomer().getTotalQuality() + "\n");
 			}
-			logger.fine(sb.toString());
+			logger.info(sb.toString());
 
 		}
 	}

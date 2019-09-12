@@ -52,10 +52,7 @@
 						actionListener="#{zoneBB.refreshList}" />
 				</p:menuButton>
 
-				<p:menuButton value="Reports" rendered="#{p:ifGranted('tmadmin')}">
-					<p:menuitem value="Customers"
-						url="#{request.contextPath}/report?id=cust" />
-				</p:menuButton>
+			
 				<p:menuButton value="Admin" rendered="#{p:ifGranted('tmadmin')}">
 					<p:menuitem value="Export" url="#{request.contextPath}/export" />
 					<p:menuitem value="Erase Quality Totals"

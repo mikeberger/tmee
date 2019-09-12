@@ -81,7 +81,6 @@ public class CustomerBB implements Serializable {
 	public void refreshList() {
 		try {
 
-			// get requests for current logged in customer
 			setList(rbean.getAll());
 			logger.fine("refresh: size=" + list.size());
 

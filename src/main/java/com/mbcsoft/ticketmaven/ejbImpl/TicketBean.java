@@ -70,4 +70,6 @@ public class TicketBean extends BaseEntityFacadeImpl<Ticket>  {
 		query.setParameter("show", s);
 		query.executeUpdate();
 	}
+	
+	
 }

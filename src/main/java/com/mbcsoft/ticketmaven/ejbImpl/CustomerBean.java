@@ -119,6 +119,16 @@ public class CustomerBean extends BaseEntityFacadeImpl<Customer>  {
 		
 	}
 
+	public void subtractTicketQuality(Ticket ticket) throws Exception {
+		Seat s = ticket.getSeat();
+		Customer cust = ticket.getCustomer();
+		cust.setTotalTickets(Integer.valueOf(cust.getTotalTickets() - 1));
+		cust.setTotalQuality(Integer.valueOf(cust.getTotalQuality() - s.getWeight()));
+		if( cust.getTotalTickets() < 0) cust.setTotalTickets(0);
+		if( cust.getTotalQuality() < 0) cust.setTotalQuality(0);
+		save(cust);
+	}
+
 
 
 }

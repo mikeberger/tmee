@@ -22,9 +22,17 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 
+import com.mbcsoft.ticketmaven.ejbImpl.CustomerBean;
+import com.mbcsoft.ticketmaven.ejbImpl.SeatBean;
+import com.mbcsoft.ticketmaven.ejbImpl.ShowBean;
 import com.mbcsoft.ticketmaven.ejbImpl.TicketBean;
+import com.mbcsoft.ticketmaven.entity.Customer;
+import com.mbcsoft.ticketmaven.entity.Seat;
+import com.mbcsoft.ticketmaven.entity.Show;
 import com.mbcsoft.ticketmaven.entity.Ticket;
 
 @Named("ticketBB")
@@ -35,9 +43,19 @@ public class TicketBB implements Serializable {
 
 	@EJB
 	private TicketBean rbean;
-	
-	private String selectedShow;
+	@EJB
+	CustomerBean custbean;
+	@EJB
+	private ShowBean showbean;
+	@EJB
+	SeatBean seatbean;
+
+	private Ticket ticket;
+
+	private Show selectedShow;
 	private String selectedCustomer;
+	private String selectedSeat;
+	private List<Seat> seatList;
 
 	// filters
 	private boolean all = false;
@@ -46,10 +64,10 @@ public class TicketBB implements Serializable {
 
 	public void refreshList() {
 		try {
-			
+
 			if (all) {
 				ticketList = rbean.getAll();
-				
+
 			} else {
 				ticketList = rbean.getTicketsForCustomer(null);
 			}
@@ -76,12 +94,12 @@ public class TicketBB implements Serializable {
 		all = true;
 		refreshList();
 	}
-	
-	public String getSelectedShow() {
+
+	public Show getSelectedShow() {
 		return selectedShow;
 	}
 
-	public void setSelectedShow(String selectedShow) {
+	public void setSelectedShow(Show selectedShow) {
 		this.selectedShow = selectedShow;
 	}
 
@@ -93,5 +111,76 @@ public class TicketBB implements Serializable {
 		this.selectedCustomer = selectedCustomer;
 	}
 
+	public void delete(ActionEvent evt) {
+
+		try {
+			String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+					.get("ticket_id");
+			if (id == null || "".equals(id))
+				return;
+
+			Ticket r = rbean.get(Ticket.class, id);
+			custbean.subtractTicketQuality(r);
+			rbean.delete(r);
+
+			refreshList();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public String getSelectedSeat() {
+		return selectedSeat;
+	}
+
+	public void setSelectedSeat(String selectedSeat) {
+		this.selectedSeat = selectedSeat;
+	}
+
+	public List<Seat> getSeatList() {
+		return seatList;
+	}
+
+	public void setSeatList(List<Seat> seatList) {
+		this.seatList = seatList;
+	}
+
+	public void save() {
+
+		ticket.setShow(selectedShow);
+
+		Customer c = custbean.get(Customer.class, selectedCustomer);
+		ticket.setCustomer(c);
+		Seat s = seatbean.get(Seat.class, selectedSeat);
+		ticket.setSeat(s);
+
+		rbean.save(ticket);
+
+		refreshList();
+
+	}
+
+	public void newRecord(ActionEvent evt) {
+
+		String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("show_id");
+		if (id == null || "".equals(id))
+			return;
+
+		selectedShow = showbean.get(Show.class, id);
+
+		seatList = seatbean.getAvailableSeatsForShow(selectedShow);
+
+		ticket = rbean.newRecord();
+
+		try {
+			CustomerBB.refreshSessionList();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 
 }

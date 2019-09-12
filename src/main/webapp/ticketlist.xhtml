@@ -33,16 +33,16 @@
 						</h:outputText>
 					</p:column>
 
-					<p:column headerText="Price">
-						<h:outputText value="#{tick.ticketPrice / 100}">
-							<f:convertNumber maxFractionDigits="2" groupingUsed="true"
-								currencySymbol="$" maxIntegerDigits="7" type="currency" />
-						</h:outputText>
+					<p:column headerText="Action">
+						<p:commandButton action="ticketlist?faces-redirect=true"
+							icon="ui-icon-circle-close" actionListener="#{ticketBB.delete}">
+							<f:param name="ticket_id" value="#{tick.recordId}" />
+							<p:confirm header="Confirmation" message="Really Delete?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
 					</p:column>
 				</p:dataTable>
-				<p:commandButton action="ticket" value="Enter New Ticket"
-					actionListener="#{ticketBB.newRecord}"
-					rendered="#{p:ifGranted('tmadmin')}" />
+				
 			</p:panel>
 
 		</h:form>

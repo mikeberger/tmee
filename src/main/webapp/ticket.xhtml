@@ -1,0 +1,47 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/templates/page-template.xhtml">
+	<ui:param name="pageTitle" value="Ticket" />
+	<ui:define name="panel-main">
+		<h:form>
+			<p:messages id="messages" showDetail="true" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+			<h:panelGrid cellpadding="5">
+
+				<p:panel id="panel" header="Ticket Information">
+
+					<p:panelGrid columns="2">
+						<p:outputLabel for="cust" value="Customer:" />
+						<p:selectOneMenu required="true" id="cust"
+							value="#{ticketBB.selectedCustomer}">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems var="item" itemValue="#{item.recordId}"
+								itemLabel="#{item}" value="#{custBB.list}" />
+						</p:selectOneMenu>
+						<p:outputLabel for="show" value="Show:" />
+						<p:inputText id="show" value="#{ticketBB.selectedShow}"
+							label="Show" readonly="true" size="60"/>
+						<p:outputLabel for="cust" value="Seat:" />
+						<p:selectOneMenu required="true" id="seat"
+							value="#{ticketBB.selectedSeat}">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems var="item" itemValue="#{item.recordId}"
+								itemLabel="#{item}" value="#{ticketBB.seatList}" />
+						</p:selectOneMenu>
+
+						<p:commandButton value="Save" action="ticketlist"
+							actionListener="#{ticketBB.save}" icon="ui-icon-check" />
+						<p:commandButton value="Cancel" immediate="true"
+							action="ticketlist" icon="ui-icon-circle-close" />
+					</p:panelGrid>
+				</p:panel>
+			</h:panelGrid>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>
