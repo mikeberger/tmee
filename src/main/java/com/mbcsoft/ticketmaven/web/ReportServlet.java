@@ -77,6 +77,13 @@ public class ReportServlet extends HttpServlet {
 				reportname = "customer";
 				parms.put("instance", Integer.valueOf(instance));
 			}
+			else if( "show".equals(id) )
+			{
+				String show_id = request.getParameter("show_id");
+				reportname = "seatsForShowByName";
+				parms.put("show_id", Integer.valueOf(show_id));
+				parms.put("title", "Title TBD");
+			}
 			
 			InputStream is = ReportServlet.class.getResourceAsStream("/" + reportname + ".jasper");
 

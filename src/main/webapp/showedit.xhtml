@@ -91,10 +91,12 @@
 			<h:panelGrid columns="3" cellpadding="5">
 				<p:commandButton value="Back To Show List" immediate="true"
 					action="showlist" icon="ui-icon-circle-close" />
-				
+
 				<p:button value="Print Tickets" action="tickets"
-					icon="ui-icon-print" disabled="#{lotteryBB.requests == 0}"
+					icon="ui-icon-print" disabled="#{lotteryBB.tickets == 0}"
 					href="#{request.contextPath}/tickets?id=#{showBB.show.recordId}" />
+				<p:button value="Seating Report" disabled="#{lotteryBB.tickets == 0}" icon="ui-icon-print"
+					href="#{request.contextPath}/report?id=show&amp;show_id=#{showBB.show.recordId}" />
 			</h:panelGrid>
 
 		</h:form>

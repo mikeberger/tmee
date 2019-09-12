@@ -288,7 +288,7 @@ public class TicketPanel extends JPanel implements Printable {
 			if (t.getSeat().getRow().startsWith("_"))
 				return "____";
 			String s = t.getSeat().getLabel();
-			if (s.equals("")) {
+			if (s == null || s.equals("")) {
 				return "1";
 			}
 			return s;
