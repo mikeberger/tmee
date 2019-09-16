@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/templates/page-template.xhtml">
+	<ui:param name="pageTitle" value="Shows" />
+	<ui:define name="panel-main">
+		<h:form>
+			<p:panel header="Shows">
+
+				<p:dataTable var="show" value="#{showBB.showList}"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="15,25,50,100" paginator="true" rows="25"
+					style="margin-bottom:20px" sortBy="#{show.time}">
+					<p:column headerText="Name" sortBy="#{show.name}"
+						filterBy="#{show.name}" filterMatchMode="contains">
+						<h:outputText value="#{show.name}" />
+					</p:column>
+
+					<p:column headerText="Time" sortBy="#{show.time}">
+						<h:outputText value="#{show.time}">
+							<f:convertDateTime pattern="MMM dd yyyy kk:mm" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Description">
+						<h:outputText rows="10" cols="60" value="#{show.description}" />
+					</p:column>
+
+					<p:column headerText="Action">
+						<p:commandButton action="request" value="Request Tickets"
+							actionListener="#{requestBB.newUserRecord}">
+							<f:param name="show_id" value="#{show.recordId}" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

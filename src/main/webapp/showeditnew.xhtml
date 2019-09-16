@@ -33,6 +33,9 @@
 						<p:selectOneMenu id="layout" value="#{showBB.layoutName}">
 							<f:selectItems value="#{showBB.allLayouts}" />
 						</p:selectOneMenu>
+						<p:outputLabel value="Description: " />
+						<p:inputTextarea rows="10" cols="60"
+							value="#{showBB.show.description}" />
 					</p:panelGrid>
 
 					<h:panelGrid columns="2" cellpadding="5">

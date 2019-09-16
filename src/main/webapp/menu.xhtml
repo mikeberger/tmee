@@ -28,6 +28,10 @@
 					action="requestlist?faces-redirect=true"
 					actionListener="#{requestBB.loadAdminList}"
 					rendered="#{p:ifGranted('tmadmin')}" />
+				<p:commandButton value="Shows" icon="ui-icon-help"
+					action="custshowlist?faces-redirect=true"
+					actionListener="#{showBB.loadOpenShows}"
+					rendered="#{p:ifGranted('tmuser')}" />
 				<p:commandButton value="My Requests" icon="ui-icon-help"
 					action="requestlist?faces-redirect=true"
 					actionListener="#{requestBB.loadUserList}"
@@ -52,7 +56,7 @@
 						actionListener="#{zoneBB.refreshList}" />
 				</p:menuButton>
 
-			
+
 				<p:menuButton value="Admin" rendered="#{p:ifGranted('tmadmin')}">
 					<p:menuitem value="Export" url="#{request.contextPath}/export" />
 					<p:menuitem value="Erase Quality Totals"

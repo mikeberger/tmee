@@ -97,7 +97,7 @@ public class RequestBB implements Serializable {
 	}
 
 	public void newRecord(ActionEvent evt) {
-		
+
 		newUserRecord(evt);
 
 		try {
@@ -108,7 +108,7 @@ public class RequestBB implements Serializable {
 		}
 
 	}
-	
+
 	public void newUserRecord(ActionEvent evt) {
 
 		try {
@@ -117,8 +117,15 @@ public class RequestBB implements Serializable {
 
 			request.setPaid(true); // testing
 
-			// we are going to the editor
-			ShowBB.refreshSessionShowList();
+			String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("show_id");
+			if (id == null || id.isEmpty()) {
+				// we are going to the editor
+				ShowBB.refreshSessionShowList();
+			} else {
+				Show s = showbean.get(Show.class, id);
+				request.setShow(s);
+
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -128,11 +135,12 @@ public class RequestBB implements Serializable {
 
 	public void save() {
 
-		Show s = showbean.get(Show.class, selectedShow);
-		request.setShow(s);
-		
-		if( selectedCustomer != null )
-		{
+		if (request.getShow() == null) {
+			Show s = showbean.get(Show.class, selectedShow);
+			request.setShow(s);
+		}
+
+		if (selectedCustomer != null) {
 			Customer c = cbean.get(Customer.class, selectedCustomer);
 			request.setCustomer(c);
 		}
@@ -140,9 +148,10 @@ public class RequestBB implements Serializable {
 		if (request.getCustomer() == null) {
 			request.setCustomer(cbean.getCurrentCustomer());
 		}
-		
-		if( request.getTickets() > request.getCustomer().getAllowedTickets()) {
-			Message.validationError("Only " + request.getCustomer().getAllowedTickets() + " tickets are allowed for this customer");
+
+		if (request.getTickets() > request.getCustomer().getAllowedTickets()) {
+			Message.validationError(
+					"Only " + request.getCustomer().getAllowedTickets() + " tickets are allowed for this customer");
 			throw new AbortProcessingException();
 		}
 
@@ -167,7 +176,7 @@ public class RequestBB implements Serializable {
 
 			if (all) {
 				list = rbean.getAll();
-				
+
 			} else {
 				// get requests for current logged in customer
 				list = rbean.getRequestsForCustomer(null);

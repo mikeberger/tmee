@@ -35,6 +35,9 @@
 							disabled="#{lotteryBB.tickets > 0}">
 							<f:selectItems value="#{showBB.allLayouts}" />
 						</p:selectOneMenu>
+						<p:outputLabel value="Description: " />
+						<p:inputTextarea rows="10" cols="60"
+							value="#{showBB.show.description}" />
 					</p:panelGrid>
 					<h:panelGrid columns="2" cellpadding="5">
 						<p:commandButton value="Update" action="showedit"
@@ -92,7 +95,7 @@
 				<p:commandButton value="Back To Show List" immediate="true"
 					action="showlist" icon="ui-icon-circle-close" />
 				<p:commandButton action="ticket" value="Enter New Ticket"
-					actionListener="#{ticketBB.newRecord}" 
+					actionListener="#{ticketBB.newRecord}"
 					rendered="#{p:ifGranted('tmadmin')}">
 					<f:param name="show_id" value="#{showBB.show.recordId}" />
 				</p:commandButton>

@@ -197,4 +197,15 @@ public class ShowBB implements Serializable {
 	public void setLayoutName(String layoutName) {
 		this.layoutName = layoutName;
 	}
+	
+	public void loadOpenShows() {
+		try {
+
+			// get requests for current logged in customer
+			showList = rbean.getFutureShows();
+
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
 }

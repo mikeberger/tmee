@@ -51,6 +51,7 @@ public class Show extends BaseAppTable implements Serializable {
 
 	@Column(nullable=false)
 	private String name;
+	private String description;
 	
 	@XmlJavaTypeAdapter(TimeDateAdapter.class)
 	@Column(nullable=false)

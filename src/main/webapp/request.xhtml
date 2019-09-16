@@ -24,12 +24,13 @@
 								itemLabel="#{item}" value="#{custBB.list}" />
 						</p:selectOneMenu>
 						<p:outputLabel for="show" value="Show:" />
-						<p:selectOneMenu required="true" id="show"
+						<p:selectOneMenu required="true" id="show" rendered="#{requestBB.request.show == null}"
 							value="#{requestBB.selectedShow}">
 							<f:selectItem itemLabel="Select One" itemValue="" />
 							<f:selectItems var="item" itemValue="#{item.recordId}"
 								itemLabel="#{item}" value="#{showBB.showList}" />
 						</p:selectOneMenu>
+						<p:inputText id="showname" readonly="true" size="60" value="#{requestBB.request.show.label}" rendered="#{requestBB.request.show != null}"/>
 						<p:outputLabel for="ticks" value="Number of Tickets: " />
 						<p:spinner id="ticks" value="#{requestBB.request.tickets}" min="1"
 							max="100" required="true" />
