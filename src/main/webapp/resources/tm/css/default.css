@@ -1,3 +1,24 @@
+/*-
+ * #%L
+ * tmee
+ * %%
+ * Copyright (C) 2019 Michael Berger
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
 html {
 	margin: 0;
 	padding: 0;
@@ -5,29 +26,10 @@ html {
 }
 
 body {
-	margin: 0;
-	padding: 0;
-	background-color: white;
 	font-size: 62.5%;
 }
 
-h1, h2, h3, h4, h5, h6 {
-	margin: 0 0 0.5em 0;
-	padding: 0;
-}
 
-p {
-	margin: 0 0 0 0;
-	padding: 0;
-}
-
-a:link, a:visited {
-	color: #1f778d;
-}
-
-a:hover, a:active {
-	color: #76cbe0;
-}
 
 body>header {
 	padding: 1em;
@@ -41,20 +43,14 @@ body>header {
 	font-size: 20px;
 }
 
-body>section {
-	margin: 5em 20%;
-	padding: 10px;
-	overflow: hidden;
-	background-color: white;
-	color: black;
-}
 
 body>footer {
 	padding: 10px;
-	margin: 10px;
 	clear: both;
-	text-align: center;
+	text-align: right;
 	background-color: white;
+    font-size: 15px;
+	
 }
 
 .ui-panel {

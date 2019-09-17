@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html>
 <!--
   #%L
   tmee
@@ -21,39 +19,23 @@
   <http://www.gnu.org/licenses/gpl-3.0.html>.
   #L%
   -->
-
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-<h:head>
-	<meta charset="UTF-8" />
-	<title>TicketMaven Login</title>
-	<link rel="stylesheet" href="resources/tm/css/default.css" />
-</h:head>
-<h:body>
-	 <header>
-         TicketMaven
-    </header>
-	<center>
-	<h:form id="myform">
-
-		<p:messages id="messages" showDetail="true" closable="true">
-        <p:autoUpdate />
-    </p:messages>
-		<p:panelGrid columns="2">
-			<p:outputLabel for="nameUser" value="Username:" />
-			<p:inputText id="nameUser" value="#{login.username}" />
-
-			<p:outputLabel for="password" value="Password:" />
-			<p:password id="password" value="#{login.password}" />
-
-			<p:commandButton value="login" action="#{login.login}" />
-		</p:panelGrid>
-
-	</h:form>
-	</center>
-</h:body>
-
-
+<ui:composition template="/templates/page-template.xhtml">
+	<ui:param name="pageTitle" value="About" />
+	<ui:define name="panel-main">
+	    <p:panel header="About" >
+	
+		<p>TicketMaven Web Version 1.0</p>
+		<br/>
+		<h:outputLink value="resources/LICENSE.txt" target="_blank">TicketMaven License</h:outputLink>
+		<p/>
+		<br/>
+		<h:outputLink value="resources/THIRD-PARTY.txt" target="_blank">Third Party Licenses</h:outputLink>
+		</p:panel>
+	</ui:define>
+</ui:composition>
 </html>
