@@ -32,12 +32,12 @@ a:hover, a:active {
 body>header {
 	padding: 1em;
 	clear: both;
-	text-align: center;
+	text-align: left;
 	background-color: rgb(20, 132, 230);
 	color: #ffffff;
 	margin: 0 0 0 0;
-	padding: 0;
-	height: 60px;
+	padding: 10px 0 5px 20px;
+	height: 30px;
 	font-size: 20px;
 }
 
