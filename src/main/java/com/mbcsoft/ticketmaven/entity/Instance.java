@@ -44,10 +44,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.primefaces.json.JSONObject;
 
 import lombok.Data;
 
@@ -56,21 +59,57 @@ import lombok.Data;
 @Entity
 @Data
 public class Instance implements Serializable {
-	
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue
 	@XmlTransient
 	private int recordId;
-	
+
 	@Column(unique = true, nullable = false)
 	private String name;
 
 	@Column(nullable = false)
 	private boolean enabled;
 
+	private String options;
 
+	@Transient
+	private JSONObject optionRoot;
+
+	public String getOption(String name, String def) {
+		loadOptions();
+		String p = (String) optionRoot.get(name);
+		if (p == null)
+			return def;
+		return p;
+	}
+
+	public int getIntOption(String name, int def) {
+		loadOptions();
+		String v = (String) optionRoot.get(name);
+		if (v == null) {
+			return def;
+		}
+		return Integer.parseInt(v);
+	}
+
+	public void putOption(String name, String val) {
+		if( optionRoot == null)
+			loadOptions();
+		optionRoot.put(name, val);
+		options = optionRoot.toString();
+	}
+
+	public void loadOptions() {
+		if (optionRoot == null) {
+			if (options == null || options.isEmpty())
+				optionRoot = new JSONObject();
+			else
+				optionRoot = new JSONObject(options);
+		}
+
+	}
 
 }

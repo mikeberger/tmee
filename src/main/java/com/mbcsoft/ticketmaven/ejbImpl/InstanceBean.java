@@ -87,7 +87,7 @@ public class InstanceBean  {
 		}
 	}
 
-	protected Instance getInstance() {
+	public Instance getInstance() {
 		return InstanceBean.getInstance(ejbContext, em);
 	}
 

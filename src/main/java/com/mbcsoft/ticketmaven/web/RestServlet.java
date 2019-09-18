@@ -151,7 +151,14 @@ public class RestServlet {
 		Instance inst = new Instance();
 		inst.setEnabled(true);
 		inst.setName(is);
+		inst.putOption("opt1", "value1");
+		inst.putOption("opt2", "value2");
 		inst = ib.save(inst);
+		
+
+		
+		inst = ib.getInstance();
+		System.out.println(inst.getOptions());
 
 		Customer admin = new Customer();
 		admin.setFirstName(is);
