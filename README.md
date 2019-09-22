@@ -15,8 +15,24 @@ TicketMaven only exists due to the communities that simply couldn't handle this 
 
 The program also models special needs seats that are reserved for customers with various special needs, such as vision, hearing, mobility problems, etc... These special needs types not pre-defined, and are created as needed by the administrator.
 
+**The web version is still incomplete and lacks some of the in-depth features of the desktop version.**
+
+**Even when completed, communities can't just take this software and run it. Managing a web server is not trivial. A local nerd will be necessary. See the Support section below.**
+
 ### Implementation
 
 The project is implemented using Primefaces on top of JEE since that is what the author is familiar with and also since the project started some time ago, in parallel with the desktop version, before many of the newer frameworks were a thing. 
+
+The web version is multi-tenant, meaning that a single running deployment can simulataneously support multiple communities. Each community would not have permission to see the data from any other, nor would a community be aware of the existence of the other communities.
+
+### Licensing
+
+This web version is free and open source, released under the GPL.
+
+### Support
+
+If there are communities with residents who are technically knowledgeable enough to manage a private web server or deploy the app to a JEE hosting site, then they might be good candidates to run the web version and I'd be glad to be involved (once the software is ready). If there are residents who are capable of contributing code to the project, that would be welcome too. For a single community, the software could run on a single spare PC or even a raspberry pi.
+
+If there isn't any interest, then writing the web version will just be something enjoyable to do.
 
 
