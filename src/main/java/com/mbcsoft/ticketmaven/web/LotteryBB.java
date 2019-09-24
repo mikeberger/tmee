@@ -65,6 +65,7 @@ public class LotteryBB implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String requests;
+	private String unpaid;
 	private String seatsRequested;
 	private String tickets;
 	private String seatsAvailable;
@@ -131,6 +132,8 @@ public class LotteryBB implements Serializable {
 			Collection<Request> reqs = reqbean.getPaidRequestsForShow(s);
 
 			requests = Integer.toString(reqs.size());
+			
+			unpaid = Long.toString(reqbean.getUnpaidCount(s));
 
 			int num_seats = 0;
 			for(Request tr : reqs )
@@ -212,6 +215,14 @@ public class LotteryBB implements Serializable {
 
 	public void setShowName(String showName) {
 		this.showName = showName;
+	}
+
+	public String getUnpaid() {
+		return unpaid;
+	}
+
+	public void setUnpaid(String unpaid) {
+		this.unpaid = unpaid;
 	}
 
 }

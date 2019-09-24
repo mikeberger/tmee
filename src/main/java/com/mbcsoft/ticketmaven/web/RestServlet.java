@@ -154,10 +154,7 @@ public class RestServlet {
 		inst.putOption("opt1", "value1");
 		inst.putOption("opt2", "value2");
 		inst = ib.save(inst);
-		
-
-		
-		inst = ib.getInstance();
+				
 		System.out.println(inst.getOptions());
 
 		Customer admin = new Customer();
@@ -207,8 +204,8 @@ public class RestServlet {
 
 		Layout l = new Layout();
 		l.setName("Full Auditorium");
-		l.setNumRows(20);
-		l.setNumSeats(40);
+		l.setNumRows(15);
+		l.setNumSeats(32);
 		l = layoutb.save(l,true);
 
 		Show show1 = null;
@@ -229,21 +226,21 @@ public class RestServlet {
 		}
 
 		loadCusts( zonelist);
-		createRequests( show1);
-		createRequests( show2);
+		createRequests( show1, true);
+		createRequests( show2, false);
 
 		lotteryb.runLottery(show1);
 
 	}
 
-	private void createRequests( Show show) {
+	private void createRequests( Show show, boolean paid) {
 
 		for (Customer c : cb.getAll()) {
 			Request r = new Request();
 			r.setCustomer(c);
 			r.setShow(show);
 			r.setTickets(2);
-			r.setPaid(true);
+			r.setPaid(paid);
 			requestb.save(r);
 
 		}
@@ -251,7 +248,7 @@ public class RestServlet {
 
 	private void loadCusts( ArrayList<Zone> zonelist) {
 
-		for (int i = 1; i < 25; i++) {
+		for (int i = 1; i <= 50; i++) {
 			Faker faker = new Faker();
 
 			Customer c = new Customer();
@@ -266,7 +263,7 @@ public class RestServlet {
 			c.setAddress(faker.address().fullAddress());
 			c.setAllowedTickets(2);
 
-			if (i <= 20)
+			if (i <= 5)
 				c.setSpecialNeeds(zonelist.get(i % zonelist.size()).getName());
 
 			try {

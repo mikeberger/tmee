@@ -137,7 +137,7 @@ public class RequestBB implements Serializable {
 
 			request = rbean.newRecord();
 
-			request.setPaid(true); // testing
+			request.setPaid(false); 
 
 			String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("show_id");
 			if (id == null || id.isEmpty()) {
@@ -153,6 +153,24 @@ public class RequestBB implements Serializable {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public void markPaid() {
+		try {
+			String id = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+					.get("request_id");
+			if (id == null || "".equals(id))
+				return;
+
+			Request r = rbean.get(Request.class, id);
+			r.setPaid(true);
+			rbean.save(r);
+
+			refreshList();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void save() {

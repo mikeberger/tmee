@@ -53,11 +53,22 @@
 						<h:outputText value="#{req.tickets}" />
 					</p:column>
 
+					<p:column headerText="Paid" sortBy="#{req.paid}">
+						<p:selectBooleanCheckbox value="#{req.paid}" disabled="true" />
+					</p:column>
+
+
 					<p:column headerText="Action">
 						<p:commandButton action="requestlist?faces-redirect=true"
 							icon="ui-icon-circle-close" actionListener="#{requestBB.delete}">
 							<f:param name="request_id" value="#{req.recordId}" />
 							<p:confirm header="Confirmation" message="Really Delete?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:commandButton rendered="#{req.paid == false}" action="requestlist?faces-redirect=true"
+							 actionListener="#{requestBB.markPaid}" value="Mark Paid">
+							<f:param name="request_id" value="#{req.recordId}" />
+							<p:confirm header="Confirmation" message="Really Mark as Paid"
 								icon="ui-icon-alert" />
 						</p:commandButton>
 					</p:column>

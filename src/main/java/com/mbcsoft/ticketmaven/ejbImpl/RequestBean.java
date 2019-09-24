@@ -117,4 +117,12 @@ public class RequestBean extends BaseEntityFacadeImpl<Request>  {
 			return 0;
 		}			
 	}
+
+
+	public long getUnpaidCount(Show s) {
+		Query query = em.createQuery("SELECT count(e) FROM Request e WHERE e.show = :show AND e.paid = false");
+		query.setParameter("show", s);
+		return (long) query.getSingleResult();
+
+	}
 }
