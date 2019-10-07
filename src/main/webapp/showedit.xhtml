@@ -60,6 +60,9 @@
 						<p:outputLabel value="Description: " />
 						<p:inputTextarea rows="10" cols="60"
 							value="#{showBB.show.description}" />
+						<p:outputLabel value="Image: " />
+						<p:inputText size="60" value="#{showBB.show.image}"
+							readonly="true" />
 					</p:panelGrid>
 					<h:panelGrid columns="2" cellpadding="5">
 						<p:commandButton value="Update" action="showedit"
@@ -80,9 +83,8 @@
 						<p:outputLabel for="show" value="Show: " />
 						<p:inputText id="show" value="#{lotteryBB.showName}"
 							readonly="true" size="60" />
-							<p:outputLabel for="reqs" value="Unpaid Requests: " />
-						<p:inputText id="unp" value="#{lotteryBB.unpaid}"
-							readonly="true" />
+						<p:outputLabel for="reqs" value="Unpaid Requests: " />
+						<p:inputText id="unp" value="#{lotteryBB.unpaid}" readonly="true" />
 						<p:outputLabel for="reqs" value="Outstanding Paid Requests: " />
 						<p:inputText id="reqs" value="#{lotteryBB.requests}"
 							readonly="true" />

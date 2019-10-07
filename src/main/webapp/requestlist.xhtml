@@ -65,8 +65,8 @@
 							<p:confirm header="Confirmation" message="Really Delete?"
 								icon="ui-icon-alert" />
 						</p:commandButton>
-						<p:commandButton rendered="#{req.paid == false}" action="requestlist?faces-redirect=true"
-							 actionListener="#{requestBB.markPaid}" value="Mark Paid">
+						<p:commandButton rendered="#{(req.paid == false) and p:ifGranted('tmadmin')}" action="requestlist?faces-redirect=true"
+							 actionListener="#{requestBB.markPaid}" value="Mark Paid" >
 							<f:param name="request_id" value="#{req.recordId}" />
 							<p:confirm header="Confirmation" message="Really Mark as Paid"
 								icon="ui-icon-alert" />

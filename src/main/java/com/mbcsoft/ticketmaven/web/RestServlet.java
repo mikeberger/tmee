@@ -216,6 +216,7 @@ public class RestServlet {
 			s.setName(faker.funnyName().name());
 			s.setCost(i * 1000);
 			s.setLayout(l);
+			s.setDescription("This is a really great show!!! A must see where stuff happens and there is this long line of description and more ******************************************************************************************");
 			s.setPrice(i * 100);
 			s.setTime(new Timestamp(faker.date().future(100, 7, TimeUnit.DAYS).getTime()));
 			s = showb.save(s);

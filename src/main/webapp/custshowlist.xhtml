@@ -27,36 +27,60 @@
 <ui:composition template="/templates/page-template.xhtml">
 	<ui:param name="pageTitle" value="Shows" />
 	<ui:define name="panel-main">
+		<style type="text/css">
+.ui-dataview-list .ui-dataview-row {
+	border-bottom: 1px solid #A8A8A8;
+	padding: 25px 10px;
+}
+
+.logo {
+	width: 5%;
+}
+
+.name {
+	width: 20%;
+	padding-left: 25px;
+}
+
+.detail {
+	width: 40%;
+	padding-left: 25px;
+}
+</style>
 		<h:form>
 			<p:panel header="Shows">
 
-				<p:dataTable var="show" value="#{showBB.showList}"
+				<p:dataView var="show" value="#{showBB.showList}"
 					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="15,25,50,100" paginator="true" rows="25"
+					rowsPerPageTemplate="5,10,25" paginator="true" rows="5"
 					style="margin-bottom:20px" sortBy="#{show.time}">
-					<p:column headerText="Name" sortBy="#{show.name}"
-						filterBy="#{show.name}" filterMatchMode="contains">
-						<h:outputText value="#{show.name}" />
-					</p:column>
 
-					<p:column headerText="Time" sortBy="#{show.time}">
-						<h:outputText value="#{show.time}">
-							<f:convertDateTime pattern="MMM dd yyyy kk:mm" />
-						</h:outputText>
-					</p:column>
+					<p:dataViewListItem>
+						<p:panelGrid columns="4" style="width:100%"
+							columnClasses="logo,name,detail,logo">
+							<p:graphicImage url="resources/tm/images/#{show.image}" width="120" height="120"/>
+							<p:outputPanel>
+								<h:panelGrid columns="2" cellpadding="5">
+									<h:outputText value="Show:" style="font-weight: bold" />
+									<h:outputText value="#{show.name}" style="font-weight: bold" />
+									<h:outputText value="Date:" style="font-weight: bold" />
+									<h:outputText value="#{show.time}" style="font-weight: bold">
+										<f:convertDateTime pattern="MMM dd yyyy kk:mm" />
+									</h:outputText>
+								</h:panelGrid>
+							</p:outputPanel>
+							<h:outputText rows="10" cols="60" value="#{show.description}" />
 
-					<p:column headerText="Description">
-						<h:outputText rows="10" cols="60" value="#{show.description}" />
-					</p:column>
+							<p:commandButton style="margin:0 auto;" action="request"
+								value="Request Tickets"
+								actionListener="#{requestBB.newUserRecord}">
+								<f:param name="show_id" value="#{show.recordId}" />
+							</p:commandButton>
 
-					<p:column headerText="Action">
-						<p:commandButton action="request" value="Request Tickets"
-							actionListener="#{requestBB.newUserRecord}">
-							<f:param name="show_id" value="#{show.recordId}" />
-						</p:commandButton>
 
-					</p:column>
-				</p:dataTable>
+						</p:panelGrid>
+					</p:dataViewListItem>
+				</p:dataView>
 
 			</p:panel>
 		</h:form>

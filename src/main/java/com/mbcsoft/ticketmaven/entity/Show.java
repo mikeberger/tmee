@@ -74,6 +74,7 @@ public class Show extends BaseAppTable implements Serializable {
 	@Column(nullable=false)
 	private String name;
 	private String description;
+	private String image = "defaultShowImage.jpeg";
 	
 	@XmlJavaTypeAdapter(TimeDateAdapter.class)
 	@Column(nullable=false)
