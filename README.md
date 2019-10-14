@@ -21,7 +21,7 @@ The program also models special needs seats that are reserved for customers with
 
 ### Design
 
-A lot of features are based on the desktop version. The desktop help is [here](https://github.com/mikeberger/tmee/desktop_help/index.html)
+A lot of features are based on the desktop version. The desktop help is [here](https://mikeberger.github.io/tmee/desktop_help/)
 The desktop help can serve as a design reference of sorts. A "Lite" version of the desktop version will be available at some point, just as reference code.
 
 ### Implementation
