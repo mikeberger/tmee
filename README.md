@@ -9,7 +9,7 @@ Most communities will do fine with one of the many off the shelf ticketing progr
 TicketMaven only exists due to the communities that simply couldn't handle this kind of process. TicketMaven follows the following process:
 
 1. Users enter "requests" for tickets at their leisure.
-2. If desired, the requests can be considered "unpaid" until payment is received and then be marked as "paid". The program does not handle payment. Payment would be collected manually in some way.
+2. The requests are considered "unpaid" until payment is received and then be marked as "paid". 
 3. The program administrator runs ticket lotteries which assign the actual tickets based on the requests. Tickets are not assigned at random. The customers who have gotten the worst seats in the past will get the best seats in the lottery. The program allows the administrator to set up auditorium models with a "goodness" value for each seat. The program keeps track of the quality of tickets that each customer has gotten in the past.
 4. The users can print their tickets on paper, or if desired, the administrator can print all of the tickets to standard business card stock and distribute them (some communities prefer the formality of traditional stiff, card-board-like tickets).
 
@@ -18,6 +18,11 @@ The program also models special needs seats that are reserved for customers with
 **The web version is still incomplete and lacks some of the in-depth features of the desktop version.**
 
 **Even when completed, communities can't just take this software and run it. Managing a web server is not trivial. A local nerd will be necessary. See the Support section below.**
+
+### Design
+
+A lot of features are based on the desktop version. The desktop help is [here](https://github.com/mikeberger/tmee/desktop_help/index.html)
+The desktop help can serve as a design reference of sorts. A "Lite" version of the desktop version will be available at some point, just as reference code.
 
 ### Implementation
 
@@ -31,8 +36,8 @@ This web version is free and open source, released under the GPL.
 
 ### Support
 
-If there are communities with residents who are technically knowledgeable enough to manage a private web server or deploy the app to a JEE hosting site, then they might be good candidates to run the web version and I'd be glad to be involved (once the software is ready). If there are residents who are capable of contributing code to the project, that would be welcome too. For a single community, the software could run on a single spare PC or even a raspberry pi.
+If there are communities with residents who are technically knowledgeable enough to manage a private web server or deploy the app to a JEE hosting site, then they might be good candidates to run the web version (once the software is ready). If there are residents who are capable of contributing code to the project, that would be welcome too. For a single community, the software could run on a single spare PC or even a raspberry pi.
 
-If there isn't any interest, then writing the web version will just be something enjoyable to do.
+If there isn't any interest, then writing the web version will just be something enjoyable to do and it will go nowhere.
 
 
