@@ -1,0 +1,9 @@
+data-source add --name=tmdb --jndi-name=java:/tm/tmdb --driver-name=h2 --connection-url=jdbc:h2:mem:tmdb --user-name=sa
+/subsystem=datasources/data-source=tmdb:test-connection-in-pool
+
+/subsystem=elytron/jdbc-realm=tmrealm:add(principal-query=[{sql="SELECT password,roles FROM customer WHERE userid=?",data-source=tmdb,simple-digest-mapper={algorithm="simple-digest-sha-256",password-index="1",hash-encoding="hex"},attribute-mapping=[{index=2,to=groups}]}])
+
+/subsystem=elytron/security-domain=tmdomain:add(realms=[{realm=tmrealm,role-decoder=groups-to-roles}],default-realm=tmrealm,permission-mapper=default-permission-mapper)
+
+/subsystem=undertow/application-security-domain=tmdomain:add(security-domain=tmdomain)
+/subsystem=ejb3/application-security-domain=tmdomain:add(security-domain=tmdomain)

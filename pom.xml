@@ -16,18 +16,18 @@
 	<version>1.0</version>
 	<packaging>war</packaging>
 	<url>http://mbcsoft.com</url>
-        <inceptionYear>2019</inceptionYear>
-        <organization>
-                <name>Michael Berger</name>
-        </organization>
-        <licenses>
-                <license>
-                        <name>GNU General Public License - Version 3</name>
-                        <url>http://www.gnu.org/licenses/gpl-3.0.en.html</url>
-                        <distribution>repo</distribution>
-                </license>
-        </licenses>
-	
+	<inceptionYear>2019</inceptionYear>
+	<organization>
+		<name>Michael Berger</name>
+	</organization>
+	<licenses>
+		<license>
+			<name>GNU General Public License - Version 3</name>
+			<url>http://www.gnu.org/licenses/gpl-3.0.en.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
 	<repositories>
 		<repository>
 			<id>prime-repo</id>
@@ -37,7 +37,7 @@
 		</repository>
 	</repositories>
 	<dependencies>
-	<dependency>
+		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<version>7.0</version>
@@ -54,10 +54,10 @@
 			<version>7.0</version>
 		</dependency>
 		<dependency>
-    <groupId>org.primefaces.themes</groupId>
-    <artifactId>all-themes</artifactId>
-    <version>1.0.10</version>
-</dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>all-themes</artifactId>
+			<version>1.0.10</version>
+		</dependency>
 		<dependency>
 			<groupId>com.github.javafaker</groupId>
 			<artifactId>javafaker</artifactId>
@@ -156,6 +156,47 @@
 					<source>13</source>
 					<target>13</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.wildfly.plugins</groupId>
+				<artifactId>wildfly-jar-maven-plugin</artifactId>
+				<version>2.0.2.Final</version>
+				<configuration>
+					<feature-pack-location>wildfly@maven(org.jboss.universe:community-universe)</feature-pack-location>
+					<context-root>tmee</context-root>
+					<layers>
+						<layer>jsf</layer>
+						<layer>ejb</layer>
+						<layer>h2-driver</layer>
+						<layer>jpa</layer>
+						<layer>jaxrs</layer>
+					</layers>
+					<cli-sessions>
+						<cli-session>
+							<script-files>
+								<script>scripts/config.cli</script>
+							</script-files>
+							<!-- We want the env variables to be resolved during server execution -->
+							<resolve-expressions>false</resolve-expressions>
+						</cli-session>
+<!-- 						<cli-session> -->
+<!-- 							<script-files> -->
+<!-- 								<script>../scripts/script2.cli</script> -->
+<!-- 							</script-files> -->
+<!-- 							<properties-file>../scripts/cli.properties</properties-file> -->
+<!-- 							We want the properties to be resolved during CLI execution (not  -->
+<!-- 								actually needed, this is the default behavior) -->
+<!-- 							<resolve-expressions>true</resolve-expressions> -->
+<!-- 						</cli-session> -->
+					</cli-sessions>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>package</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

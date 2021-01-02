@@ -3,3 +3,4 @@
 .classpath
 faces-config.pageflow
 /target/
+/.metadata/
