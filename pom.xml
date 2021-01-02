@@ -13,7 +13,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>tmee</artifactId>
 	<groupId>tmee</groupId>
-	<version>1.0</version>
+	<version>0.1</version>
 	<packaging>war</packaging>
 	<url>http://mbcsoft.com</url>
 	<inceptionYear>2019</inceptionYear>

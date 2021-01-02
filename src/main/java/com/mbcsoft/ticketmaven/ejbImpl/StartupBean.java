@@ -103,6 +103,38 @@ public class StartupBean {
 
 		}
 		
+		//
+		// TEST INSTANCE
+		//
+		Instance b = null;
+		try {
+			query = em.createQuery("SELECT e FROM Instance e WHERE e.name = 'Bellaggio'");
+			b = (Instance) query.getSingleResult();
+		} catch (Exception e) {
+			logger.info("**** Creating Bellaggio Instance ****");
+
+			b = new Instance();
+			b.setEnabled(true);
+			b.setName("Bellaggio");
+			em.persist(b);
+			
+			Customer admin = new Customer();
+
+			admin.setFirstName("Bellaggio");
+			admin.setLastName("Admin");
+			admin.setUserid("bellaggio");
+			admin.setPassword(PasswordUtil.hexHash("bellaggio")); 
+			admin.setRoles("tmadmin");
+			admin.setInstance(b);
+			admin.setResident("N");
+			admin.setSpecialNeeds(Customer.NONE);
+			
+			em.persist(admin);
+			
+			
+		}
+
+		
 	}
 
 	

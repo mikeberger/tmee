@@ -81,7 +81,7 @@ public class RESTInvoker {
     }
     
     public static void main(String[] args) {
-    	RESTInvoker ri = new RESTInvoker("http://localhost:8080/tmee/tmrest/api", "bellaggio", "mike");
+    	RESTInvoker ri = new RESTInvoker("http://localhost:8080/tmee/tmrest/api", "bellaggio", "bellaggio");
     	System.out.println(ri.getDataFromServer("/ping"));
     	System.out.println(ri.getDataFromServer("/customers"));	
     }
