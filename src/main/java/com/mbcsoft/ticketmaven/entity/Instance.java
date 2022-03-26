@@ -50,9 +50,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.primefaces.json.JSONObject;
-
 import lombok.Data;
+import org.primefaces.shaded.json.JSONObject;
 
 @XmlRootElement(name = "Instance")
 @XmlAccessorType(XmlAccessType.FIELD)

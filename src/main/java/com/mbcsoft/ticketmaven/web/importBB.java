@@ -47,7 +47,6 @@ import javax.inject.Named;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
-import org.primefaces.model.UploadedFile;
 
 import com.mbcsoft.ticketmaven.ejbImpl.CustomerBean;
 import com.mbcsoft.ticketmaven.ejbImpl.LayoutBean;
@@ -60,6 +59,7 @@ import com.mbcsoft.ticketmaven.entity.Layout;
 import com.mbcsoft.ticketmaven.entity.Seat;
 import com.mbcsoft.ticketmaven.entity.Show;
 import com.mbcsoft.ticketmaven.entity.Zone;
+import org.primefaces.model.file.UploadedFile;
 
 @Named("importBB")
 @RequestScoped
@@ -86,7 +86,7 @@ public class importBB implements Serializable {
 		try {
 			JAXBContext jc = JAXBContext.newInstance(XmlContainer.class);
 			Unmarshaller u = jc.createUnmarshaller();
-			XmlContainer container = (XmlContainer) u.unmarshal(uploadedFile.getInputstream());
+			XmlContainer container = (XmlContainer) u.unmarshal(uploadedFile.getInputStream());
 			Instance inst = cbean.getCurrentCustomer().getInstance();
 			
 			for( Customer c : container.customer)

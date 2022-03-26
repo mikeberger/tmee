@@ -53,8 +53,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 
-import org.primefaces.json.JSONArray;
-import org.primefaces.json.JSONObject;
 
 import com.github.javafaker.Faker;
 import com.mbcsoft.ticketmaven.ejbImpl.CustomerBean;
@@ -72,6 +70,8 @@ import com.mbcsoft.ticketmaven.entity.Request;
 import com.mbcsoft.ticketmaven.entity.Show;
 import com.mbcsoft.ticketmaven.entity.Zone;
 import com.mbcsoft.ticketmaven.util.PasswordUtil;
+import org.primefaces.shaded.json.JSONArray;
+import org.primefaces.shaded.json.JSONObject;
 
 @Stateless
 @Path("/api")
