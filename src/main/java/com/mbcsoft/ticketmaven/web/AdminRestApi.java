@@ -38,11 +38,13 @@ package com.mbcsoft.ticketmaven.web;
  * #L%
  */
 
-import java.net.HttpURLConnection;
+import java.io.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
@@ -52,6 +54,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.StreamingOutput;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 
 
 import com.github.javafaker.Faker;
@@ -63,21 +68,16 @@ import com.mbcsoft.ticketmaven.ejbImpl.RequestBean;
 import com.mbcsoft.ticketmaven.ejbImpl.SeatBean;
 import com.mbcsoft.ticketmaven.ejbImpl.ShowBean;
 import com.mbcsoft.ticketmaven.ejbImpl.ZoneBean;
-import com.mbcsoft.ticketmaven.entity.Customer;
-import com.mbcsoft.ticketmaven.entity.Instance;
-import com.mbcsoft.ticketmaven.entity.Layout;
-import com.mbcsoft.ticketmaven.entity.Request;
-import com.mbcsoft.ticketmaven.entity.Show;
-import com.mbcsoft.ticketmaven.entity.Zone;
+import com.mbcsoft.ticketmaven.entity.*;
 import com.mbcsoft.ticketmaven.util.PasswordUtil;
-import org.primefaces.shaded.json.JSONArray;
-import org.primefaces.shaded.json.JSONObject;
 
 @Stateless
-@Path("/api")
+@Path("/admin")
 @Produces({ "application/json;charset=UTF-8" })
 @RolesAllowed({ "tmsite", "tmadmin" })
-public class RestServlet {
+public class AdminRestApi {
+
+	static private final Logger logger = Logger.getLogger(AdminRestApi.class.getName());
 
 	@EJB
 	private CustomerBean cb;
@@ -98,8 +98,63 @@ public class RestServlet {
 	private LotteryManager lotteryb;
 
 	@GET
+	@Path("/export")
+	@Produces("application/zip")
+	public StreamingOutput export() {
+
+		return new StreamingOutput() {
+			@Override
+			public void write(OutputStream outputStream) throws IOException, WebApplicationException {
+				try {
+					Instance inst = cb.getCurrentCustomer().getInstance();
+					logger.info("Export for community = " + inst.getName());
+
+					ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+					ZipOutputStream out = new ZipOutputStream(byteArrayOutputStream);
+					Writer fw = new OutputStreamWriter(out, "UTF8");
+
+					out.putNextEntry(new ZipEntry("export.xml"));
+					JAXBContext jc = JAXBContext.newInstance(XmlContainer.class);
+					Marshaller marshaller = jc.createMarshaller();
+					marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+					XmlContainer cc = new XmlContainer();
+					cc.instance = inst;
+					cc.customer = cb.getAll();
+					cc.show = showb.getAll();
+					cc.layout = layoutb.getAll();
+					cc.zone = zoneb.getAll();
+					cc.seat = seatb.getAll();
+
+					for (Show s : cc.show) {
+						s.setLayoutName(s.getLayout().getName());
+					}
+
+					for (Seat s : cc.seat) {
+						s.setLayoutName(s.getLayout().getName());
+						if (s.getZone() != null)
+							s.setZoneName(s.getZone().getName());
+					}
+
+					marshaller.marshal(cc, out);
+					fw.flush();
+					out.closeEntry();
+					out.close();
+
+					outputStream.write(byteArrayOutputStream.toByteArray());
+
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		};
+
+	}
+
+/*
+	@GET
 	@Path("/customer/{id}")
-	public Object getBalanceBank(@PathParam("id") final String id) {
+	public Object getCustomer(@PathParam("id") final String id) {
 
 		Customer c = cb.getCustomer(id);
 		if (c != null)
@@ -134,13 +189,7 @@ public class RestServlet {
 
 	}
 
-	@GET
-	@Path("/ping")
-	public Object ping() {
-
-		return "{\"resp\":\"I am Here!\"}";
-
-	}
+	*/
 
 	@GET
 	@Path("/genTestInstance/{instance}")

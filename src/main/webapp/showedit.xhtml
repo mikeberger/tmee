@@ -128,10 +128,10 @@
 				</p:commandButton>
 				<p:button value="Print Tickets" action="tickets"
 					icon="ui-icon-print" disabled="#{lotteryBB.tickets == 0}"
-					href="#{request.contextPath}/tickets?id=#{showBB.show.recordId}" />
+					href="#{request.contextPath}/api/ticket/#{showBB.show.recordId}" />
 				<p:button value="Seating Report"
 					disabled="#{lotteryBB.tickets == 0}" icon="ui-icon-print"
-					href="#{request.contextPath}/report?id=show&amp;show_id=#{showBB.show.recordId}" />
+					href="#{request.contextPath}/api/report/show/#{showBB.show.recordId}" />
 			</h:panelGrid>
 
 		</h:form>

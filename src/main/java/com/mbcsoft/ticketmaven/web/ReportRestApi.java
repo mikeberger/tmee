@@ -41,9 +41,12 @@ package com.mbcsoft.ticketmaven.web;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import javax.naming.InitialContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -52,6 +55,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import javax.ws.rs.*;
+import javax.ws.rs.core.StreamingOutput;
 
 import com.mbcsoft.ticketmaven.ejbImpl.CustomerBean;
 
@@ -64,32 +69,19 @@ import net.sf.jasperreports.engine.util.JRLoader;
 /**
  * Servlet implementation class ReportServlet
  */
-@WebServlet("/report")
-public class ReportServlet extends HttpServlet {
+@Stateless
+@Path("/report")
+@Produces({ "application/pdf" })
+@RolesAllowed({ "tmsite", "tmadmin" })
+public class ReportRestApi {
 	private static final long serialVersionUID = 1L;
 
 	@EJB private CustomerBean rbean;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public ReportServlet() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		
-		String id = request.getParameter("id");
-
+	private void runReport(OutputStream outputStream, String id, String show_id ){
 		JasperPrint jasperPrint = null;
 		try {
-			
+
 			int instance = rbean.getCurrentCustomer().getInstance().getRecordId();
 			String reportname = "na";
 			HashMap<String, Object> parms = new HashMap<String, Object>();
@@ -101,43 +93,52 @@ public class ReportServlet extends HttpServlet {
 			}
 			else if( "show".equals(id) )
 			{
-				String show_id = request.getParameter("show_id");
 				reportname = "seatsForShowByName";
 				parms.put("show_id", Integer.valueOf(show_id));
 				parms.put("title", "Title TBD");
 			}
-			
-			InputStream is = ReportServlet.class.getResourceAsStream("/" + reportname + ".jasper");
+
+			InputStream is = ReportRestApi.class.getResourceAsStream("/" + reportname + ".jasper");
 
 			String targetFileName = reportname + ".pdf";
 			JasperReport jasperReport = (JasperReport) JRLoader.loadObject(is);
 			InitialContext ctx = new InitialContext();
 			DataSource ds = (DataSource) ctx.lookup("java:/tm/tmdb");
-			
+
 			jasperPrint = JasperFillManager.fillReport(jasperReport, parms, ds.getConnection());
-			
-			ServletOutputStream outputstream = response.getOutputStream();
+
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 			JasperExportManager.exportReportToPdfStream(jasperPrint, byteArrayOutputStream);
-			response.setContentType("application/pdf");
-			outputstream.write(byteArrayOutputStream.toByteArray());
-			response.setHeader("Cache-Control", "max-age=0");
-			response.setHeader("Content-Disposition", "attachment; filename=" + targetFileName);
-			outputstream.flush();
-			outputstream.close();
+			outputStream.write(byteArrayOutputStream.toByteArray());
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+	@GET
+	@Path("/{id}")
+	public StreamingOutput report(@PathParam("id") String id) {
+		return new StreamingOutput() {
+			@Override
+			public void write(OutputStream outputStream) throws IOException, WebApplicationException {
+				runReport(outputStream,id,null);
+			}
+		};
 	}
+
+	@GET
+	@Path("/{id}/{showid}")
+	public StreamingOutput reportWithShowId(@PathParam("id") String id, @PathParam("showid") String show_id) {
+		return new StreamingOutput() {
+			@Override
+			public void write(OutputStream outputStream) throws IOException, WebApplicationException {
+				runReport(outputStream,id,show_id);
+			}
+		};
+	}
+
+
+
 
 }

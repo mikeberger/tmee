@@ -80,7 +80,7 @@
 
 
 				<p:menuButton value="Admin" rendered="#{p:ifGranted('tmadmin')}">
-					<p:menuitem value="Export" url="#{request.contextPath}/export" />
+					<p:menuitem value="Export" url="#{request.contextPath}/api/admin/export" />
 					<p:menuitem value="Erase Quality Totals"
 						actionListener="#{custBB.eraseQualityTotals}">
 						<p:confirm header="Confirmation"
@@ -94,7 +94,7 @@
 							icon="ui-icon-alert" />
 					</p:menuitem>
 					<p:menuitem value="Create Test Data (testing only!!!)"
-						url="#{request.contextPath}/tmrest/api/genTestData">	
+						url="#{request.contextPath}/api/admin/genTestData">
 					</p:menuitem>
 				</p:menuButton>
 			</f:facet>

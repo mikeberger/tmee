@@ -41,7 +41,7 @@ package com.mbcsoft.ticketmaven.web;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-@ApplicationPath("/tmrest")
+@ApplicationPath("/api")
 public class RestApp extends Application {
 	
 }
