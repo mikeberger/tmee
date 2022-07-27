@@ -151,45 +151,7 @@ public class AdminRestApi {
 
 	}
 
-/*
-	@GET
-	@Path("/customer/{id}")
-	public Object getCustomer(@PathParam("id") final String id) {
 
-		Customer c = cb.getCustomer(id);
-		if (c != null)
-			return c.toString();
-
-		throw new WebApplicationException(HttpURLConnection.HTTP_NOT_FOUND);
-
-	}
-
-	@GET
-	@Path("/customers")
-	public Object getCusts() {
-
-		List<Customer> l = cb.getAll();
-		if (l != null) {
-			JSONObject ret = new JSONObject();
-			JSONArray list = new JSONArray();
-			for (Customer c : l) {
-				JSONObject jsonObj = new JSONObject();
-				jsonObj.put("firstname", c.getFirstName());
-				jsonObj.put("lastname", c.getLastName());
-				jsonObj.put("recordid", c.getRecordId());
-				jsonObj.put("userid", c.getUserid());
-				list.put(jsonObj);
-			}
-			ret.append("customers", list);
-
-			return ret.toString();
-		}
-
-		throw new WebApplicationException(HttpURLConnection.HTTP_NOT_FOUND);
-
-	}
-
-	*/
 
 	@GET
 	@Path("/genTestInstance/{instance}")

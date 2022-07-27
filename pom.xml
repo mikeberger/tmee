@@ -184,7 +184,6 @@
 				<version>7.0.2.Final</version>
 				<configuration>
 					<feature-pack-location>wildfly@maven(org.jboss.universe:community-universe)</feature-pack-location>
-					<context-root>tmee</context-root>
 					<layers>
 						<layer>jsf</layer>
 						<layer>ejb</layer>

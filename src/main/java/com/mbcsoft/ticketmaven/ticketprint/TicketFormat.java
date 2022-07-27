@@ -139,9 +139,6 @@ public class TicketFormat {
 
 	/**
 	 * Gets the default line texts for a layout type.
-	 * 
-	 * @param layoutType the layout type
-	 * 
 	 * @return the line defaults
 	 */
 	static public String[] getLineDefaults() {
@@ -151,8 +148,7 @@ public class TicketFormat {
 	/**
 	 * Inits the preferences for the global ticket format defaults - the ugly scheme
 	 * of pref names is being kept for backwards compatibility with older versions.
-	 * 
-	 * @param layoutType the layout type
+	 *
 	 */
 	 private void initPrefs() {
 		String f = getPref(PREFIX + "0font", "not-set");

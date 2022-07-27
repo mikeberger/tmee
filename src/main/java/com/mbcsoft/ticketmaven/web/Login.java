@@ -59,7 +59,7 @@ import com.mbcsoft.ticketmaven.entity.Instance;
 public class Login implements Serializable {
 
 	private static final long serialVersionUID = -5876465825563098570L;
-	static private final Logger logger = Logger.getLogger("audit_logger");
+	static private final Logger logger = Logger.getLogger(Login.class.getName());
 	
 	@EJB private CustomerBean custbean;
 
