@@ -40,7 +40,7 @@ package com.mbcsoft.ticketmaven.web;
 
 import java.util.Collection;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import com.mbcsoft.ticketmaven.entity.Customer;
 import com.mbcsoft.ticketmaven.entity.Instance;

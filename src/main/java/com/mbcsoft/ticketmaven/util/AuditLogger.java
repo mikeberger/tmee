@@ -41,10 +41,10 @@ package com.mbcsoft.ticketmaven.util;
 import java.lang.reflect.Method;
 import java.util.logging.Logger;
 
-import javax.annotation.Resource;
-import javax.ejb.EJBContext;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.InvocationContext;
+import jakarta.annotation.Resource;
+import jakarta.ejb.EJBContext;
+import jakarta.interceptor.AroundInvoke;
+import jakarta.interceptor.InvocationContext;
 
 
 public class AuditLogger {

@@ -41,12 +41,12 @@ package com.mbcsoft.ticketmaven.ejbImpl;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.annotation.Resource;
-import javax.annotation.security.RolesAllowed;
-import javax.ejb.EJBContext;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import jakarta.annotation.Resource;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.EJBContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 
 import com.mbcsoft.ticketmaven.entity.BaseAppTable;
 import com.mbcsoft.ticketmaven.entity.Customer;

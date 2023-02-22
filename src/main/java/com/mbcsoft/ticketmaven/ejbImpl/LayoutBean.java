@@ -40,11 +40,11 @@ package com.mbcsoft.ticketmaven.ejbImpl;
 
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.EJB;
+import jakarta.ejb.Stateless;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.Query;
 
 import com.mbcsoft.ticketmaven.entity.Layout;
 

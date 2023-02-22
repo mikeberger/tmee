@@ -44,19 +44,19 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 
-import javax.annotation.security.RolesAllowed;
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.EJB;
+import jakarta.ejb.Stateless;
 import javax.naming.InitialContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-import javax.ws.rs.*;
-import javax.ws.rs.core.StreamingOutput;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.StreamingOutput;
 
 import com.mbcsoft.ticketmaven.ejbImpl.CustomerBean;
 

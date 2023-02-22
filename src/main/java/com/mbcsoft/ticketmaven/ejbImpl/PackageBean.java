@@ -41,8 +41,8 @@ package com.mbcsoft.ticketmaven.ejbImpl;
 import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
-import javax.ejb.Stateless;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.Stateless;
 
 import com.mbcsoft.ticketmaven.entity.Show;
 import com.mbcsoft.ticketmaven.entity.TMPackage;

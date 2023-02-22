@@ -43,10 +43,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.annotation.security.RolesAllowed;
-import javax.ejb.Stateless;
-import javax.interceptor.Interceptors;
-import javax.persistence.Query;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.Stateless;
+import jakarta.interceptor.Interceptors;
+import jakarta.persistence.Query;
 
 import com.mbcsoft.ticketmaven.entity.Show;
 import com.mbcsoft.ticketmaven.util.AuditLogger;
