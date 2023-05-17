@@ -168,7 +168,7 @@
 			<plugin>
 				<groupId>org.wildfly.plugins</groupId>
 				<artifactId>wildfly-jar-maven-plugin</artifactId>
-				<version>8.1.0.Final</version>
+				<version>9.0.0.Final</version>
 				<configuration>
 					<feature-pack-location>wildfly@maven(org.jboss.universe:community-universe)</feature-pack-location>
 					<layers>
